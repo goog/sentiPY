@@ -1,0 +1,11 @@
+x=0
+for file in $1/*
+ do 
+  if [ -f "$file" ] 
+  then 
+        x=$(( $x + 1 ))
+	iconv -f GBK -t utf-8 $file > $x.txt
+
+  fi
+
+done
