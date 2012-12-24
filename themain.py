@@ -1,5 +1,6 @@
 from preprocess import *
 from evaluate import *
+from check import *
 
 def readPHRASE(path):
     fo = open(path)
@@ -19,10 +20,7 @@ def readPHRASE(path):
 
 
 def countPHRASE(path):
-    len1=0
-    len2=0
-    len3=0
-    lenx=0
+    len1=0;len2=0;len3=0;lenx=0
     fo = open(path)
     for line in fo:
         line=line.strip()
@@ -50,12 +48,12 @@ def loadSENTI(path):
                 try:
                     senti_dict[li[0]]= float(li[1])
                 except:
-                    print "type error, not number"
+                    print "type error, not number",line
     print "the length of sentiment lexion is ",len(senti_dict)
     
-oov=set()
+oov= set()
 def calPHRASEstrength(phrase,advDICT): 
-    if not phrase:    ## it occurs
+    if not phrase:
         return 0
     li = phrase.split()
     if len(li) ==1:
@@ -81,15 +79,19 @@ def calPHRASEstrength(phrase,advDICT):
             strength = 0
         if advDICT.get(li[1]):
             strength*=advDICT.get(li[1])
-        ## DO SHIFT
+        ## DO SHIFT ,,,,,
+        ## print phrase
         if li[0] in ['shift','没','没有']:
             if strength>0:
                 strength-=4
-            else:
+            elif strength<0:
                 strength+=4
         else:
             if advDICT.get(li[0]):
                 strength*= advDICT.get(li[0])
+        ## to magnify the negative strength
+        if strength < 0:
+            strength = strength*1.5
         return strength
 
 
@@ -129,46 +131,47 @@ def calALL(advDICTfilePATH,inputPATH,outputPATH):
 
 
 def statistics(phraseNUMBERseqs):
-    #'./phraseINline2.txt'
     errorLIST = []
     dict ={1:0,0:0,-1:0}
     with open(phraseNUMBERseqs) as myFILE:
         for num, line in enumerate(myFILE, 1):
             line=line.strip()
             strength = findSENTIdroppoint(line)
-            if strength > 0:
-                errorLIST.append(num)
+            #strength = commonSENTI(line)
+            #if strength > 0:
+                #errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
-    print errorLIST
+    #print errorLIST
     print dict
     print "the correct percentage is %s" %(dict[-1]/2000.0)
 
 
-taggedFIILE='./pos_tagged.txt'
-phraseFILE='./pos_phrase.txt'
-finalPHRASE='./phrase.txt'
-phraseNUMBERseqs='./phraseINline.txt'
+taggedFILE='./neg_tagged.txt'
+phraseFILE='./neg_phrase.txt'
+finalPHRASE='./phrase2.txt'
+phraseNUMBERseqs='./phraseINline2.txt'
 
-#### precess block
+##preprocess block
 #preprocess("preprocess-neg.txt")
 #segANDpos("preprocess-neg.txt")
 
 
-## load sentiment strength 
+## load sentiment strength lexicon
 senti_dict = {}
 loadSENTI('./sentiment.txt')
 #loadSENTI('./senti.txt')
 
 
-findPHRASE(taggedFIILE,phraseFILE)
+findPHRASE(taggedFILE,phraseFILE)
 filterPHRASE(phraseFILE,finalPHRASE)
 calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
 statistics(phraseNUMBERseqs)
 
-
-#for i in oov:
-#    print i
-print "the length of OOV:",len(oov)
+fw = open('oov.txt','w')
+for i in oov:
+    fw.write(i+'\n')
+fw.close()
+print "the length of OOV is %s" %(len(oov))
 
 
 

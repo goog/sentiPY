@@ -1,7 +1,7 @@
-
 def findSENTIdroppoint(sentence):
     sentence =sentence.strip()
     if sentence:
+        ## to remove b e zero
         li = sentence.split('|')
         ## there is a summary
         if 's' in li:
@@ -34,10 +34,20 @@ def findSENTIdroppoint(sentence):
                     ind = newLIST.index(max(newLIST))
                     ## if float(li[1:-1][ind]) smaller than two ,count 
                     return float(li[1:-1][ind])
-## for negativfe,  there is a issue. 
+## for negative,  there is an issue.
 
-           
-
+## traditional method, to aggregate it
+def commonSENTI(sentence):
+    sentence =sentence.strip()
+    sum = 0
+    if sentence:
+        li = sentence.split('|')
+        for i in li:
+            try:
+                sum+=float(i)
+            except:
+                continue
+    return sum
 
 def calORIENTATION(strength):
     if strength>0:

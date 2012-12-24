@@ -57,14 +57,14 @@ def preprocess(path):
                     m = quote2.findall(line.decode('utf8')) ## remove chinese quotes
                     if m:
                         for i in m:
-                            print i
+                            #print i
                             line = line.replace(i.encode('utf8'),' ')
                     ## remove intensional verb and something unsure
                     line_copy=line     
                     line_copy = line_copy.replace('。','\n').replace(',','\n').replace('，','\n')
                     clauses = line_copy.split('\n')
                     for i in clauses:
-                        for j in ['怀疑','觉得','如果']:
+                        for j in ['怀疑','觉得','如果','假如']:
                             if i.find(j) !=-1:
                                 line = line.replace(i,' ')
                     if line:
@@ -76,19 +76,10 @@ def preprocess(path):
 def segANDpos(input):
     cmd="cp "+input+" ~/segmenter/"+input
     subprocess.call(cmd, shell=True)
-    if input[-7:-4]=="neg":
-##        ctb has a large dictionary, pku
-        cmd = "/home/googcheng/segmenter/segment.sh ctb "+input+" UTF-8 0 > neg_seged.txt"
-    else:
-        cmd = "/home/googcheng/segmenter/segment.sh ctb "+input+" UTF-8 0 > pos_seged.txt"    
-    subprocess.call(cmd, shell=True)
+    arg0=input[-7:-4]  
+    subprocess.call("./segment.sh "+arg0, shell=True)
     print "segment finished."
-    if input[-7:-4]=="neg":
-        subprocess.call("./neg_tag.sh", shell=True)
-        subprocess.call("mv /home/googcheng/pos/neg_tagged.txt .", shell=True)
-    else:
-        subprocess.call("./pos_tag.sh", shell=True)
-        subprocess.call("mv /home/googcheng/pos/pos_tagged.txt .", shell=True)
+    subprocess.call("./tagger.sh "+arg0, shell=True)
     print "pos tagger finished."
     
     
@@ -122,8 +113,7 @@ def sentiment():
 def getLABEL(element):
     return element[element.find('#')+1:]
     
-## to make it clean
-
+## the vital method
 def findPHRASE(taggedFILE,posedFILE):
     dict = sentiment()
     fo = open(taggedFILE)
@@ -300,10 +290,6 @@ def filterPHRASE(phraseFILE,filteredFILE):
     fw.close()
 
 
-##dict = sentiment()
-##print dict.get('难')
-
-#findPHRASE('neg_tagged.txt','neg_phrase.txt')
 
 
                 

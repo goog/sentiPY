@@ -1,5 +1,8 @@
-*.txt
 *.pyc
 *.doc
 *.txt~
 *.sh~
+*~
+senti*
+neg_result
+maybeADV.txt
