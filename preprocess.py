@@ -7,12 +7,19 @@ def rmBLANK(path,writeTO):
     fo = open(path)
     fw = open(writeTO,'w')
     for line in fo:
-        line = line.strip() # has this line,next line works
+        line = line.strip()
         if line:
             fw.write(line+'\n')       
     fw.close()
 
-
+def readFILEasSET(path):
+    newSET = set()
+    fo = open(path)
+    for line in fo:
+        line = line.strip()
+        if line:
+            newSET.add(line)
+    return newSET
 
 pal = re.compile(ur'\(.+?\)')
 pal2 = re.compile(ur'\uff08.+?\uff09')
@@ -22,7 +29,6 @@ quote2 = re.compile(ur'\u201c.+?\u201d')
 #chinese notation must unicode in reg
 def preprocess(path):
     ## the method mainly to remove smth disrelated and interferential
-    ## 2 虚拟block   if ,,假如....
     r=raw_input("type a directory name:")
     fw = open(path,'w')
     for root,dirs,files in os.walk(r):
@@ -112,10 +118,12 @@ def sentiment():
 
 def getLABEL(element):
     return element[element.find('#')+1:]
-    
+
+ 
 ## the vital method
 def findPHRASE(taggedFILE,posedFILE):
     dict = sentiment()
+    advSET = readFILEasSET('./sentiADV.txt') ## read advs which have sentiment
     fo = open(taggedFILE)
     fw = open(posedFILE,'w')
     for line in fo:
@@ -130,7 +138,7 @@ def findPHRASE(taggedFILE,posedFILE):
                 label = getLABEL(list[i])
                 if seger in ['整体','总之','总体','总而言之','总的来说','总结','整体性','总体性']:
                     fw.write('SUM\n')
-                if dict.get(seger):   #word in sentiment lexicon
+                if dict.get(seger):   #current word in sentiment lexicon
                     #label_dict[label]=label_dict[label]+1
                     if label=="VA":
                         if i>0:
@@ -188,17 +196,29 @@ def findPHRASE(taggedFILE,posedFILE):
                                 fw.write(list[i]+'\n')
                         else:
                             fw.write(list[i]+'\n')
-                       
-
+                            
                     if label=='AD' and i>0:
-                        ## to add 似乎#AD 不#AD 太#AD 好#AD
-                        ###  like 系统#NN 难#AD 装#VV 啊#SP
-                        index = list[i-1].find('#');p_label = list[i-1][index+1:]
+                        index = list[i-1].find('#');p_label = getLABEL(list[i-1])
                         if p_label=='NN' and list[i-1][:index] in ['问题','价格','价位','效果','速度','续航','散热','性能','外观','容量']:
+                            #print ''.join(list[i-1:i+1])
                             fw.write(''.join(list[i-1:i+1])+'\n')
+                        elif p_label=='AD':
+                            ind = i-1
+                            for j in range(i-2,-1,-1):
+                                if getLABEL(list[j])=='AD':
+                                    ind=j
+                                else:
+                                    break
+                            if seger in advSET:
+                                if seger=='重' and list[i-1][:index] in['再','往复']:
+                                    continue
+                                else:
+                                    fw.write(''.join(list[ind:i+1])+'\n')
+                                    #print ''.join(list[ind:i+1])
                         else:
                             fw.write(''.join(list[i])+'\n')
-                    #感叹词        
+                            
+                    #interjection        
                     if label=="IJ":
                         fw.write(list[i]+'\n')
                     if label=="JJ":
@@ -206,6 +226,7 @@ def findPHRASE(taggedFILE,posedFILE):
                             fw.write(list[i]+'\n')
                     if label=="CD":
                         fw.write(list[i]+'\n')
+
     fw.close()
     #print label_dict
 
