@@ -16,6 +16,7 @@ def checkoutPHRASE(path):
                 flag=1
             else:
                 flag=0
+    print "the length of empty phrase reviews is:",len(emptyLIST)
     return emptyLIST
 
 
@@ -29,7 +30,6 @@ lineNO=0
 for line in fo:
     line=line.strip()
     if line:
-        line=line.strip()
         if line=="----------#NR":
             lineNO+=1
             if lineNO in list:
