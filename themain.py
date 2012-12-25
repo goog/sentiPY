@@ -136,8 +136,8 @@ def statistics(phraseNUMBERseqs):
     with open(phraseNUMBERseqs) as myFILE:
         for num, line in enumerate(myFILE, 1):
             line=line.strip()
-            strength = findSENTIdroppoint(line)
-            #strength = commonSENTI(line)
+            #strength = findSENTIdroppoint(line)
+            strength = commonSENTI(line)
             #if strength > 0:
                 #errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1

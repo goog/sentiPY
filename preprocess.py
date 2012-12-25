@@ -27,6 +27,7 @@ quote = re.compile(ur'".+?"')
 quote2 = re.compile(ur'\u201c.+?\u201d')
 #suiran = re.compile(ur'\u867d\u7136.+?\u4f46.+?[,!\uff01\uff0c\u3002\uff1b]')
 #chinese notation must unicode in reg
+
 def preprocess(path):
     ## the method mainly to remove smth disrelated and interferential
     r=raw_input("type a directory name:")
@@ -90,8 +91,13 @@ def segANDpos(input):
     
     
 
-def parse():
-    pass
+def parseLINE(line):
+    p = re.compile( '#\w{1,3}')
+    fw=open('/home/googcheng/parser/line.txt','w')
+    fw.write(p.sub('',line))
+    fw.close()
+    parsed = subprocess.check_output("./parse.sh", shell=True)
+    return parsed
 
 def sentiment():
     dict_list=[]
@@ -119,13 +125,14 @@ def sentiment():
 def getLABEL(element):
     return element[element.find('#')+1:]
 
- 
+
 ## the vital method
-def findPHRASE(taggedFILE,posedFILE):
+def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
-    advSET = readFILEasSET('./sentiADV.txt') ## read advs which have sentiment
+    advSET = readFILEasSET('./sentiADV.txt') ##read sentiment words which act as advs
+##    tempSET = set() 
     fo = open(taggedFILE)
-    fw = open(posedFILE,'w')
+    fw = open(phraseFILE,'w')
     for line in fo:
         line = line.strip()
         if line:
@@ -138,6 +145,16 @@ def findPHRASE(taggedFILE,posedFILE):
                 label = getLABEL(list[i])
                 if seger in ['整体','总之','总体','总而言之','总的来说','总结','整体性','总体性']:
                     fw.write('SUM\n')
+                if seger=='高': ## for some special words have two polarities
+                    parseLINE(line)
+                    fo = open('/home/googcheng/parser/parsed.txt')
+                    target = "高-"+str(i+1)
+                    for line in fo:
+                        line=line.strip()
+                        if line:
+                            if line.find(target)!=-1:
+                                print line
+                        
                 if dict.get(seger):   #current word in sentiment lexicon
                     #label_dict[label]=label_dict[label]+1
                     if label=="VA":
@@ -226,6 +243,8 @@ def findPHRASE(taggedFILE,posedFILE):
                             fw.write(list[i]+'\n')
                     if label=="CD":
                         fw.write(list[i]+'\n')
+##    for i in tempSET:
+##        print i
 
     fw.close()
     #print label_dict
@@ -309,6 +328,12 @@ def filterPHRASE(phraseFILE,filteredFILE):
                         fw.write(rmword.sub('','   '.join(li[2:4]))+'\n')
                                                 
     fw.close()
+
+
+
+##line = "没有#VE 缺点#NN ，#PU 都#AD 是#VC 优点#NN ~#PU ~#PU 吼#VV 吼#VV ，#PU 或许#AD"
+##parseLINE(line)
+
 
 
 
