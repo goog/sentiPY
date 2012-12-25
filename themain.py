@@ -18,7 +18,6 @@ def readPHRASE(path):
         fw.write(i+'\n')
     fw.close()
 
-
 def countPHRASE(path):
     len1=0;len2=0;len3=0;lenx=0
     fo = open(path)
@@ -172,10 +171,6 @@ for i in oov:
     fw.write(i+'\n')
 fw.close()
 print "the length of OOV is %s" %(len(oov))
-
-
-
-
 
             
     

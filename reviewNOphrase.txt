@@ -10,8 +10,6 @@ USB#NN 接口#NN 太#AD 少#VA 而且#CC 位置#NN 不#AD 人性化#VV ！#PU XP
 1.#NR 购买#VV 的#DEC 时候#NN 写#VV 着#AS 赠送#VV 包#VV 的#SP ，#PU 可是#AD 收到#VV 本本#NN 的#DEC 时候#NN 没有#AD 包#VV 。#PU 这时#AD 去#VV 查看#VV 订单#NN 时#LC ，#PU 赠#VV 包#VV 的#DEC 条款#NN 没有#VE 了#SP 。#PU2.#NR 刚#AD 买#VV 完#VV 就#AD 降#VV 了#AS 100#CD .#PU
 机器#NN 装#VV 的#DEC 内存#NN 是#VC 两#CD 条#M 1G#NN 667MHZ#NN 内#LC 存条#NN .#PU 影响#NN 以后#LC 升级#VV .VISTA#NN 系统#NN 开机#VV 就#AD 用#VV 了#AS 7OOM#NN 内存#NN 了#SP .#PU 运行#VV 一些#CD 软件#NN 后#LC ,#PU 使用#VV 的#DEC 内#NN 存量#NN 差不多#AD 去#VV 到#VV 1G#NR 了#SP .#PU
 装#NN 系统#NN 花#VV 了#AS 一#CD 点#M 时间#NN ，#PU 不#AD 能#VV 直接#AD 使用#VV ghost#NN 版本#NN 要#VV 先#AD 去#VV BIOS#NN 里#LC 修改#VV 一#CD 项#M 内容#NN 。#PU
-1#CD C#NN 面#NN 温度#NN 稍#AD 高#VA ，#PU 但#AD 在#P 可#VV 接受#VV 范围#NN ；#PU 适配器#NN 在#P 充电#NN 时会#NN 高热#NN ，#PU 说明书#NN 中#LC 倒是#AD 有#VE 提醒#NN2#CD 字母#NN 大写键#NN 的#DEG 开关#NN 没有#AD 指示#VV ，#PU 在#P 输入#VV 密码#NN 时#LC 要#VV 注意#VV 了#SP
-与#P 联想#NR 的#DEG Y450#NN 系列#NN 相比#VV ，#PU 价格#NN 有点#AD 偏#AD 高#VA应该#VV 送#VV 个#M XP#NN 驱动#NN 光盘#NN ，#PU VISTA#NN 还是#AD 有点#AD 不#AD 方便#VA
 既然#CS 是#VC 游戏#NN 专用#NN 就#AD 应该#VV 搞#VV 个#M XP#NN 系统#NN 的#DEG 驱动#NN 嘛#SP ！！#AD ！！#VV ！！#NN ！！#NN ！！！#NN ！#PU
 笔记本#NN 的#DEG 下半#JJ 部分#NN 是#VC 梯形#JJ 设计#NN ，#PU 放#VV 在#P 桌子#NN 上#LC 不#AD 容易#AD 找#VV 网口#NN 和#CC 其他#DT 接口#NN
 找#VV 了#AS 好几#CD 个#M 系统#NN 盘#NN 都#AD 找#VV 不#AD 到#VV SATA#NR 的#DEG 硬盘#NN .#PU 最后#AD 用#P U#CD 盘#M 做#VV 了#AS 一个#AD 启动#VV 盘#NN ，#PU 先#AD 启动#VV 了#AS 一个#CD Win#M PE#NN 操作系统#VV ，#PU 然后#AD 在#P Win#NN PE#NN 环境#NN 下#LC 使用#VV Ghost#NN 安装#VV 一个#CD ＸＰｓｐ３#M 的#DEG 镜像#NN ，#PU 终于#AD 能够#VV 装#VV 上#VV ＸＰ#NN 系统#NN 了#SP 。#PU
@@ -34,9 +32,7 @@ USB#NN 接口#NN 太#AD 少#VA 而且#CC 位置#NN 不#AD 人性化#VV ！#PU XP
 为什么#AD 没有#VE 我#PN 的#DEG 赠品#NN 呢#SP ？#PU当日#NT 出#VV 了#AS 赠品#NN ，#PU 我#PN 也#AD 使#VV 当日#NT 订购#VV 的#DEC ，#PU 为什么#AD 没有#VE 我#PN 的#DEG 赠品#NN 呢#SP ？#PU
 重装#VV 了#AS 系统#NN 之后#LC ，#PU 开机#VV 的#DEC 人脸#NN 识别#NN 没有#VE 了#SP ，#PU 只能#AD 在#P msn#NN 里#LC 看到#VV 摄影#NN 的#DEG 头像#NN 了#SP ，#PU 其他#DT 的#DEG 就#AD 看#VV 不#AD 到#VV 了#AS ，#PU 找#VV 不#AD 到#VV 摄像机#NN 的#DEG 位置#NN ，#PU 要#VV 安装#VV 其他#DT 软件#NN 吗#SP ？#PU
 1#CD 货到付款#NN 但#AD 必须#VV 先#AD 付款#VV 再#AD 验货#VV 2#CD Vista--XP#M 要#VV 咨询#VV 客服#NN ,#PU 除非#CS 大牛#NR
-温度#NN 较#AD 高#VA ，#PU 系统#NN 较难#AD 安装#VV 。#PU 刚#AD 买#VV 一#CD 天#M 就#AD 赠#VV 杀毒#NN 软件#NN ，#PU 过#VV 两#CD 天#M 又#AD 降#VV 100#CD 。#PU
 No#VV attached#JJ presents#NN such#NN as#AD Mouse#NR ,#PU Notebook#NR shoulder#NN bag#NN ,#PU ^_#NN ^#NN
-硬盘#NN 没有#VE 分区#NN ，#PU VISTA#NR 太慢#NN好像#AD 我#PN 的#DEG 本本#NN 也#AD 是#VC 左边#NN 比#P 右边#NN 的#DEG 温度#NN 要#VV 高#VA 一些#AD ，#PU 但是#AD 还#AD 能#VV 接受#VV
 x=0#NRfor#P file#NN in$1/*#VVdo#NNif#NN [#AD -f"$#VV file"#VV ]#NNthen#NRx=$(($x+1))#NRiconv-f#NR GBK#NN -t#NN utf-8$#VV file#NN >#PU $x.txt#NNfi#NRdone#NR
 c#NN 盘#NN 不#AD 分区#AD 很#AD 让#VV 人#NN 郁#VV 闷#VV 啊#SP ，#PU 我#PN 把#BA 旧#JJ 电脑#NN 的#DEC 东西#NN 传#VV 到#VV 本本#NN 里面#NN 了#SP ，#PU 结果#AD 使用#VV 了#AS 超过#VV 20G#CD 的#DEG 空间#NN ，#PU 没有#VE 办法#NN 备份#VV 了#AS
 没有#VE 无线#JJ 网卡#NN ，#PU 但#AD 开关#NN ，#PU 指示灯#NN 都#AD 有#VE ，#PU 拆开#VV 看#VV 了#AS ，#PU 网卡#NN 插槽#VV ，#PU 天线#NN 都#AD 预留#VV 了#AS ，#PU 想#VV 办法#NN 掏#VV 一#CD 块#M 装#NN 上#LC 就#AD 行#VV 。#PU
