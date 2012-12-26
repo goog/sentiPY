@@ -1,8 +1,12 @@
 def findSENTIdroppoint(sentence):
     sentence =sentence.strip()
     if sentence:
-        ## to remove b e zero
         li = sentence.split('|')
+        for i in[0,-1]:
+            if li and li[i]=='0':
+                li.pop(i)
+        if not li:
+            return 0
         ## there is a summary
         if 's' in li:
             for k,i in enumerate(li):  # find last 's'
@@ -13,14 +17,17 @@ def findSENTIdroppoint(sentence):
                     return float(li[index-1])
                 except:
                     print "sentiment miss",sentence
-                    return 0.0
+                    return 0
             else:   
                 return float(li[index+1])
                 
         else:
             # case 2 begin and end
             if len(li)==1:
-                return float(li[0])
+                try:
+                    return float(li[0])
+                except:
+                    return 0
             begin = float(li[0]);end = float(li[-1])
             if abs(begin)>abs(end):
                 return begin
@@ -34,7 +41,6 @@ def findSENTIdroppoint(sentence):
                     ind = newLIST.index(max(newLIST))
                     ## if float(li[1:-1][ind]) smaller than two ,count 
                     return float(li[1:-1][ind])
-## for negative,  there is an issue.
 
 ## traditional method, to aggregate it
 def commonSENTI(sentence):

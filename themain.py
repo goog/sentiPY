@@ -1,6 +1,7 @@
 from preprocess import *
 from evaluate import *
 from check import *
+import time
 
 def readPHRASE(path):
     fo = open(path)
@@ -144,23 +145,20 @@ def statistics(phraseNUMBERseqs):
     print dict
     print "the correct percentage is %s" %(dict[-1]/2000.0)
 
-
+print "starts",time.asctime()
 taggedFILE='./neg_tagged.txt'
 phraseFILE='./neg_phrase.txt'
 finalPHRASE='./phrase2.txt'
 phraseNUMBERseqs='./phraseINline2.txt'
 
+
 ##preprocess block
-#preprocess("preprocess-neg.txt")
-#segANDpos("preprocess-neg.txt")
+##preprocess("preprocess-neg.txt")
+##segANDpos("preprocess-neg.txt")
 
-
-## load sentiment strength lexicon
 senti_dict = {}
 loadSENTI('./sentiment.txt')
 #loadSENTI('./senti.txt')
-
-
 findPHRASE(taggedFILE,phraseFILE)
 filterPHRASE(phraseFILE,finalPHRASE)
 calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
@@ -171,6 +169,7 @@ for i in oov:
     fw.write(i+'\n')
 fw.close()
 print "the length of OOV is %s" %(len(oov))
+print 'finished',time.asctime()
 
             
     
