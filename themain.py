@@ -52,35 +52,36 @@ def loadSENTI(path):
     print "the length of sentiment lexion is ",len(senti_dict)
     
 oov= set()
-def calPHRASEstrength(phrase,advDICT): 
+def calPHRASEstrength(phrase,advDICT):
     if not phrase:
         return 0
     li = phrase.split()
     if len(li) ==1:
-        value = senti_dict.get(li[0])
-        if not value:
+        strength= senti_dict.get(li[0])
+        if strength is None:
             oov.add(li[0])
-        return  0 if value is None else value
+            strength = 0
     elif len(li)==2:
         sentiSTR= senti_dict.get(li[1])
         if sentiSTR is None:
             oov.add(li[1])
             sentiSTR = 0
         if advDICT.get(li[0]):
-            ### try to shift
+            ## do linear advs
             strength= advDICT.get(li[0])*sentiSTR
+        elif li[0]=="不太" and sentiSTR:
+            strength = sentiSTR - 5
         else:
             strength = sentiSTR
-        return strength
-    else:  ###  len 3  
+
+    elif len(li)==3:  
         strength= senti_dict.get(li[2])
         if strength is None:
             oov.add(li[2])
             strength = 0
         if advDICT.get(li[1]):
             strength*=advDICT.get(li[1])
-        ## DO SHIFT ,,,,,
-        ## print phrase
+        ## DO SHIFT(4)
         if li[0] in ['shift','没','没有']:
             if strength>0:
                 strength-=4
@@ -90,9 +91,18 @@ def calPHRASEstrength(phrase,advDICT):
             if advDICT.get(li[0]):
                 strength*= advDICT.get(li[0])
         ## to magnify the negative strength
-        if strength < 0:
-            strength = strength*1.5
-        return strength
+    else:
+        length = len(li)
+        strength= senti_dict.get(li[length-1])
+        if strength is None:
+            oov.add(li[2])
+            strength = 0
+        for i in range(length-2,-1,-1):
+            if advDICT.get(li[1]):
+                strength*=advDICT.get(li[1])  ## no this more high 
+    if strength < 0:
+        strength = strength*1.5
+    return strength
 
 
 def readFILEasDICT(path):
@@ -166,7 +176,7 @@ statistics(phraseNUMBERseqs)
 
 fw = open('oov.txt','w')
 for i in oov:
-    fw.write(i+'\n')
+    fw.write(i+'   \n')
 fw.close()
 print "the length of OOV is %s" %(len(oov))
 print 'finished',time.asctime()

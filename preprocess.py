@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import os,sys,re
 import subprocess
-
+from check import *
 
 def rmBLANK(path,writeTO):
     fo = open(path)
@@ -168,7 +168,7 @@ def findPHRASE(taggedFILE,phraseFILE):
                         print "No,process failed.please check it"
                         print line
                         
-                if dict.get(seger):   #current word in sentiment lexicon
+                if dict.get(seger):
                     #label_dict[label]=label_dict[label]+1
                     if label=="VA":
                         if i>0:
@@ -262,7 +262,6 @@ def findPHRASE(taggedFILE,phraseFILE):
 
 
 def filterPHRASE(phraseFILE,filteredFILE):
-    cnt5 = 0
     p = re.compile( '#\w{1,3}')
     rmword = re.compile( '\w{1,3}')
     dict = sentiment()
@@ -290,25 +289,22 @@ def filterPHRASE(phraseFILE,filteredFILE):
                     fw.write(li[0]+'\n')
                     
                 elif len(li) == 4:  ###  more things to do
-                    #  solve 有些#AD 不#AD 合理#VA
                     if not li[1].startswith('VE') and rmword.sub('',li[1]) in ['什么','任何','啥']:
                         fw.write('没有   ' + rmword.sub('',li[2])+'\n')
-                        #print '没有   ' + rmword.sub('',li[2])
                     else:
                         if li[1].startswith('VE'):
-                            # VE:有/没有 ,
+                            # VE:有/没有
                             fw.write(p.sub('   ',line)+'\n')
                             #print line,p.sub('   ',line)
                         elif li[1].startswith('AD'):
                             if li[2].startswith('DEV') :
                                 fw.write(li[0]+'   '+rmword.sub('',li[2])+'\n')
-                                #print line,li[0]+'   '+rmword.sub('',li[2])
                             else:
-                                ## ad attention
-                                ##确实#AD不#AD低#VA    都#AD挺#AD烫#VA    极#AD不#AD舒服#VA
-                                fw.write(rmword.sub('','   '.join(li[0:3]))+'\n')
-                                ##todo linear and nonlinear
-                                ###print line,rmword.sub('','   '.join(li[0:3]))
+                                if li[0] in ['也','都','就','却','还是']: ## may clearly enhance???
+                                    fw.write(rmword.sub('','   '.join(li[1:3]))+'\n')
+                                    #print rmword.sub('','   '.join(li[1:3]))
+                                else:
+                                    fw.write(processADVS(rmword.sub('','   '.join(li[0:3]))))
                         else:
                             if li[1].startswith('LC'):
                                 fw.write("不   "+rmword.sub('',li[2])+'\n')  #  add negative
@@ -323,16 +319,17 @@ def filterPHRASE(phraseFILE,filteredFILE):
                                     #print line,rmword.sub('',li[2])
                 else:
                     if len(li)==5:
-                        ##cnt5+=1
                         if li[2].startswith('VC'):
                             if li[0]=="不":
                                 fw.write("shift   "+rmword.sub('','   '.join(li[2:4]))+'\n')
                             else:
-                                ##本#AD是#VC很#AD时尚#VA
-                                ##实在#AD是#VC太#AD麻烦#VA
-                                fw.write(rmword.sub('','   '.join(li[2:4]))+'\n')        
+                                fw.write(rmword.sub('','   '.join([li[0]]+li[2:4]))+'\n')
+                        else:
+                            fw.write(rmword.sub('','   '.join(li)+'\n'))
+                            print line,rmword.sub('','   '.join(li))
                     else:
-                        fw.write(rmword.sub('','   '.join(li[2:4]))+'\n')
+                        #print len(li)
+                        fw.write(rmword.sub('','   '.join(li))+'\n')
                                                 
     fw.close()
 

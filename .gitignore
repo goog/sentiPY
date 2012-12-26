@@ -4,7 +4,8 @@
 *.sh~
 *~
 senti*
-neg_result
+neg_*
+pos_*
 maybeADV.txt
 1.txt
 2.txt
