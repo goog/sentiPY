@@ -49,7 +49,86 @@ def findLABELS(path):
         index = line.find('#')
         if index!=-1:
             a.add(line[index+1:])
-    print a            
+    print a
+
+def file2count(path):
+    ## read a file ,output  k,v
+    fo =open(path)
+    dict = {}
+    for line in fo:
+        line = line.strip()
+        if line:
+            if dict.get(line):
+                dict[line]+=1
+            else:
+                dict[line]=1
+    for i in dict.keys():
+        print i,dict[i]
+    
+def checkLABELED(path1,path2):
+    dict1={}
+    dict2={}
+    fo1 = open(path1)  #'./1.txt'
+    fo2 = open(path2)  #'./2.txt'
+    fw=open('./senti.txt','a')
+    for line in fo1:
+        line=line.strip()
+        if line:
+            kv=line.split()
+            if len(kv)==2:
+                try:
+                    test = float(kv[1])
+                except:
+                    print kv[0]
+                dict1[kv[0]]=kv[1]
+    print "dict1 length is %s" %len(dict1)
+
+
+    for line in fo2:
+        line=line.strip()
+        if line:
+            kv=line.split()
+            if len(kv)==2:
+                try:
+                    test = float(kv[1])
+                except:
+                    print kv[0]
+                    
+                dict2[kv[0]]=kv[1]
+    print "dict2 length is %s" %len(dict2)
+
+    a = set(dict1.keys())
+    b = set(dict2.keys())
+    c = a|b
+    print "the total length is %s" %len(c)
+    flag=0
+    for i in c:
+        if i=="自我":
+            flag=1
+        if flag:
+        
+            try:
+                
+                if dict1.get(i)==dict2.get(i):
+                    fw.write(i+"   "+dict1.get(i)+"\n")
+                else:
+                    if dict1.get(i) and dict2.get(i):
+                        if abs(int(dict1.get(i))-int(dict2.get(i)))<=1:
+                            avg= (int(dict1.get(i))+int(dict2.get(i)))/2.0
+                            fw.write(i+"   "+str(avg)+"\n")
+                        else:
+                            print i,"   ",dict1.get(i),"   ",dict2.get(i)
+                            r=raw_input("type a value:")
+                            fw.write(i+"   "+r+"\n")
+                            
+                            
+                    else:
+                        print i,"   ",dict1.get(i),"   ",dict2.get(i)
+                        r=raw_input("type a value:")
+                        fw.write(i+"   "+r+"\n")
+            except:
+                print i
+    fw.close()
 
 
 def doOOV():
@@ -97,9 +176,15 @@ def processADVSS(path):
         
     fw.close()
 
+def recordOOV(oov):
+    fw = open('oov.txt','w')
+    for i in oov:
+        fw.write(i+'   \n')
+    fw.close()
+    print "the length of OOV is %s" %(len(oov))
+
 
 def processADVS(line):
-    ## 不 太 好
     li=line.split()
     if len(li)==3:
         if ''.join(li[:2])=='不太':
@@ -119,17 +204,12 @@ def findADorVE(phrase):
         phrase = m.group().encode('utf8')
     elif m2:
         phrase = m2.group().encode('utf8')
-    return phrase+'\n'
-        
-    
-    
-    
+    return phrase+'\n' 
 
 if __name__ == '__main__':
     processADVSS('./advss.txt')
     print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
-    ##几乎#AD没有#VE什么#DT合口味#NN
-    
+    file2count('./jjj.txt')
             
             
             

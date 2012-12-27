@@ -134,7 +134,7 @@ def calALL(advDICTfilePATH,inputPATH,outputPATH):
             else:
                 list.append(str(calPHRASEstrength(line,advDICT)))
         else:
-            #if list:  ### a lot lines is empty 
+            #if list:  ### a lot lines are empty 
             fw.write("|".join(list)+"\n")
             list=[]  
     fw.close()
@@ -162,10 +162,8 @@ if __name__ == '__main__':
     finalPHRASE='./phrase2.txt'
     phraseNUMBERseqs='./phraseINline2.txt'
 
-
-    ##preprocess block
-    ##preprocess("preprocess-neg.txt")
-    ##segANDpos("preprocess-neg.txt")
+##    preprocess("preprocess-neg.txt")
+##    segANDpos("preprocess-neg.txt")
 
     senti_dict = {}
     loadSENTI('./sentiment.txt')
@@ -174,12 +172,8 @@ if __name__ == '__main__':
     filterPHRASE(phraseFILE,finalPHRASE)
     calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
     statistics(phraseNUMBERseqs)
-
-    fw = open('oov.txt','w')
-    for i in oov:
-        fw.write(i+'   \n')
-    fw.close()
-    print "the length of OOV is %s" %(len(oov))
+    recordOOV(oov)
+    
     print 'finished',time.asctime()
 
             

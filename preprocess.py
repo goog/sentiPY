@@ -121,6 +121,9 @@ def sentiment():
 def getLABEL(element):
     return element[element.find('#')+1:]
 
+def getWORD(element):
+    return element[:element.find('#')]
+
 def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
     advSET = readFILEasSET('./sentiADV.txt') ##read sentiment words which act as advs
@@ -136,7 +139,7 @@ def findPHRASE(taggedFILE,phraseFILE):
                 continue
             list = line.split()       #list elements are Word#POS
             for i in range(len(list)):
-                index = list[i].find('#');seger = list[i][:index];
+                seger = getWORD(list[i])
                 label = getLABEL(list[i])
                 if seger in ['整体','总之','总体','总而言之','总的来说','总结','整体性','总体性']:
                     fw.write('SUM\n')
@@ -208,7 +211,7 @@ def findPHRASE(taggedFILE,phraseFILE):
                         else:
                             fw.write(list[i]+'\n')
                             
-                    # verbs ,forward/backward
+                    # verbs ,forward/backward?
                     if label=="VV":
                         if i>0:
                             p_label = getLABEL(list[i-1])
@@ -243,13 +246,30 @@ def findPHRASE(taggedFILE,phraseFILE):
                     if label=="IJ":
                         fw.write(list[i]+'\n')
                     if label=="JJ":
-                        ##  to do
-                        if seger not in ['大']:
-                            fw.write(list[i]+'\n')
-                            #print list[i]
+                        try:
+                            if getLABEL(list[i+1])=='NN':
+                            #or (getLABEL(list[i+1])=='DEG' and getLABEL(list[i+2])=='NN')
+                                if seger=='小': 
+                                    try:
+                                        if getWORD(list[i+1]) in ['单人床','县城','地方','柜门','液晶']:
+                                            fw.write('-小\n')
+                                    except:
+                                        pass
+                                if seger=='大':
+                                    try:
+                                        if getWORD(list[i+1]) in ['公司','单位','商场','城市','宾馆','床','店','气','片','能力','酒店','钱','银行','阳台']:
+                                            fw.write('+大\n')
+                                        if getWORD(list[i+1]) in ['声','理由','环境','当']:
+                                            fw.write('-大\n')
+                                    except:
+                                        pass
+                               
+                                        
+                                ## 长#JJ 时间#NN ///in notebook +, hotel :-
+                        except:
+                            print "JJ here,out of range"
                     if label=="CD":  # so small
                         fw.write(list[i]+'\n')
-                        print list[i]
 ##    for i in tempSET:
 ##        print i
 
@@ -294,9 +314,8 @@ def filterPHRASE(phraseFILE,filteredFILE):
                             if li[2].startswith('DEV') :
                                 fw.write(li[0]+'   '+rmword.sub('',li[2])+'\n')
                             else:
-                                if li[0] in ['也','都','就','却','还是']: ## may clearly enhance???
+                                if li[0] in ['都','就','却','还是']:
                                     fw.write(rmword.sub('','   '.join(li[1:3]))+'\n')
-                                    #print rmword.sub('','   '.join(li[1:3]))
                                 else:
                                     fw.write(processADVS(rmword.sub('','   '.join(li[0:3]))))
                         else:
