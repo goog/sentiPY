@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import re
 '''tools'''
 
 def checkoutPHRASE(path):
@@ -105,7 +106,30 @@ def processADVS(line):
             return '不太 '+li[2]+'\n'  ## minus -5
     return line+'\n'
 
-processADVSS('./advss.txt')
+
+palAD= re.compile(ur'[\u4e00-\u9fa5]+#AD.*')
+palVE= re.compile(ur'[\u4e00-\u9fa5]+#VE.*')
+def findADorVE(phrase):
+    li = phrase.split('#PU')
+    if len(li)==2:
+        phrase = li[1]
+    m = palAD.search(phrase.decode('utf8'))
+    m2=palVE.search(phrase.decode('utf8'))
+    if m:
+        phrase = m.group().encode('utf8')
+    elif m2:
+        phrase = m2.group().encode('utf8')
+    return phrase+'\n'
+        
+    
+    
+    
+
+if __name__ == '__main__':
+    processADVSS('./advss.txt')
+    print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
+    ##几乎#AD没有#VE什么#DT合口味#NN
+    
             
             
             

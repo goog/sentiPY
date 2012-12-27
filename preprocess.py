@@ -3,6 +3,12 @@ import os,sys,re
 import subprocess
 from check import *
 
+pal = re.compile(ur'\(.+?\)')
+pal2 = re.compile(ur'\uff08.+?\uff09')
+quote = re.compile(ur'".+?"')
+quote2 = re.compile(ur'\u201c.+?\u201d')
+#suiran = re.compile(ur'\u867d\u7136.+?\u4f46.+?[,!\uff01\uff0c\u3002\uff1b]')
+
 def rmBLANK(path,writeTO):
     fo = open(path)
     fw = open(writeTO,'w')
@@ -20,13 +26,6 @@ def readFILEasSET(path):
         if line:
             newSET.add(line)
     return newSET
-
-pal = re.compile(ur'\(.+?\)')
-pal2 = re.compile(ur'\uff08.+?\uff09')
-quote = re.compile(ur'".+?"')
-quote2 = re.compile(ur'\u201c.+?\u201d')
-#suiran = re.compile(ur'\u867d\u7136.+?\u4f46.+?[,!\uff01\uff0c\u3002\uff1b]')
-#chinese notation must unicode in re
 
 def preprocess(path):
     ## the method mainly to remove smth disrelated and interferential
@@ -122,8 +121,6 @@ def sentiment():
 def getLABEL(element):
     return element[element.find('#')+1:]
 
-
-## the vital method
 def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
     advSET = readFILEasSET('./sentiADV.txt') ##read sentiment words which act as advs
@@ -158,58 +155,54 @@ def findPHRASE(taggedFILE,phraseFILE):
 ##                                    fw.write('-高\n')  ##use const
 ##                                else:
 ##                                    fw.write('+高\n')
-                ##  because of there is not a No in lexicon
-                if label=='VE' and seger=='没有':
+                ##  because there is not a No in lexicon
+                if list[i]=='没有#VE':
                     try:
                         indexVE = list[i+1].find('#');nextLABEL = getLABEL(list[i+1])
                         if nextLABEL=='NN' and (not dict.get(list[i+1][:indexVE])):
                             fw.write('-没有\n')
                     except:
-                        print "No,process failed.please check it"
-                        print line
+                        print "the No,process failed.please check it:",line
                         
                 if dict.get(seger):
-                    #label_dict[label]=label_dict[label]+1
                     if label=="VA":
                         if i>0:
                             p_label = getLABEL(list[i-1])
-                            #consider '的' 
+                            #'的' 
                             if p_label in ['DEV','DEG'] and i>1:
                                 fw.write(''.join(list[i-2:i+1])+'\n')
                             elif p_label=='AD':
-                                if i==1:
-                                    fw.write(''.join(list[0:2])+'\n')
-                                else:
-                                    ind = i-1
+                                ind = i-1
+                                try:
                                     for j in range(i-2,-1,-1):
                                         if getLABEL(list[j])=='AD':
                                             ind=j
                                         else:
                                             break
-                                    if ind==i-1 and i>2:
-                                        if getLABEL(list[i-2])=='VC' and getLABEL(list[i-3])=='AD':
-                                            fw.write(''.join(list[i-3:i+1])+'\n')
-                                        else:
-                                            fw.write(''.join(list[i-1:i+1])+'\n')       
-
+                                except:
+                                    print "out of range."
+                                if ind==i-1 and i>2:
+                                    if getLABEL(list[i-2])=='VC' and getLABEL(list[i-3])=='AD':
+                                        fw.write(''.join(list[i-3:i+1])+'\n')
                                     else:
-                                        fw.write(''.join(list[ind:i+1])+'\n')
+                                        fw.write(''.join(list[i-1:i+1])+'\n')       
+
+                                else:
+                                    fw.write(''.join(list[ind:i+1])+'\n')
                             ###  may other to do   
                             else:
                                 fw.write(list[i]+'\n')
                         else:
                             fw.write(list[i]+'\n')
                     
-                    # nouns
                     if label=="NN":
                         if i>0:
-                            p_label = list[i-1][list[i-1].find('#')+1:]
+                            p_label = getLABEL(list[i-1])
                             if p_label in ['AD','JJ','VE','CD']:
                                 # VE: 有/没有;CD:一点点
                                 fw.write(''.join(list[i-1:i+1])+'\n')
                             elif p_label=='DT' and i>1:
-                                #print ''.join(list[i-2:i+1])
-                                fw.write(''.join(list[i-2:i+1])+'\n')
+                                fw.write(findADorVE(''.join(list[i-2:i+1])))
                             else:
                                 fw.write(list[i]+'\n')
                         else:
@@ -218,14 +211,14 @@ def findPHRASE(taggedFILE,phraseFILE):
                     # verbs ,forward/backward
                     if label=="VV":
                         if i>0:
-                            p_label = list[i-1][list[i-1].find('#')+1:]
+                            p_label = getLABEL(list[i-1])
                             if p_label in ['AD','PN','VV']:  #PN means I(subjective);算#VV可以#VV;没#VV得说#VV
                                 fw.write(''.join(list[i-1:i+1])+'\n')
                             else:
                                 fw.write(list[i]+'\n')
                         else:
                             fw.write(list[i]+'\n')
-                            
+                                           
                     if label=='AD' and i>0:
                         index = list[i-1].find('#');p_label = getLABEL(list[i-1])
                         if p_label=='NN' and list[i-1][:index] in ['问题','价格','价位','效果','速度','续航','散热','性能','外观','容量']:
@@ -238,28 +231,29 @@ def findPHRASE(taggedFILE,phraseFILE):
                                     ind=j
                                 else:
                                     break
-                            if seger in advSET:
+                            if seger in advSET:  ## enhanced lexicon
                                 if seger=='重' and list[i-1][:index] in['再','往复']:
                                     continue
                                 else:
                                     fw.write(''.join(list[ind:i+1])+'\n')
                         else:
                             fw.write(''.join(list[i])+'\n')
-                                     
+                            
                     #interjection        
                     if label=="IJ":
                         fw.write(list[i]+'\n')
                     if label=="JJ":
+                        ##  to do
                         if seger not in ['大']:
                             fw.write(list[i]+'\n')
-                    if label=="CD":
+                            #print list[i]
+                    if label=="CD":  # so small
                         fw.write(list[i]+'\n')
+                        print list[i]
 ##    for i in tempSET:
 ##        print i
 
     fw.close()
-    #print label_dict
-
 
 def filterPHRASE(phraseFILE,filteredFILE):
     p = re.compile( '#\w{1,3}')
@@ -326,7 +320,7 @@ def filterPHRASE(phraseFILE,filteredFILE):
                                 fw.write(rmword.sub('','   '.join([li[0]]+li[2:4]))+'\n')
                         else:
                             fw.write(rmword.sub('','   '.join(li)+'\n'))
-                            print line,rmword.sub('','   '.join(li))
+                            #print line,rmword.sub('','   '.join(li))
                     else:
                         #print len(li)
                         fw.write(rmword.sub('','   '.join(li))+'\n')

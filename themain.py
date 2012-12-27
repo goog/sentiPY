@@ -99,7 +99,7 @@ def calPHRASEstrength(phrase,advDICT):
             strength = 0
         for i in range(length-2,-1,-1):
             if advDICT.get(li[1]):
-                strength*=advDICT.get(li[1])  ## no this more high 
+                strength*=advDICT.get(li[1])  ## no this more higher
     if strength < 0:
         strength = strength*1.5
     return strength
@@ -155,31 +155,32 @@ def statistics(phraseNUMBERseqs):
     print dict
     print "the correct percentage is %s" %(dict[-1]/2000.0)
 
-print "starts",time.asctime()
-taggedFILE='./neg_tagged.txt'
-phraseFILE='./neg_phrase.txt'
-finalPHRASE='./phrase2.txt'
-phraseNUMBERseqs='./phraseINline2.txt'
+if __name__ == '__main__':
+    print "starts",time.asctime()
+    taggedFILE='./neg_tagged.txt'
+    phraseFILE='./neg_phrase.txt'
+    finalPHRASE='./phrase2.txt'
+    phraseNUMBERseqs='./phraseINline2.txt'
 
 
-##preprocess block
-##preprocess("preprocess-neg.txt")
-##segANDpos("preprocess-neg.txt")
+    ##preprocess block
+    ##preprocess("preprocess-neg.txt")
+    ##segANDpos("preprocess-neg.txt")
 
-senti_dict = {}
-loadSENTI('./sentiment.txt')
-#loadSENTI('./senti.txt')
-findPHRASE(taggedFILE,phraseFILE)
-filterPHRASE(phraseFILE,finalPHRASE)
-calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
-statistics(phraseNUMBERseqs)
+    senti_dict = {}
+    loadSENTI('./sentiment.txt')
+    #loadSENTI('./senti.txt')
+    findPHRASE(taggedFILE,phraseFILE)
+    filterPHRASE(phraseFILE,finalPHRASE)
+    calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
+    statistics(phraseNUMBERseqs)
 
-fw = open('oov.txt','w')
-for i in oov:
-    fw.write(i+'   \n')
-fw.close()
-print "the length of OOV is %s" %(len(oov))
-print 'finished',time.asctime()
+    fw = open('oov.txt','w')
+    for i in oov:
+        fw.write(i+'   \n')
+    fw.close()
+    print "the length of OOV is %s" %(len(oov))
+    print 'finished',time.asctime()
 
             
     
