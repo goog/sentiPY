@@ -19,23 +19,6 @@ def readPHRASE(path):
         fw.write(i+'\n')
     fw.close()
 
-def countPHRASE(path):
-    len1=0;len2=0;len3=0;lenx=0
-    fo = open(path)
-    for line in fo:
-        line=line.strip()
-        if line:
-            num =len(line.split())
-            if num==1:
-                len1+=1
-            elif num==2:
-                len2+=1
-            elif num==3:
-                len3+=1
-            else:
-                lenx+=1
-    print "the number of length 1 2 3 and more than three in a phrase is %s %s %s %s" %(len1,len2,len3,lenx)
-
 
 def loadSENTI(path):
     fo = open(path)  #'./sentiment.txt'           
@@ -62,17 +45,14 @@ def calPHRASEstrength(phrase,advDICT):
             oov.add(li[0])
             strength = 0
     elif len(li)==2:
-        sentiSTR= senti_dict.get(li[1])
-        if sentiSTR is None:
+        strength = senti_dict.get(li[1])
+        if strength is None:
             oov.add(li[1])
-            sentiSTR = 0
+            strength = 0
         if advDICT.get(li[0]):
-            ## do linear advs
-            strength= advDICT.get(li[0])*sentiSTR
-        elif li[0]=="不太" and sentiSTR:
-            strength = sentiSTR - 5
-        else:
-            strength = sentiSTR
+            strength*= advDICT.get(li[0])
+        elif li[0]=="不太" and strength:
+            strength = strength - 5 if strength>0 else strength + 5 
 
     elif len(li)==3:  
         strength= senti_dict.get(li[2])
@@ -90,16 +70,15 @@ def calPHRASEstrength(phrase,advDICT):
         else:
             if advDICT.get(li[0]):
                 strength*= advDICT.get(li[0])
-        ## to magnify the negative strength
     else:
         length = len(li)
         strength= senti_dict.get(li[length-1])
         if strength is None:
-            oov.add(li[2])
+            oov.add(li[length-1])
             strength = 0
         for i in range(length-2,-1,-1):
-            if advDICT.get(li[1]):
-                strength*=advDICT.get(li[1])  ## no this more higher
+            if advDICT.get(li[i]):
+                strength*=advDICT.get(li[i])
     if strength < 0:
         strength = strength*1.5
     return strength
@@ -153,27 +132,30 @@ def statistics(phraseNUMBERseqs):
             dict[calORIENTATION(strength)]+=1
     #print errorLIST
     print dict
-    print "the correct percentage is %s" %(dict[-1]/2000.0)
+    print "the correct percentage is %s" %(dict[1]/2000.0)
 
 if __name__ == '__main__':
     print "starts",time.asctime()
-    taggedFILE='./neg_tagged.txt'
-    phraseFILE='./neg_phrase.txt'
-    finalPHRASE='./phrase2.txt'
-    phraseNUMBERseqs='./phraseINline2.txt'
+##    taggedFILE='./neg_tagged.txt'
+##    phraseFILE='./neg_phrase.txt'
+##    finalPHRASE='./phrase2.txt'
+##    phraseNUMBERseqs='./phraseINline2.txt'
 
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
+    taggedFILE='./pos_tagged.txt'
+    phraseFILE='./pos_phrase.txt'
+    finalPHRASE='./phrase.txt'
+    phraseNUMBERseqs='./phraseINline.txt'
+
+##    preprocess("preprocess-pos.txt")
+##    segANDpos("preprocess-pos.txt")
 
     senti_dict = {}
     loadSENTI('./sentiment.txt')
-    #loadSENTI('./senti.txt')
     findPHRASE(taggedFILE,phraseFILE)
     filterPHRASE(phraseFILE,finalPHRASE)
     calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
     statistics(phraseNUMBERseqs)
     recordOOV(oov)
-    
     print 'finished',time.asctime()
 
             

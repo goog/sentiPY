@@ -42,7 +42,7 @@ def findSENTIdroppoint(sentence):
                     ## if float(li[1:-1][ind]) smaller than two ,count 
                     return float(li[1:-1][ind])
 
-## traditional method, to aggregate it
+## common method, to aggregate it
 def commonSENTI(sentence):
     sentence =sentence.strip()
     sum = 0
@@ -62,6 +62,11 @@ def calORIENTATION(strength):
         return -1
     else:
         return 0
+
+
+if __name__ == '__main__':
+    print commonSENTI('s|1.8|-5.85|0|s|1.0|0')
+    
 
 
 

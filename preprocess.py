@@ -18,7 +18,7 @@ def rmBLANK(path,writeTO):
             fw.write(line+'\n')       
     fw.close()
 
-def readFILEasSET(path):
+def file2set(path):
     newSET = set()
     fo = open(path)
     for line in fo:
@@ -126,7 +126,8 @@ def getWORD(element):
 
 def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
-    advSET = readFILEasSET('./sentiADV.txt') ##read sentiment words which act as advs
+    advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
+    nnSET = file2set('./sentiNN.txt')
     #tempSET = set() 
     fo = open(taggedFILE)
     fw = open(phraseFILE,'w')
@@ -199,6 +200,8 @@ def findPHRASE(taggedFILE,phraseFILE):
                             fw.write(list[i]+'\n')
                     
                     if label=="NN":
+                        if seger in nnSET:  ## skip the zero strength noun
+                            continue
                         if i>0:
                             p_label = getLABEL(list[i-1])
                             if p_label in ['AD','JJ','VE','CD']:
@@ -250,24 +253,17 @@ def findPHRASE(taggedFILE,phraseFILE):
                             if getLABEL(list[i+1])=='NN':
                             #or (getLABEL(list[i+1])=='DEG' and getLABEL(list[i+2])=='NN')
                                 if seger=='小': 
-                                    try:
-                                        if getWORD(list[i+1]) in ['单人床','县城','地方','柜门','液晶']:
-                                            fw.write('-小\n')
-                                    except:
-                                        pass
+                                    if getWORD(list[i+1]) in ['单人床','县城','地方','柜门','液晶']:
+                                        fw.write('-小\n')
                                 if seger=='大':
-                                    try:
-                                        if getWORD(list[i+1]) in ['公司','单位','商场','城市','宾馆','床','店','气','片','能力','酒店','钱','银行','阳台']:
-                                            fw.write('+大\n')
-                                        if getWORD(list[i+1]) in ['声','理由','环境','当']:
-                                            fw.write('-大\n')
-                                    except:
-                                        pass
-                               
-                                        
-                                ## 长#JJ 时间#NN ///in notebook +, hotel :-
+                                    if getWORD(list[i+1]) in ['公司','单位','商场','城市','宾馆',
+                                                              '床','店','气','片','能力','酒店','钱','银行','阳台']:
+                                        fw.write('+大\n')
+                                    elif getWORD(list[i+1]) in ['声','理由','环境','当']:
+                                        fw.write('-大\n')         
+                                ## 长#JJ 时间#NN //notebook +;hotel -
                         except:
-                            print "JJ here,out of range"
+                            print "JJ currently,out of range"
                     if label=="CD":  # so small
                         fw.write(list[i]+'\n')
 ##    for i in tempSET:

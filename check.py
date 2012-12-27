@@ -41,6 +41,23 @@ def reviewNOphrase():
                 buf+=line
     fw.close()
 
+def countPHRASE(path):
+    len1=0;len2=0;len3=0;lenx=0
+    fo = open(path)
+    for line in fo:
+        line=line.strip()
+        if line:
+            num =len(line.split())
+            if num==1:
+                len1+=1
+            elif num==2:
+                len2+=1
+            elif num==3:
+                len3+=1
+            else:
+                lenx+=1
+    print "the number of length 1 2 3 and more than three in a phrase is %s %s %s %s" %(len1,len2,len3,lenx)
+
 def findLABELS(path):
     fo = open(path)  # "./pos_phrase.txt"
     a= set()
@@ -209,7 +226,6 @@ def findADorVE(phrase):
 if __name__ == '__main__':
     processADVSS('./advss.txt')
     print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
-    file2count('./jjj.txt')
             
             
             
