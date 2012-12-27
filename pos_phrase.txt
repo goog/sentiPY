@@ -11,7 +11,7 @@
 也#AD可以#VV
 也#AD不错#VA
 ----------
-最#AD实惠#VA
+实惠#VA
 优惠#NN
 竟然#AD
 不#AD适用#VV
@@ -103,7 +103,7 @@ SUM
 很#AD好#VA
 也#AD很#AD新#VA
 SUM
-总的来说#AD还是#AD很#AD满意#VA
+还是#AD很#AD满意#VA
 很#AD方便#VA
 ----------
 ----------
@@ -205,7 +205,7 @@ SUM
 都#AD很#AD方便#VA
 差#NN
 实在#AD
-实在#AD太#AD小#VA
+太#AD小#VA
 就#AD非常#AD好#VA
 低#VA
 ----------
@@ -268,7 +268,7 @@ SUM
 ----------
 还是#AD不错#VA
 ----------
-非常#AD好#VA
+好#VA
 免费#AD
 很#AD好#VA
 很#AD喜欢#VV
@@ -320,7 +320,7 @@ SUM
 平时#AD贵#NN
 ----------
 SUM
-总的来说#AD非常#AD满意#VA
+非常#AD满意#VA
 都#AD很#AD好#VA
 十分#AD难#AD
 救命#VV
@@ -390,7 +390,7 @@ SUM
 比较#AD差#VA
 警报器#NN
 居然#AD
-居然#AD还#AD不错#VA
+还#AD不错#VA
 问题#NN
 有#VE问题#NN
 没#AD急#VV
@@ -455,7 +455,7 @@ SUM
 碍眼#NN
 感谢#VV
 一律#AD
-一律#AD免费#AD
+免费#AD
 不断#AD
 不断#AD提升#VV
 再次#AD感谢#VV
@@ -485,7 +485,7 @@ SUM
 值得#VV
 推荐#NN
 ----------
-非常#AD好#VA
+好#VA
 非常#AD好#VA
 非常#AD差#VA
 ----------
@@ -537,7 +537,7 @@ SUM
 ----------
 很#AD干净#VA
 也#AD蛮#AD合理#VA
-还#AD不错#VA
+不错#VA
 ----------
 不错#VA
 SUM
@@ -721,7 +721,7 @@ SUM
 SUM
 很#AD好#VA
 一般#AD
-一般#AD但#AD很#AD干净#VA
+但#AD很#AD干净#VA
 很#AD喜欢#VV
 很#AD周到#VA
 很#AD公道#NN
@@ -747,7 +747,7 @@ SUM
 也#AD可以#VV
 都#AD不错#VA
 ----------
-很#AD满意#VA
+满意#VA
 很#AD好#VA
 骚扰#NN
 无#VE骚扰#NN
@@ -767,7 +767,7 @@ SUM
 极#AD贵#VA
 免费#AD
 ----------
-比较#AD新#VA
+新#VA
 都#AD还#AD不错#VA
 很#AD标准#VA
 值得#VV
@@ -912,7 +912,7 @@ SUM
 但#AD卫生#NN
 很#AD好#VA
 实在#AD
-实在#AD太#AD小#VA
+太#AD小#VA
 ----------
 很#AD好#VA
 比较#AD安静#VA
@@ -956,7 +956,7 @@ SUM
 免费#AD
 沿途#AD欣赏#VV
 ----------
-还#AD不错#VA
+不错#VA
 比较#AD符合#VV
 标准#NN
 太#AD贵#VA
@@ -1069,7 +1069,7 @@ SUM
 惬意#VV
 非常#AD重要#VA
 SUM
-总的来说#AD还是#AD很#AD好#VA
+还是#AD很#AD好#VA
 ----------
 相当#AD大#VA
 干净#VA
@@ -1112,7 +1112,7 @@ SUM
 ----------
 好#VA
 快#VA
-最#AD重要#VA
+重要#VA
 真#AD好#VA
 合理#VA
 不#AD太#AD合适#VA
@@ -1129,7 +1129,7 @@ SUM
 很#AD适合#VV
 还是#AD对#VA
 快捷#VA
-非常#AD感动#VA
+感动#VA
 非常#AD担心#VV
 忐忑不安#VV
 非常#AD亲切#VA
@@ -1303,7 +1303,7 @@ SUM
 实在#AD
 本人#PN支持#VV
 ----------
-很#AD不错#VA
+不错#VA
 也#AD不错#VA
 ----------
 不错#VA
@@ -1331,7 +1331,7 @@ SUM
 就#AD不#AD太#AD方便#VA
 -没有
 ----------
-还#AD不错#VA
+不错#VA
 但是#AD可以#VV
 很#AD方便#VA
 ----------
@@ -1342,7 +1342,7 @@ SUM
 热情#VA
 周到#VA
 主动#AD
-主动#AD免费#AD
+免费#AD
 免费#AD给予#VV
 十分#AD方便#VA
 ----------
@@ -1408,7 +1408,7 @@ SUM
 很#AD大#VA
 终于#AD开通#VV
 ----------
-非常#AD好#VA
+好#VA
 非常#AD好#VA
 非常#AD挑剔#VV
 实在#AD
@@ -1626,14 +1626,14 @@ SUM
 不错#VA
 很#AD方便#VA
 ----------
-很#AD安静#VA
+安静#VA
 不错#VA
 很#AD好#VA
 ----------
 一般#VA
 不#AD佳#VA
 ----------
-很#AD好#VA
+好#VA
 ----------
 很#AD安静#VA
 很#AD干净#VA
@@ -1653,7 +1653,7 @@ SUM
 挺#AD温馨#VA
 不错#VA
 ----------
-很#AD好#VA
+好#VA
 很#AD大#VA
 很#AD好#VA
 感谢#VV
@@ -1666,10 +1666,10 @@ SUM
 很#AD安静#VA
 很#AD好#VA
 ----------
-非常#AD好#VA
+好#VA
 就#AD可以#VV
 SUM
-总的来说#AD比较#AD满意#VA
+比较#AD满意#VA
 ----------
 最#AD长#VA
 可以#VV
@@ -1716,7 +1716,7 @@ SUM
 答应#VV
 强#AD
 ----------
-真是#AD很#AD好#VA
+很#AD好#VA
 我#PN满意#VV
 有#VE机会#NN
 ----------
@@ -1831,7 +1831,7 @@ SUM
 很#AD到位#VV
 明亮#VA
 也#AD很#AD快#VA
-很#AD满意#VA
+满意#VA
 ----------
 不错#VA
 也#AD不错#VA
@@ -1840,7 +1840,7 @@ SUM
 都#AD方便#VA
 ----------
 SUM
-总的来说#AD还#AD不错#VA
+还#AD不错#VA
 一般#AD
 SUM
 还#AD不错#VA
@@ -1926,7 +1926,7 @@ SUM
 就#AD更#AD好#VA
 ----------
 SUM
-总的来说#AD还是#AD不错#VA
+还是#AD不错#VA
 进一步#JJ提高#NN
 ----------
 都#AD不错#VA
@@ -1962,7 +1962,7 @@ SUM
 免费#AD
 差#VV
 ----------
-非常#AD好#VA
+好#VA
 热情#NN
 很#AD新#VA
 舒服#VA
@@ -2125,7 +2125,7 @@ SUM
 也#AD挺#AD齐全#VA
 便宜#VA
 SUM
-总的来说#AD还#AD不错#VA
+还#AD不错#VA
 ----------
 陈旧#VA
 很#AD重#VA
@@ -2162,7 +2162,7 @@ SUM
 ----------
 很#AD大#VA
 SUM
-总的来说#AD还#AD满意#VA
+还#AD满意#VA
 ----------
 大#VA
 好#VA
@@ -2296,7 +2296,7 @@ SUM
 贵#VV
 可#VV挑剔#VV
 ----------
-非常#AD好#VA
+好#VA
 都#AD很#AD方便#VA
 ----------
 不错#VA
@@ -2346,7 +2346,7 @@ SUM
 ----------
 很#AD干净#VA
 也#AD蛮#AD合理#VA
-还#AD不错#VA
+不错#VA
 ----------
 很#AD感动#VV
 出奇#AD紧张#VA
@@ -2434,7 +2434,7 @@ SUM
 但是#AD偏#AD小#VA
 很#AD不错#VA
 全#AD
-全#AD免费#AD
+免费#AD
 ----------
 +大
 都#AD不错#VA
@@ -2483,7 +2483,7 @@ SUM
 SUM
 可以#VV
 ----------
-比较#AD满意#VA
+满意#VA
 不错#VA
 均#AD较#AD新#VA
 很#AD好#VA
@@ -2554,7 +2554,7 @@ SUM
 一定#AD错#VA
 ----------
 SUM
-总的来说#AD比较#AD满意#VA
+比较#AD满意#VA
 涉嫌#VV
 无证#AD经营#VV
 未#AD耽搁#VV
@@ -2840,7 +2840,7 @@ SUM
 正好#AD
 真的#AD很#AD不错#VA
 ----------
-很#AD好#VA
+好#VA
 适合#VV
 便利#VA
 很#AD喜欢#VV
@@ -3236,7 +3236,7 @@ SUM
 很#AD好#VA
 也#AD很#AD好#VA
 SUM
-总的来说#AD都#AD很#AD理想#VA
+都#AD很#AD理想#VA
 能#VV改进#VV
 问题#NN
 更#AD好#VA
@@ -3317,7 +3317,7 @@ SUM
 也#AD很#AD不错#VA
 干净#VA
 整洁#VA
-最#AD重要#VA
+重要#VA
 也#AD比较#AD便宜#VA
 SUM
 到位#VV
@@ -3462,7 +3462,7 @@ SUM
 很#AD热情#VA
 赞#VV
 ----------
-很#AD不错#VA
+不错#VA
 最#AD好#VA
 相当#AD到位#VV
 也#AD很#AD好#VA
@@ -3645,7 +3645,7 @@ SUM
 有点#AD小#VA
 ----------
 SUM
-总的来说#AD比较#AD满意#VA
+比较#AD满意#VA
 免费#AD
 相当#AD美丽#VA
 不错#VA
@@ -3786,7 +3786,7 @@ SUM
 误导#VV
 有点#AD不爽#VA
 ----------
-非常#AD好#VA
+好#VA
 最#AD好#VA
 都#AD不错#VA
 ----------
@@ -3827,7 +3827,7 @@ SUM
 也#AD很#AD好#VA
 便宜#VA
 ----------
-还#AD不错#VA
+不错#VA
 ----------
 最好#AD
 贵#NN
@@ -3919,7 +3919,7 @@ SUM
 SUM
 很#AD满意#VA
 ----------
-还算#AD不错#VA
+不错#VA
 很#AD大#VA
 比较#AD丰富#VA
 但是#AD挺#AD贵#VA
@@ -4134,7 +4134,7 @@ SUM
 -没有
 ----------
 SUM
-总的来说#AD还#AD不错#VA
+还#AD不错#VA
 也#AD好#VA
 不足#NN
 不#AD好#VA
@@ -4238,7 +4238,7 @@ SUM
 实在#AD
 ----------
 SUM
-总的来说#AD很#AD满意#VA
+很#AD满意#VA
 简单#VA
 ----------
 不错#VA
@@ -4398,7 +4398,7 @@ SUM
 很#AD合适#VA
 都#AD很#AD好#VA
 ----------
-很#AD不错#VA
+不错#VA
 非常#AD不错#VA
 略显#AD小#VA
 SUM
@@ -4409,7 +4409,7 @@ SUM
 ----------
 很#AD方便#VA
 自助#AD
-自助#AD很#AD实惠#VA
+很#AD实惠#VA
 也#AD不错#VA
 狭小#VA
 ----------
@@ -4608,7 +4608,7 @@ SUM
 不#AD方便#VA
 有点#AD贵#VA
 ----------
-非常#AD一般#VA
+一般#VA
 +大
 白白#AD
 还#AD是#VC比较#AD安静#VA
@@ -4799,7 +4799,7 @@ SUM
 ----------
 很#AD大#VA
 SUM
-总的来说#AD还#AD满意#VA
+还#AD满意#VA
 ----------
 比较#AD好#VA
 比较#AD合理#VA
@@ -4878,7 +4878,7 @@ SUM
 努力#AD
 贵#NN
 ----------
-很#AD好#VA
+好#VA
 ----------
 很#AD好#VA
 很#AD豪华#VA
@@ -5055,7 +5055,7 @@ SUM
 很#AD好#VA
 更#AD好吃#VA
 ----------
-很#AD不错#VA
+不错#VA
 幽雅#VA
 完善#VA
 适合#VV
@@ -5064,7 +5064,7 @@ SUM
 ----------
 不#AD错#VA
 实在#AD
-实在#AD太#AD小#VA
+太#AD小#VA
 简陋#VA
 很#AD方便#VA
 不错#VA
@@ -5554,7 +5554,7 @@ SUM
 ----------
 非常#AD好#VA
 ----------
-还#AD不错#VA
+不错#VA
 本来#AD也#AD不#AD大#VA
 也#AD很#AD好#VA
 ----------
@@ -5614,7 +5614,7 @@ SUM
 逊色#VV
 挺#AD喜欢#VV
 ----------
-很#AD适宜#VA
+适宜#VA
 幽静#VA
 较#AD好#VA
 满意#VA
@@ -5639,7 +5639,7 @@ SUM
 很#AD大#VA
 也#AD很#AD大#VA
 ----------
-很#AD不错#VA
+不错#VA
 蛮#AD新#VA
 很#AD好#VA
 也#AD颇#AD丰富#VA
@@ -5763,7 +5763,7 @@ SUM
 ----------
 还是#AD不错#VA
 实在#AD
-实在#AD太#AD差#VA
+太#AD差#VA
 非常#AD慢#VA
 差#VA
 居然#AD
@@ -5808,7 +5808,7 @@ SUM
 蛮#AD实惠#VA
 也#AD很#AD方便#VA
 ----------
-很#AD不错#VA
+不错#VA
 也#AD很#AD干净#VA
 太#AD小#VA
 不#AD太#AD清楚#VA
@@ -5880,7 +5880,7 @@ SUM
 略#AD小#VA
 强烈#JJ推荐#NN
 绝对#AD安静#VA
-唯一#AD不#AD好#VA
+不#AD好#VA
 问题#NN
 很#AD快#AD
 很#AD大#VA
@@ -5912,7 +5912,7 @@ SUM
 可以#VV
 还#AD是#VC挺#AD不错#VA
 ----------
-很#AD不错#VA
+不错#VA
 彬彬有礼#VA
 大方#VA
 亲切#VA
@@ -5923,7 +5923,7 @@ SUM
 最#AD好#VA
 也#AD很#AD好#VA
 ----------
-确实#AD不错#VA
+不错#VA
 较#AD佳#VA
 能#VV欣赏#VV
 较#AD丰富#VA
@@ -5978,7 +5978,7 @@ SUM
 十分#AD感谢#VV
 有#VE机会#NN
 ----------
-还#AD不错#VA
+不错#VA
 太#AD长#VA
 一般#AD
 浪费#VV
@@ -6291,7 +6291,7 @@ SUM
 自然#NN
 货真价实#VV
 ----------
-非常#AD好#VA
+好#VA
 标准#NN
 完全#AD超值#VV
 享受#NN
@@ -6400,7 +6400,7 @@ SUM
 ----------
 SUM
 还#AD是#VC蛮#AD不错#VA
-最#AD满意#VA
+满意#VA
 免费#AD
 这里#PN赞#VV
 不足之处#NN
@@ -6538,7 +6538,7 @@ SUM
 ----------
 很#AD好#VA
 ----------
-还#AD不错#VA
+不错#VA
 +大
 就#AD好#VA
 ----------
@@ -6557,7 +6557,7 @@ SUM
 也#AD很#AD大#VA
 可以#VV
 ----------
-非常#AD好#VA
+好#VA
 差#VA
 都#AD很#AD热情#VA
 主动#AD
@@ -6610,7 +6610,7 @@ SUM
 雅静#VA
 ----------
 五星级#JJ标准#NN
-只#AD可惜#AD
+可惜#AD
 停业#NN
 挺#AD喜欢#VV
 很多#CD精力#NN
@@ -6651,7 +6651,7 @@ SUM
 也#AD很#AD舒服#VA
 ----------
 SUM
-总的来说#AD很#AD满意#VA
+很#AD满意#VA
 干净#VA
 整洁#VA
 +大
@@ -6783,7 +6783,7 @@ SUM
 值得#VV
 推荐#NN
 ----------
-最#AD繁华#VA
+繁华#VA
 较#AD大#VA
 骚扰#VV
 ----------
@@ -6864,7 +6864,7 @@ SUM
 SUM
 算#VV可以#VV
 也#AD比较#AD新#AD
-也#AD比较#AD新#AD比较#AD干净#VA
+比较#AD干净#VA
 比较#AD差#VA
 延迟#VV
 不#AD好玩#VA
@@ -6906,7 +6906,7 @@ SUM
 很#AD不错#VA
 很#AD方便#VA
 ----------
-很#AD实惠#VA
+实惠#VA
 就#AD是#VC不#AD灵活#VA
 更加#AD进步#VV
 ----------
@@ -7126,7 +7126,7 @@ SUM
 也#AD便宜#VA
 最#AD满意#VA
 ----------
-非常#AD好#VA
+好#VA
 可以#VV
 美丽#VA
 很#AD干净#VA
@@ -7596,7 +7596,7 @@ SUM
 实在#AD
 有#VE问题#NN
 突然#AD
-突然#AD又#AD好#VA
+又#AD好#VA
 又#AD偏#AD又#AD不#AD干净#VA
 慢#VA
 问题#NN
@@ -7684,7 +7684,7 @@ SUM
 不#AD太#AD好#VA
 也#AD太#AD小#VA
 ----------
-很#AD不错#VA
+不错#VA
 可是#AD还是#AD挺#AD方便#VA
 很#AD大#VA
 很#AD舒服#VA
@@ -7834,15 +7834,15 @@ SUM
 ----------
 标准#NN
 ----------
-很#AD不错#VA
+不错#VA
 很#AD大#VA
 都#AD很#AD方便#VA
 ----------
-很#AD安静#VA
+安静#VA
 不错#VA
 较#AD便捷#VA
 ----------
-非常#AD不错#VA
+不错#VA
 很#AD好#VA
 方便#VA
 ----------
@@ -7935,7 +7935,7 @@ SUM
 好#VA
 说#VV什么#DT骚扰#NN
 还#AD心有余悸#VV
-结果#AD好#VA
+好#VA
 不得了#VA
 仔细#AD
 非常#AD的#DEV好#VA
@@ -7984,7 +7984,7 @@ SUM
 ----------
 非常#AD不错#VA
 ----------
-挺#AD好#VA
+好#VA
 不#AD是#VC很#AD完美#VA
 错误#VA
 希望#VV改进#VV
@@ -8069,7 +8069,7 @@ SUM
 太#AD差#VA
 太#AD没#AD私密#VA
 ----------
-挺#AD好#VA
+好#VA
 ----------
 方便#VA
 不#AD好#VA
@@ -8124,7 +8124,7 @@ SUM
 问题#NN
 欢迎#VV
 ----------
-很#AD好#VA
+好#VA
 很#AD喜欢#VV
 很#AD干净#VA
 很#AD漂亮#VA
@@ -8367,7 +8367,7 @@ SUM
 ----------
 不错#VA
 比较#AD方便#VA
-最#AD高兴#VA
+高兴#VA
 免费#AD
 太#AD好#VA
 也#AD不#AD小#VA
@@ -8382,7 +8382,7 @@ SUM
 可以#VV
 已经#AD落伍#VV
 ----------
-很#AD好#VA
+好#VA
 不#AD好#VA
 都#AD很#AD满意#VA
 对#VA
@@ -8480,7 +8480,7 @@ SUM
 那么#AD的#DEV温馨#VA
 热情#VA
 ----------
-还是#AD不错#VA
+不错#VA
 也#AD比较#AD方便#VA
 SUM
 还是#AD可以#VV
@@ -8601,7 +8601,7 @@ SUM
 很#AD重#VA
 看上去#AD还#AD不错#VA
 根本#AD
-根本#AD没法#AD
+没法#AD
 很#AD温馨#VA
 也#AD很#AD舒适#VA
 干净#VA
@@ -8670,7 +8670,7 @@ SUM
 ----------
 都#AD忘记#VV
 ----------
-还是#AD很#AD幽静#VA
+很#AD幽静#VA
 也#AD不错#VA
 极#AD差#VA
 很#AD在乎#VV
@@ -8724,7 +8724,7 @@ SUM
 较#AD长#VA
 极#AD快#VA
 SUM
-总体#AD基本#AD满意#VA
+基本#AD满意#VA
 ----------
 非常#AD棒#VA
 有些#AD小#VA
@@ -8745,7 +8745,7 @@ SUM
 比较#AD方便#VA
 还#AD可以#VV
 实在#AD
-实在#AD太#AD差#VA
+太#AD差#VA
 ----------
 不错#VA
 非常#AD便利#VA
@@ -8762,7 +8762,7 @@ SUM
 丰富#VA
 不错#VA
 ----------
-非常#AD好#VA
+好#VA
 很#AD方便#VA
 也#AD很#AD方便#VA
 不#AD是#VC很#AD优惠#VA
@@ -8913,7 +8913,7 @@ SUM
 很#AD干净#VA
 都#AD很#AD齐全#VA
 比较#AD有序#VA
-很#AD不#AD方便#VA
+不#AD方便#VA
 很#AD周到#VA
 规范#NN
 亲切#NN
@@ -9254,7 +9254,7 @@ SUM
 训练#NN
 安静#VA
 ----------
-还#AD不错#VA
+不错#VA
 很#AD好#VA
 ----------
 比较#AD好#VA
@@ -9689,7 +9689,7 @@ SUM
 还#AD是#VC比较#AD舒服#VA
 比较#AD繁华#VA
 ----------
-非常#AD好#VA
+好#VA
 也#AD很#AD好#VA
 干净#VA
 舒服#VA
@@ -9783,7 +9783,6 @@ SUM
 扫兴#VA
 考虑#VV改进#VV
 比较#AD显著#VA
-规矩#NN
 最#AD低#VA
 要#VV差#VV
 较#AD差#VA
@@ -9954,7 +9953,7 @@ SUM
 一股股#CD噪音#NN
 还是#AD很#AD好#VA
 ----------
-很#AD好#VA
+好#VA
 非常#AD干净#VA
 不错#VA
 也#AD很#AD好#VA
@@ -10023,7 +10022,7 @@ SUM
 很#AD静#VA
 ----------
 SUM
-总的来说#AD还是#AD不错#VA
+还是#AD不错#VA
 还是#AD不错#VA
 也#AD不错#VA
 ----------
@@ -10137,7 +10136,7 @@ SUM
 繁华#VA
 非常#AD不错#VA
 SUM
-总之#AD很#AD繁华#VA
+很#AD繁华#VA
 便捷#VA
 ----------
 SUM
@@ -10189,7 +10188,7 @@ SUM
 欢迎#VV
 +大
 ----------
-很#AD不错#VA
+不错#VA
 很#AD干净#VA
 很#AD安静#VA
 ----------
@@ -10244,7 +10243,7 @@ SUM
 体贴#VA
 ----------
 SUM
-总的来说#AD很#AD不错#VA
+很#AD不错#VA
 很#AD好#VA
 很#AD好#VA
 最#AD好#VA
@@ -10416,7 +10415,7 @@ SUM
 也#AD比较#AD热情#VA
 不#AD亮丽#VA
 陈旧#VA
-比较#AD好玩#VA
+好玩#VA
 赞#VV
 不#AD好#VA
 制止#VV
@@ -10499,7 +10498,7 @@ SUM
 也#AD不#AD贵#VA
 还#AD可以#VV
 ----------
-非常#AD好#VA
+好#VA
 不愧#AD
 ----------
 太#AD小#VA
@@ -10550,7 +10549,7 @@ SUM
 也#AD可以#VV
 可以#VV理解#VV
 ----------
-非常#AD一般#VA
+一般#VA
 很#AD小#VA
 过时#VA
 太#AD差#VA
@@ -10718,7 +10717,7 @@ SUM
 非常#AD的#DEV不错#VA
 ----------
 都#AD还#AD不错#VA
-也#AD比较#AD安静#VA
+比较#AD安静#VA
 ----------
 ----------
 一般#VA
@@ -10800,9 +10799,9 @@ SUM
 很#AD不错#VA
 极#AD佳#VA
 SUM
-总的来说#AD很#AD满意#VA
+很#AD满意#VA
 真的#AD好#AD
-真的#AD好#AD长#VA
+长#VA
 ----------
 ----------
 非常#AD棒#VA
@@ -10912,7 +10911,7 @@ SUM
 正好#AD
 还#AD可以#VV
 ----------
-很#AD好#VA
+好#VA
 方便#VA
 好#VA
 不错#VA
@@ -10978,7 +10977,7 @@ SUM
 整洁#VA
 ----------
 实在#AD
-实在#AD很#AD好#VA
+很#AD好#VA
 大#AD
 大#AD可以#VV
 方便#VA
@@ -11120,7 +11119,7 @@ SUM
 值得#VV
 大家#PN推荐#VV
 ----------
-很#AD好#VA
+好#VA
 尊贵#VA
 很#AD好#VA
 可以#VV
@@ -11145,7 +11144,7 @@ SUM
 好像#AD不错#VA
 还#AD可以#VV
 ----------
-其实#AD不错#VA
+不错#VA
 不错#VA
 可惜#VA
 实在#AD
@@ -11163,7 +11162,7 @@ SUM
 还是#AD非常#AD高兴#VA
 还#AD约定#VV
 ----------
-挺#AD不错#VA
+不错#VA
 很#AD敞亮#VA
 -没有
 很#AD干净#VA
@@ -11196,7 +11195,7 @@ SUM
 很#AD好#VA
 也#AD蛮#AD不错#VA
 实在#AD
-实在#AD太#AD差#VA
+太#AD差#VA
 非常#AD感谢#VV
 非常#AD感谢#VV
 宝贵#VA
@@ -11221,7 +11220,7 @@ SUM
 ----------
 一流#VA
 ----------
-非常#AD好#VA
+好#VA
 繁华#VA
 很#AD舒服#VA
 也#AD非常#AD好#VA
@@ -11478,7 +11477,7 @@ SUM
 比较#AD贵#VA
 ----------
 很#AD舒服#VA
-最#AD满意#VA
+满意#VA
 可以#VV
 尽心尽力#VV
 感谢#VV
@@ -11698,7 +11697,7 @@ SUM
 也#AD便利#VA
 不错#VA
 ----------
-还#AD不错#VA
+不错#VA
 可以#VV
 ----------
 SUM
@@ -11826,7 +11825,7 @@ SUM
 也#AD很#AD方便#VA
 八#CD错#NN
 错#VA
-唯一#AD不#AD太#AD理想#VA
+不#AD太#AD理想#VA
 刚好#AD
 的#DEC某#DT噪声#NN
 伤心#VV
@@ -11836,7 +11835,7 @@ SUM
 很#AD方便#VA
 可以#VV
 ----------
-很#AD不错#VA
+不错#VA
 非常#AD快#VA
 小#VA
 ----------
@@ -11844,7 +11843,7 @@ SUM
 ----------
 还行#VV
 有啥#AD
-有啥#AD不#AD好#VA
+不#AD好#VA
 SUM
 还#AD可以#VV
 ----------
@@ -11873,7 +11872,7 @@ SUM
 刚好#AD
 很#AD不#AD错#VA
 ----------
-很#AD不错#VA
+不错#VA
 快#NN
 也#AD相当#AD不错#VA
 也#AD好#VA
@@ -12053,7 +12052,7 @@ SUM
 ----------
 很#AD不错#VA
 ----------
-很#AD不错#VA
+不错#VA
 一流#VA
 都#AD很#AD热情#VA
 主动#AD
@@ -12076,7 +12075,7 @@ SUM
 幽雅#VA
 安静#VA
 SUM
-总的来说#AD还是#AD比较#AD满意#VA
+还是#AD比较#AD满意#VA
 ----------
 很#AD大#VA
 也#AD很#AD好#VA
@@ -12116,7 +12115,7 @@ SUM
 SUM
 还是#AD不错#VA
 ----------
-太#AD一般#VA
+一般#VA
 慢#VA
 ----------
 都#AD很#AD理想#VA
@@ -12301,7 +12300,7 @@ SUM
 ----------
 普通#JJ标准#NN
 主动#AD
-主动#AD免费#AD
+免费#AD
 好#VA
 好#VA
 挺#AD好#VA
@@ -12853,13 +12852,13 @@ SUM
 整洁#VA
 很#AD方便#VA
 ----------
-很#AD不错#VA
+不错#VA
 都#AD很#AD好#VA
 很#AD快#AD
 也#AD很#AD不错#VA
 好吃#VA
 SUM
-总的来说#AD很#AD好#VA
+很#AD好#VA
 ----------
 有些#AD不#AD方便#VA
 还行#VV
@@ -13079,7 +13078,7 @@ SUM
 不错#VA
 隆重#AD
 隆重#AD推荐#VV
-唯一#AD不#AD满意#VA
+不#AD满意#VA
 标准#NN
 根本#AD
 超出#VV
@@ -13090,7 +13089,7 @@ SUM
 ----------
 有#VE特色#NN
 ----------
-挺#AD不错#VA
+不错#VA
 专门#AD
 经济#NN
 小#VA
@@ -13224,7 +13223,7 @@ SUM
 叹气#VV
 可以#VV
 ----------
-很#AD不错#VA
+不错#VA
 但#AD很#AD安静#VA
 干净#VA
 一般#VA
@@ -13243,7 +13242,7 @@ SUM
 还#AD可以#VV
 稍微#AD难#AD
 ----------
-很#AD满意#VA
+满意#VA
 不错#VA
 问题#NN
 负责#VV
@@ -13251,7 +13250,7 @@ SUM
 免费#AD
 也#AD很#AD好#VA
 SUM
-总之#AD很#AD满意#VA
+很#AD满意#VA
 ----------
 较#AD小#VA
 噪声#NN
@@ -13289,7 +13288,7 @@ SUM
 差#VA
 很#AD好#VA
 ----------
-很#AD好#VA
+好#VA
 免费#AD
 优惠#NN
 满意#VV
@@ -13618,7 +13617,7 @@ OK#VA
 蛮#AD喜欢#VV
 我#PN失望#VV
 ----------
-挺#AD不错#VA
+不错#VA
 ----------
 SUM
 还是#AD很#AD不错#VA
@@ -13637,7 +13636,7 @@ SUM
 也#AD很#AD一般#VA
 ----------
 SUM
-总的来说#AD还是#AD不错#VA
+还是#AD不错#VA
 不#AD推荐#VV
 算#VV可以#VV
 不错#VA
@@ -13663,7 +13662,7 @@ out#VV
 放心#VV
 感动#VV
 免费#AD
-免费#AD且#AD可口#VA
+且#AD可口#VA
 齐全#VA
 ----------
 一下#AD简单#VA
@@ -13715,7 +13714,7 @@ SUM
 热情#AD
 一般#VA
 ----------
-很#AD好#VA
+好#VA
 很#AD规范#VA
 一般#AD
 好#VA
@@ -13828,7 +13827,7 @@ SUM
 整洁#VA
 也#AD好#VA
 ----------
-还#AD不错#VA
+不错#VA
 还#AD不错#VA
 丰富#VA
 SUM
@@ -14016,7 +14015,7 @@ SUM
 有点#AD怪#VA
 ----------
 SUM
-总的来说#AD比较#AD满意#VA
+比较#AD满意#VA
 好#VA
 热情#AD
 热情#AD周到#VA
@@ -14099,9 +14098,9 @@ SUM
 推荐#VV
 特别#AD感谢#VV
 真的#AD好#AD
-真的#AD好#AD感动#VA
+感动#VA
 ----------
-很#AD不错#VA
+不错#VA
 感谢#VV
 很#AD不错#VA
 舒服#VA
@@ -14234,7 +14233,7 @@ out#NN
 还#AD可以#VV
 有#VE机会#NN
 ----------
-比较#AD不错#VA
+不错#VA
 比较#AD新#VA
 还#AD是#VC比较#AD方便#VA
 方便#VA

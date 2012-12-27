@@ -124,11 +124,21 @@ def getLABEL(element):
 def getWORD(element):
     return element[:element.find('#')]
 
+def doSMALLbig(seger,element):
+    if seger=='小': 
+        if getWORD(element) in ['单人床','县城','地方','柜门','液晶']:
+            return '-小\n'
+    elif seger=='大':
+        if getWORD(element) in ['公司','单位','商场','城市','宾馆',
+                                  '床','店','气','片','能力','酒店','钱','银行','阳台']:
+            return '+大\n'
+        elif getWORD(element) in ['声','理由','环境','当']:
+            return '-大\n'
+
 def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
     advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
     nnSET = file2set('./sentiNN.txt')
-    #tempSET = set() 
     fo = open(taggedFILE)
     fw = open(phraseFILE,'w')
     for line in fo:
@@ -138,12 +148,12 @@ def findPHRASE(taggedFILE,phraseFILE):
             if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
                 fw.write('----------\n')
                 continue
-            list = line.split()       #list elements are Word#POS
+            list = line.split()
+            lb = 0    #lowerbound, record the wrote position
             for i in range(len(list)):
-                seger = getWORD(list[i])
-                label = getLABEL(list[i])
+                seger = getWORD(list[i]);label = getLABEL(list[i])
                 if seger in ['整体','总之','总体','总而言之','总的来说','总结','整体性','总体性']:
-                    fw.write('SUM\n')
+                    fw.write('SUM\n');lb=i
                 ## try this pattern  
 ##                if seger=='高':  ##for some special words both positive and negative, like 'miss'
 ##                    parseLINE(line)  ## consume much time because of the java CLI, improve 0.2%
@@ -155,26 +165,26 @@ def findPHRASE(taggedFILE,phraseFILE):
 ##                            if line.find(target)!=-1:
 ##                                print line
 ##                                position = line.split()[1].find('-')
-##                                if line.split()[1][:position] in ['中间','温度','热量','风扇','配置','价格','发热量','左边','散热','价钱']:
-##                                    fw.write('-高\n')  ##use const
+##                                if line.split()[1][:position] in ['中间','温度','热量','风扇','配置',
+##                                                                  '价格','发热量','左边','散热','价钱']:
+##                                    fw.write('-高\n');lb=i  ##use const
 ##                                else:
-##                                    fw.write('+高\n')
+##                                    fw.write('+高\n');lb=i
                 ##  because there is not a No in lexicon
                 if list[i]=='没有#VE':
                     try:
-                        indexVE = list[i+1].find('#');nextLABEL = getLABEL(list[i+1])
-                        if nextLABEL=='NN' and (not dict.get(list[i+1][:indexVE])):
-                            fw.write('-没有\n')
+                        nextLABEL = getLABEL(list[i+1])
+                        if nextLABEL=='NN' and (not dict.get(getWORD(list[i+1]))):
+                            fw.write('-没有\n');lb=i
                     except:
                         print "the No,process failed.please check it:",line
                         
                 if dict.get(seger):
                     if label=="VA":
                         if i>0:
-                            p_label = getLABEL(list[i-1])
-                            #'的' 
+                            p_label = getLABEL(list[i-1]) 
                             if p_label in ['DEV','DEG'] and i>1:
-                                fw.write(''.join(list[i-2:i+1])+'\n')
+                                fw.write(''.join(list[i-2:i+1])+'\n');lb=i
                             elif p_label=='AD':
                                 ind = i-1
                                 try:
@@ -187,17 +197,19 @@ def findPHRASE(taggedFILE,phraseFILE):
                                     print "out of range."
                                 if ind==i-1 and i>2:
                                     if getLABEL(list[i-2])=='VC' and getLABEL(list[i-3])=='AD':
-                                        fw.write(''.join(list[i-3:i+1])+'\n')
+                                        fw.write(''.join(list[i-3:i+1])+'\n');lb=i
                                     else:
-                                        fw.write(''.join(list[i-1:i+1])+'\n')       
+                                        fw.write(''.join(list[i-1:i+1])+'\n');lb=i       
 
                                 else:
-                                    fw.write(''.join(list[ind:i+1])+'\n')
+                                    if ind<=lb:
+                                        ind=lb+1 ## avoid repeated extraction
+                                    fw.write(''.join(list[ind:i+1])+'\n');lb=i
                             ###  may other to do   
                             else:
-                                fw.write(list[i]+'\n')
+                                fw.write(list[i]+'\n');lb=i
                         else:
-                            fw.write(list[i]+'\n')
+                            fw.write(list[i]+'\n');lb=i
                     
                     if label=="NN":
                         if seger in nnSET:  ## skip the zero strength noun
@@ -206,68 +218,70 @@ def findPHRASE(taggedFILE,phraseFILE):
                             p_label = getLABEL(list[i-1])
                             if p_label in ['AD','JJ','VE','CD']:
                                 # VE: 有/没有;CD:一点点
-                                fw.write(''.join(list[i-1:i+1])+'\n')
+                                fw.write(''.join(list[i-1:i+1])+'\n');lb=i
                             elif p_label=='DT' and i>1:
-                                fw.write(findADorVE(''.join(list[i-2:i+1])))
+                                fw.write(findADorVE(''.join(list[i-2:i+1])));lb=i
                             else:
-                                fw.write(list[i]+'\n')
+                                fw.write(list[i]+'\n');lb=i
                         else:
-                            fw.write(list[i]+'\n')
+                            fw.write(list[i]+'\n');lb=i
                             
                     # verbs ,forward/backward?
                     if label=="VV":
                         if i>0:
                             p_label = getLABEL(list[i-1])
-                            if p_label in ['AD','PN','VV']:  #PN means I(subjective);算#VV可以#VV;没#VV得说#VV
-                                fw.write(''.join(list[i-1:i+1])+'\n')
+                            if p_label in ['AD','PN','VV']:
+                                fw.write(''.join(list[i-1:i+1])+'\n');lb=i
                             else:
-                                fw.write(list[i]+'\n')
+                                fw.write(list[i]+'\n');lb=i
                         else:
-                            fw.write(list[i]+'\n')
+                            fw.write(list[i]+'\n');lb=i
                                            
-                    if label=='AD' and i>0:
-                        index = list[i-1].find('#');p_label = getLABEL(list[i-1])
-                        if p_label=='NN' and list[i-1][:index] in ['问题','价格','价位','效果','速度','续航','散热','性能','外观','容量']:
-                            #print ''.join(list[i-1:i+1])
-                            fw.write(''.join(list[i-1:i+1])+'\n')
-                        elif p_label=='AD':
-                            ind = i-1
-                            for j in range(i-2,-1,-1):
-                                if getLABEL(list[j])=='AD':
-                                    ind=j
-                                else:
-                                    break
-                            if seger in advSET:  ## enhanced lexicon
-                                if seger=='重' and list[i-1][:index] in['再','往复']:
-                                    continue
-                                else:
-                                    fw.write(''.join(list[ind:i+1])+'\n')
+                    if label=='AD':
+                        if i>0:
+                            p_label = getLABEL(list[i-1])
+                            if p_label=='NN' and getWORD(list[i-1]) in ['问题','价格','价位','效果',
+                                                                       '速度','续航','散热','性能','外观','容量']:
+                                fw.write(''.join(list[i-1:i+1])+'\n');lb=i
+                            elif p_label=='AD':
+                                ind = i-1
+                                try:
+                                    for j in range(i-2,-1,-1):
+                                        if getLABEL(list[j])=='AD':
+                                            ind=j
+                                        else:
+                                            break
+                                except:
+                                    pass
+                                if seger in advSET:  ## enhanced lexicon
+                                    if seger=='重' and getWORD(list[i-1]) in['再','往复']:
+                                        continue
+                                    else:
+                                        if ind<=lb:
+                                            ind=lb+1
+                                        fw.write(''.join(list[ind:i+1])+'\n');lb=i
+                            else:
+                                fw.write(list[i]+'\n');lb=i
                         else:
-                            fw.write(''.join(list[i])+'\n')
+                            fw.write(list[i]+'\n');lb=i
+                            
                             
                     #interjection        
                     if label=="IJ":
-                        fw.write(list[i]+'\n')
+                        fw.write(list[i]+'\n');lb=i
                     if label=="JJ":
                         try:
                             if getLABEL(list[i+1])=='NN':
-                            #or (getLABEL(list[i+1])=='DEG' and getLABEL(list[i+2])=='NN')
-                                if seger=='小': 
-                                    if getWORD(list[i+1]) in ['单人床','县城','地方','柜门','液晶']:
-                                        fw.write('-小\n')
-                                if seger=='大':
-                                    if getWORD(list[i+1]) in ['公司','单位','商场','城市','宾馆',
-                                                              '床','店','气','片','能力','酒店','钱','银行','阳台']:
-                                        fw.write('+大\n')
-                                    elif getWORD(list[i+1]) in ['声','理由','环境','当']:
-                                        fw.write('-大\n')         
-                                ## 长#JJ 时间#NN //notebook +;hotel -
+                                if doSMALLbig(seger,list[i+1]):
+                                    fw.write(doSMALLbig(seger,list[i+1]));lb=i
+                            elif getLABEL(list[i+1])=='DEG' and getLABEL(list[i+2])=='NN':
+                                if doSMALLbig(seger,list[i+2]):
+                                    fw.write(doSMALLbig(seger,list[i+2]));lb=i+1
+                            ## 长#JJ 时间#NN //notebook +;hotel -
                         except:
                             print "JJ currently,out of range"
                     if label=="CD":  # so small
-                        fw.write(list[i]+'\n')
-##    for i in tempSET:
-##        print i
+                        fw.write(list[i]+'\n');lb=i
 
     fw.close()
 
