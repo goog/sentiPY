@@ -41,6 +41,8 @@ def findSENTIdroppoint(sentence):
                     ind = newLIST.index(max(newLIST))
                     ## if float(li[1:-1][ind]) smaller than two ,count 
                     return float(li[1:-1][ind])
+    else:
+        return 0  #  because of no sentiment
 
 ## common method, to aggregate it
 def commonSENTI(sentence):

@@ -18,6 +18,22 @@ def rmBLANK(path,writeTO):
             fw.write(line+'\n')       
     fw.close()
 
+def readPHRASE(path):
+    fo = open(path)
+    fw=open('./maybeADV.txt','w')
+    li=[]
+    for line in fo:
+        line=line.strip()
+        if line:
+            words=line.split()
+            if len(words)==2:
+                li.append(words[0])
+    a =set(li)
+    print "the maybe adv has %s" %len(a)
+    for i in a:
+        fw.write(i+'\n')
+    fw.close()
+
 def file2set(path):
     newSET = set()
     fo = open(path)
@@ -144,8 +160,9 @@ def findPHRASE(taggedFILE,phraseFILE):
     for line in fo:
         line = line.strip()
         if line:
-            #if line =='----------#NR':
-            if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
+            #if line =='----------#NN':  ## NN
+            #if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
+            if line =='--#NN --#NN --#NN --#NN --#NN':
                 fw.write('----------\n')
                 continue
             list = line.split()

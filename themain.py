@@ -3,36 +3,19 @@ from evaluate import *
 from check import *
 import time
 
-def readPHRASE(path):
-    fo = open(path)
-    fw=open('./maybeADV.txt','w')
-    li=[]
-    for line in fo:
-        line=line.strip()
-        if line:
-            words=line.split()
-            if len(words)==2:
-                li.append(words[0])
-    a =set(li)
-    print "the maybe adv has %s" %len(a)
-    for i in a:
-        fw.write(i+'\n')
-    fw.close()
-
-
 def loadSENTI(path):
-    fo = open(path)  #'./sentiment.txt'           
-    global senti_dict
+    fo = open(path)
+    global sentiDICT
     for line in fo:
         line =line.strip()
         if line:
             li= line.split()
             if len(li)==2:
                 try:
-                    senti_dict[li[0]]= float(li[1])
+                    sentiDICT[li[0]]= float(li[1])
                 except:
                     print "type error, not number",line
-    print "the length of sentiment lexion is ",len(senti_dict)
+    print "Length of sentiment lexion in %s is %s " %(fo.name,len(sentiDICT))
     
 oov= set()
 def calPHRASEstrength(phrase,advDICT):
@@ -40,12 +23,11 @@ def calPHRASEstrength(phrase,advDICT):
         return 0
     li = phrase.split()
     if len(li) ==1:
-        strength= senti_dict.get(li[0])
+        strength= sentiDICT.get(li[0])
         if strength is None:
-            oov.add(li[0])
-            strength = 0
+            oov.add(li[0]);strength = 0
     elif len(li)==2:
-        strength = senti_dict.get(li[1])
+        strength = sentiDICT.get(li[1])
         if strength is None:
             oov.add(li[1])
             strength = 0
@@ -55,7 +37,7 @@ def calPHRASEstrength(phrase,advDICT):
             strength = strength - 5 if strength>0 else strength + 5 
 
     elif len(li)==3:  
-        strength= senti_dict.get(li[2])
+        strength= sentiDICT.get(li[2])
         if strength is None:
             oov.add(li[2])
             strength = 0
@@ -70,9 +52,10 @@ def calPHRASEstrength(phrase,advDICT):
         else:
             if advDICT.get(li[0]):
                 strength*= advDICT.get(li[0])
+    
     else:
         length = len(li)
-        strength= senti_dict.get(li[length-1])
+        strength= sentiDICT.get(li[length-1])
         if strength is None:
             oov.add(li[length-1])
             strength = 0
@@ -112,8 +95,7 @@ def calALL(advDICTfilePATH,inputPATH,outputPATH):
                 list.append('s')
             else:
                 list.append(str(calPHRASEstrength(line,advDICT)))
-        else:
-            #if list:  ### a lot lines are empty 
+        else: 
             fw.write("|".join(list)+"\n")
             list=[]  
     fw.close()
@@ -127,29 +109,32 @@ def statistics(phraseNUMBERseqs):
             line=line.strip()
             #strength = findSENTIdroppoint(line)
             strength = commonSENTI(line)
-            #if strength > 0:
-                #errorLIST.append(num)
+            if strength > 0:
+                errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
-    #print errorLIST
+    print errorLIST
     print dict
-    print "the correct percentage is %s" %(dict[1]/2000.0)
+    print "the correct percentage is %s" %(dict[-1]/2000.0)
 
 if __name__ == '__main__':
     print "starts",time.asctime()
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
+    print '''
+**notice : the preprocess 163 line , if segmenter is changed!
+'''
+    taggedFILE='./neg_tagged.txt'
+    phraseFILE='./neg_phrase.txt'
+    finalPHRASE='./phrase2.txt'
+    phraseNUMBERseqs='./phraseINline2.txt'
 
-    taggedFILE='./pos_tagged.txt'
-    phraseFILE='./pos_phrase.txt'
-    finalPHRASE='./phrase.txt'
-    phraseNUMBERseqs='./phraseINline.txt'
+##    taggedFILE='./pos_tagged.txt'
+##    phraseFILE='./pos_phrase.txt'
+##    finalPHRASE='./phrase.txt'
+##    phraseNUMBERseqs='./phraseINline.txt'
 
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
+##    preprocess("preprocess-neg.txt")
+##    segANDpos("preprocess-neg.txt")
 
-    senti_dict = {}
+    sentiDICT = {}
     loadSENTI('./sentiment.txt')
     findPHRASE(taggedFILE,phraseFILE)
     filterPHRASE(phraseFILE,finalPHRASE)

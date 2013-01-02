@@ -221,11 +221,52 @@ def findADorVE(phrase):
         phrase = m.group().encode('utf8')
     elif m2:
         phrase = m2.group().encode('utf8')
-    return phrase+'\n' 
+    return phrase+'\n'
+
+
+
+def checkOOV(path1,path2):
+    dict1={}
+    fo1 = open(path1)  #'./sentiment_yb.txt'
+    fo2 = open(path2)  #'./oov.txt'
+    fw=open('./oov2.txt','w')
+    for line in fo1:
+        line=line.strip()
+        if line:
+            kv=line.split()
+            if len(kv)==2:
+                try:
+                    test = float(kv[1])
+                    dict1[kv[0]]=kv[1]
+                except:
+                    print kv[0],kv[1]
+                
+    print "dict1 length is %s" %len(dict1)
+
+
+    for line in fo2:
+        line=line.strip()
+        if line:
+            if not dict1.get(line):
+                print "%s isn't in sentiment_yb" %line
+            else:
+                print line,':',dict1.get(line)
+            r=raw_input("type a value:")
+            if r=='':
+                continue
+            else:
+                fw.write(line+"   "+r+"\n")
+    fw.close()
+
+
+
+def rmOOVfromLEXICON():
+    pass
 
 if __name__ == '__main__':
-    processADVSS('./advss.txt')
-    print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
+##    processADVSS('./advss.txt')
+##    print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
+    checkOOV('./sentiment_yb.txt','./oov.txt')
             
             
             
