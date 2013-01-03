@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 import re
+import os
 '''tools'''
 
 def checkoutPHRASE(path):
-    ## path to the final phrase
+    ## path to the final phrase,return empty phrase line number
     emptyLIST=[]
     fo =open(path)
     flag=0
@@ -32,10 +33,10 @@ def reviewNOphrase():
     for line in fo:
         line=line.strip()
         if line:
-            if line=="----------#NR":
+            if line=="--#NN --#NN --#NN --#NN --#NN":  ## change with segment
                 lineNO+=1
                 if lineNO in list:
-                    fw.write(buf+'\n')
+                    fw.write(buf+'*_*\n')
                 buf=''
             else:
                 buf+=line
@@ -258,16 +259,60 @@ def checkOOV(path1,path2):
                 fw.write(line+"   "+r+"\n")
     fw.close()
 
+def rmOOVinLEXICON(path):
+    fo =open(path)
+    fw= open('./oovRESERVE.txt','w')
+    li=[]
+    for line in fo:
+        line=line.strip()
+        if line:
+            print line
+            r=raw_input("remove it? [y/n]:")
+            if r=='y' or r=='Y' or r=='':
+                li.append(line)
+            else:
+                fw.write(line+'\n')
+    print 'there is %s words to be removed!' %len(li)
+    fw.close()
+
+    with open('pos.txt') as f, open('pos_rm.txt',"w") as working:
+        for line in f:
+            line=line.strip()
+            if line:
+                if line in li:
+                    continue
+                else:
+                    working.write(line+'\n')
+    os.rename('pos_rm.txt','pos.txt')
+
+    with open('neg.txt') as f, open('neg_rm.txt',"w") as working:
+        for line in f:
+            line=line.strip()
+            if line:
+                if line in li:
+                    continue
+                else:
+                    working.write(line+'\n')
+    os.rename('neg_rm.txt','neg.txt')
 
 
-def rmOOVfromLEXICON():
-    pass
+def fixedLEN(path):
+    fo =open(path)
+    fw= open('./cedict1.txt','w')
+    for line in fo:
+        line=line.strip()
+        if line:
+            if len(line)==9 or len(line)==12:
+                fw.write(line+'\n')
+    fw.close()
+    
+
 
 if __name__ == '__main__':
 ##    processADVSS('./advss.txt')
 ##    print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
-    checkOOV('./sentiment_yb.txt','./oov.txt')
-            
-            
-            
-
+    #checkOOV('./sentiment_yb.txt','./oov.txt')
+    #rmOOVinLEXICON('./oov.txt')
+    #fixedLEN('./cedict.txt')
+    #reviewNOphrase()
+    pass

@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os,sys,re
+import opencc
 import subprocess
 from check import *
 
@@ -7,7 +8,7 @@ pal = re.compile(ur'\(.+?\)')
 pal2 = re.compile(ur'\uff08.+?\uff09')
 quote = re.compile(ur'".+?"')
 quote2 = re.compile(ur'\u201c.+?\u201d')
-#suiran = re.compile(ur'\u867d\u7136.+?\u4f46.+?[,!\uff01\uff0c\u3002\uff1b]')
+period = re.compile(ur'\u3002{2,}')
 
 def rmBLANK(path,writeTO):
     fo = open(path)
@@ -43,16 +44,28 @@ def file2set(path):
             newSET.add(line)
     return newSET
 
+def file2list(path):
+    li = []
+    with open(path) as fo:
+        for line in fo:
+            line = line.strip()
+            if line:
+                li.append(line)
+    return li
+
 def preprocess(path):
     ## the method mainly to remove smth disrelated and interferential
     r=raw_input("type a directory name:")
     fw = open(path,'w')
+    ivLIST = file2list('./iv.txt')
     for root,dirs,files in os.walk(r):
         for f in files:
             path = os.path.join(root,f)
             fo = open(path)
             for line in fo:
                 line=line.strip()
+                cc = opencc.OpenCC('t2s',opencc_path='/usr/bin/opencc')
+                line  = cc.convert(line.decode('utf8')).encode('utf8')
                 if line:
                     #remove the content in () 
                     match = pal.findall(line)
@@ -66,27 +79,28 @@ def preprocess(path):
                     match = quote.findall(line)
                     if match:
                         for i in match:
-                            if i=='(*^__^*)' or i=='(∩_∩)':
-                                line = line.replace(i,'微笑 ')
-                            else:
-                                line = line.replace(i,' ')
+                            line = line.replace(i,' ')
                             
                     m = pal2.findall(line.decode('utf8'))
                     if m:
                         for i in m:
-                            line = line.replace(i.encode('utf8'),' ')
-
+                            line = line.replace(i.encode('utf8'),' ')  
                     m = quote2.findall(line.decode('utf8')) ## remove chinese quotes
                     if m:
                         for i in m:
                             #print i
                             line = line.replace(i.encode('utf8'),' ')
+
+                    m = period.findall(line.decode('utf8'))
+                    if m:
+                        for i in m:
+                            line = line.replace(i.encode('utf8'),' 无语 ')
                     ## remove intensional verb and something unsure
                     line_copy=line     
                     line_copy = line_copy.replace('。','\n').replace(',','\n').replace('，','\n')
-                    clauses = line_copy.split('\n')
+                    clauses = line_copy.split('\n') 
                     for i in clauses:
-                        for j in ['怀疑','觉得','如果','假如']:
+                        for j in ivLIST:
                             if i.find(j) !=-1:
                                 line = line.replace(i,' ')
                     if line:
@@ -372,6 +386,10 @@ def filterPHRASE(phraseFILE,filteredFILE):
                         fw.write(rmword.sub('','   '.join(li))+'\n')
                                                 
     fw.close()
+
+
+if __name__ == '__main__':
+    preprocess("preprocess-neg.txt")
 
 
 

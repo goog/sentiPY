@@ -3,6 +3,7 @@
 *.txt~
 *.sh~
 *~
+*.txt
 senti*
 neg_*
 pos_*
