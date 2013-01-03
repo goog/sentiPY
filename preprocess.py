@@ -201,12 +201,17 @@ def findPHRASE(taggedFILE,phraseFILE):
 ##                                    fw.write('-高\n');lb=i  ##use const
 ##                                else:
 ##                                    fw.write('+高\n');lb=i
-                ##  because there is not a No in lexicon
-                if list[i]=='没有#VE':
+                
+                if list[i]=='没有#VE' or list[i]=='没#VE':
                     try:
                         nextLABEL = getLABEL(list[i+1])
                         if nextLABEL=='NN' and (not dict.get(getWORD(list[i+1]))):
                             fw.write('-没有\n');lb=i
+                        elif getLABEL(list[i-1])=='NN' and (not dict.get(getWORD(list[i-1]))):
+                            fw.write('-没有\n');lb=i
+                        elif getLABEL(list[i-1])=='AD' and getLABEL(list[i-2])=='NN' and (not dict.get(getWORD(list[i-2]))):
+                            fw.write('-没有\n');lb=i
+                            
                     except:
                         print "the No,process failed.please check it:",line
                         
@@ -313,6 +318,14 @@ def findPHRASE(taggedFILE,phraseFILE):
                             print "JJ currently,out of range"
                     if label=="CD":  # so small
                         fw.write(list[i]+'\n');lb=i
+                else:
+                    if label=='VV':
+                        try:
+                            if ''.join(list[i-3:i])=='不#AD会#VV再#AD':
+                                fw.write('-4\n');lb=i
+                        except:
+                            pass
+            
 
     fw.close()
 

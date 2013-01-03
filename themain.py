@@ -62,9 +62,9 @@ def calPHRASEstrength(phrase,advDICT):
         for i in range(length-2,-1,-1):
             if advDICT.get(li[i]):
                 strength*=advDICT.get(li[i])
-    if strength < 0:
-        strength = strength*1.5
-## if my,comment two lines above
+##    if strength < 0:
+##        strength = strength*1.5
+## if mine,comment two lines above
     return strength
 
 
@@ -108,12 +108,12 @@ def statistics(phraseNUMBERseqs):
     with open(phraseNUMBERseqs) as myFILE:
         for num, line in enumerate(myFILE, 1):
             line=line.strip()
-            #strength = findSENTIdroppoint(line)
-            strength = commonSENTI(line)
+            strength = findSENTIdroppoint(line)
+            #strength = commonSENTI(line)
             if strength > 0:
                 errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
-    print errorLIST
+    #print errorLIST
     print dict
     print "the correct percentage is %s" %(dict[1]/2000.0)
 
