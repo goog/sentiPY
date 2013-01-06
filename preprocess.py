@@ -3,6 +3,7 @@ import os,sys,re
 import opencc
 import subprocess
 from check import *
+from itertools import izip
 
 par = re.compile(ur'\(.+?\)')
 par2 = re.compile(ur'\uff08.+?\uff09')
@@ -100,6 +101,7 @@ def segANDpos(input):
     arg1=input[-7:-4]  
     subprocess.call("./segment.sh "+arg1, shell=True)
     print "segment finished."
+    getSENTENCE(arg1+"_seged.txt")   ## split into sentences
     subprocess.call("./tagger.sh "+arg1, shell=True)
     print "pos tagger finished."
     
@@ -112,13 +114,7 @@ def parseLINE(line):
 
 def sentiment():
     dict_list=[]
-    exclude = set()
-    fop = open('exclude.txt')
-    for line in fop:
-        line= line.strip()
-        if line:
-            exclude.add(line)
-            
+    exclude = file2set('./stopword.txt')      
     fo1 = open('./neg.txt')
     fo2 = open('./pos.txt')
     for line in fo1:
@@ -155,6 +151,13 @@ def findPHRASE(taggedFILE,phraseFILE):
     advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
     nnSET = file2set('./sentiNN.txt')
     aspect = loadASPECTsenti('./aspectDICT.txt')
+    am = file2list('./ambiguity.txt')
+##    with open("textfile1") as textfile1, open("textfile2") as textfile2: 
+##    for x, y in izip(textfile1, textfile2):
+##        x = x.strip()
+##        y = y.strip()
+##        print("{0}\t{1}".format(x, y))
+    ##  to do
     fo = open(taggedFILE)
     fw = open(phraseFILE,'w')
     for line in fo:
@@ -171,22 +174,6 @@ def findPHRASE(taggedFILE,phraseFILE):
                 seger = getWORD(list[i]);label = getLABEL(list[i])
                 if seger in ['整体','总之','总体','总而言之','总的来说','总结','整体性','总体性']:
                     fw.write('SUM\n');lb=i
-                ## try this pattern  
-##                if seger=='高':  ##for some special words both positive and negative, like 'miss'
-##                    parseLINE(line)  ## consume much time because of the java CLI, improve 0.2%
-##                    fo = open('/home/googcheng/parser/parsed.txt')
-##                    target = "nsubj(高-"+str(i+1)
-##                    for line in fo:
-##                        line=line.strip()
-##                        if line:
-##                            if line.find(target)!=-1:
-##                                print line
-##                                position = line.split()[1].find('-')
-##                                if line.split()[1][:position] in ['中间','温度','热量','风扇','配置',
-##                                                                  '价格','发热量','左边','散热','价钱']:
-##                                    fw.write('-高\n');lb=i  ##use const
-##                                else:
-##                                    fw.write('+高\n');lb=i
                 
                 if list[i]=='没有#VE' or list[i]=='没#VE':
                     try:

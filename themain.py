@@ -115,25 +115,25 @@ def statistics(phraseNUMBERseqs):
             dict[calORIENTATION(strength)]+=1
     #print errorLIST
     print dict
-    print "the correct percentage is %s" %(dict[1]/2000.0)
+    print "the correct percentage is %s" %(dict[-1]/2000.0)
 
 if __name__ == '__main__':
     print "starts",time.asctime()
     print '''
 **notice : the preprocess 163 line , if segmenter is changed!
 '''
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
+    taggedFILE='./neg_tagged.txt'
+    phraseFILE='./neg_phrase.txt'
+    finalPHRASE='./phrase2.txt'
+    phraseNUMBERseqs='./phraseINline2.txt'
 
-    taggedFILE='./pos_tagged.txt'
-    phraseFILE='./pos_phrase.txt'
-    finalPHRASE='./phrase.txt'
-    phraseNUMBERseqs='./phraseINline.txt'
+##    taggedFILE='./pos_tagged.txt'
+##    phraseFILE='./pos_phrase.txt'
+##    finalPHRASE='./phrase.txt'
+##    phraseNUMBERseqs='./phraseINline.txt'
 
-    preprocess("preprocess-pos.txt")
-    segANDpos("preprocess-pos.txt")
+    preprocess("preprocess-neg.txt")
+    segANDpos("preprocess-neg.txt")
 
     sentiDICT = {}
     loadSENTI('./sentiment.txt')

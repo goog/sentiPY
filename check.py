@@ -334,8 +334,8 @@ def loadASPECTsenti(path):
     return dic
 
 sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
-def getSENTENCE(path1,path2):
-    with open(path1) as f,open(path2,'w') as fw:
+def getSENTENCE(path):
+    with open(path) as f,open('sentences.txt','w') as fw:
         for line in f:
             line=line.strip()
             if line:
@@ -345,16 +345,11 @@ def getSENTENCE(path1,path2):
                     li = sen.split(line.decode('utf8'))
                     for i in li:
                         i = i.strip()
-                        if not i:
-                            #print 'empty'
-                            pass
-                        else:
+                        if i:
                             fw.write(i.encode('utf8')+'\n')
     fw.close()
+    os.rename('sentences.txt',path)
                     
-        
-
-
 if __name__ == '__main__':
 ##    processADVSS('./advss.txt')
 ##    print findADorVE('几乎#AD没有#VE什么#DT合口味#NN')
