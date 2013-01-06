@@ -132,8 +132,8 @@ if __name__ == '__main__':
     finalPHRASE='./phrase.txt'
     phraseNUMBERseqs='./phraseINline.txt'
 
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
+    preprocess("preprocess-pos.txt")
+    segANDpos("preprocess-pos.txt")
 
     sentiDICT = {}
     loadSENTI('./sentiment.txt')

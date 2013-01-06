@@ -305,7 +305,54 @@ def fixedLEN(path):
             if len(line)==9 or len(line)==12:
                 fw.write(line+'\n')
     fw.close()
-    
+
+def applyPAT(pat,line,isCH=None,sub=' '):
+    if isCH:
+        m = pat.findall(line.decode('utf8'))
+        if m:
+            for i in m:
+                line = line.replace(i.encode('utf8'),sub)
+    else:
+        m = pat.findall(line)
+        if m:
+            for i in m:
+                line = line.replace(i,sub)
+    return line
+
+def loadASPECTsenti(path):
+    dic = {}
+    with open(path) as f:
+        for line in f:
+            line=line.strip()
+            if line:
+                li = line.split()
+                if len(li)==3:
+                    if dic.get(' '.join(li[0:2])):
+                        continue
+                    else:
+                        dic[' '.join(li[0:2])]=li[2]
+    return dic
+
+sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
+def getSENTENCE(path1,path2):
+    with open(path1) as f,open(path2,'w') as fw:
+        for line in f:
+            line=line.strip()
+            if line:
+                if line=='-- -- -- -- --':
+                    fw.write(line+'\n')
+                else:
+                    li = sen.split(line.decode('utf8'))
+                    for i in li:
+                        i = i.strip()
+                        if not i:
+                            #print 'empty'
+                            pass
+                        else:
+                            fw.write(i.encode('utf8')+'\n')
+    fw.close()
+                    
+        
 
 
 if __name__ == '__main__':
@@ -315,4 +362,6 @@ if __name__ == '__main__':
     #rmOOVinLEXICON('./oov.txt')
     #fixedLEN('./cedict.txt')
     #reviewNOphrase()
+    #print loadASPECTsenti('./aspectDICT.txt')
+    getSENTENCE('./pos_seged.txt','./sentencePOS.txt')
     pass

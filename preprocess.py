@@ -4,8 +4,8 @@ import opencc
 import subprocess
 from check import *
 
-pal = re.compile(ur'\(.+?\)')
-pal2 = re.compile(ur'\uff08.+?\uff09')
+par = re.compile(ur'\(.+?\)')
+par2 = re.compile(ur'\uff08.+?\uff09')
 quote = re.compile(ur'".+?"')
 quote2 = re.compile(ur'\u201c.+?\u201d')
 period = re.compile(ur'\u3002{2,}')
@@ -54,7 +54,6 @@ def file2list(path):
     return li
 
 def preprocess(path):
-    ## the method mainly to remove smth disrelated and interferential
     r=raw_input("type a directory name:")
     fw = open(path,'w')
     ivLIST = file2list('./iv.txt')
@@ -68,37 +67,23 @@ def preprocess(path):
                 line  = cc.convert(line.decode('utf8')).encode('utf8')
                 if line:
                     #remove the content in () 
-                    match = pal.findall(line)
+                    match = par.findall(line)
                     if match:
                         for i in match:
                             if i=='(*^__^*)' or i=='(∩_∩)':
-                                line = line.replace(i,'微笑 ')
+                                line = line.replace(i,' 微笑 ')
                             else:
                                 line = line.replace(i,' ')
 
-                    match = quote.findall(line)
-                    if match:
-                        for i in match:
-                            line = line.replace(i,' ')
-                            
-                    m = pal2.findall(line.decode('utf8'))
-                    if m:
-                        for i in m:
-                            line = line.replace(i.encode('utf8'),' ')  
-                    m = quote2.findall(line.decode('utf8')) ## remove chinese quotes
-                    if m:
-                        for i in m:
-                            #print i
-                            line = line.replace(i.encode('utf8'),' ')
-
-                    m = period.findall(line.decode('utf8'))
-                    if m:
-                        for i in m:
-                            line = line.replace(i.encode('utf8'),' 无语 ')
+                    line = applyPAT(quote,line,isCH=None,sub=' ')
+                    line = applyPAT(par2,line,1)
+                    line = applyPAT(quote2,line,1)
+                    line = applyPAT(period,line,1,' 无语 ')
+                    
                     ## remove intensional verb and something unsure
-                    line_copy=line     
-                    line_copy = line_copy.replace('。','\n').replace(',','\n').replace('，','\n')
-                    clauses = line_copy.split('\n') 
+                    lineCOPY = line     
+                    lineCOPY = lineCOPY.replace('。','\n').replace(',','\n').replace('，','\n')
+                    clauses = lineCOPY.split('\n') 
                     for i in clauses:
                         for j in ivLIST:
                             if i.find(j) !=-1:
@@ -112,10 +97,10 @@ def preprocess(path):
 def segANDpos(input):
     cmd="cp "+input+" ~/segmenter/"+input
     subprocess.call(cmd, shell=True)
-    arg0=input[-7:-4]  
-    subprocess.call("./segment.sh "+arg0, shell=True)
+    arg1=input[-7:-4]  
+    subprocess.call("./segment.sh "+arg1, shell=True)
     print "segment finished."
-    subprocess.call("./tagger.sh "+arg0, shell=True)
+    subprocess.call("./tagger.sh "+arg1, shell=True)
     print "pos tagger finished."
     
 def parseLINE(line):
@@ -169,6 +154,7 @@ def findPHRASE(taggedFILE,phraseFILE):
     dict = sentiment()
     advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
     nnSET = file2set('./sentiNN.txt')
+    aspect = loadASPECTsenti('./aspectDICT.txt')
     fo = open(taggedFILE)
     fw = open(phraseFILE,'w')
     for line in fo:
