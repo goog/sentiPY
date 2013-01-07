@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import re
 import os
+from shutil import copyfile
 '''tools'''
 
 def checkoutPHRASE(path):
@@ -334,7 +335,34 @@ def loadASPECTsenti(path):
     return dic
 
 sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
+
+# split more than 80 tokens
+def splitLONG(i):
+    sentenceLI= []
+    list1=i.split('，')
+    for j in list1:
+        j = j.strip()
+        if j:
+            if len(j.split())<81:
+                sentenceLI.append(j)
+            else:
+                for k in j.split(','):
+                    k = k.strip()
+                    if k:
+                        if len(k.split())<81:
+                            sentenceLI.append(k)
+                        else:
+                            print "can't split this one:",k
+                            r=raw_input("input man made sentences:")
+                            list2 = r.split('\\n')
+                            for l in list2:
+                                sentenceLI.append(l)
+    return sentenceLI
+                        
+                
+        
 def getSENTENCE(path):
+    ## sentence length :80 tokens
     with open(path) as f,open('sentences.txt','w') as fw:
         for line in f:
             line=line.strip()
@@ -344,11 +372,54 @@ def getSENTENCE(path):
                 else:
                     li = sen.split(line.decode('utf8'))
                     for i in li:
-                        i = i.strip()
+                        i = i.strip().encode('utf8')
                         if i:
-                            fw.write(i.encode('utf8')+'\n')
+                            if len(i.split())< 81:
+                                fw.write(i+'\n')
+                            else:
+                                list2 = splitLONG(i)
+                                for s in list2:
+                                    fw.write(s+'\n')
     fw.close()
+    copyfile('sentences.txt',path+'.backup')  
     os.rename('sentences.txt',path)
+
+def statSENTENCES(path):
+    cnt = 0
+    maxl = 1
+    with open(path) as f:
+        for line in f:
+            line=line.strip()
+            if line:
+                if line!='-- -- -- -- --':
+                    length = len(line.split())
+                    if length > maxl:
+                        maxl = length
+                    if length >80:
+                        print line
+                        cnt+=1
+    print cnt,maxl
+    
+def statPARSED(path):
+    cnt = 0
+    with open(path) as f:
+        for line in f:
+            line=line.strip()
+            if line=='':
+                cnt+=1
+    print cnt
+
+def reformPARSED(path,path2):
+    with open(path) as f,open(path2,'w') as fw:
+        li = []
+        for line in f:
+            line=line.strip()
+            if line:
+                li.append(line)
+            else:
+                fw.write('   '.join(li)+'\n')
+                li = []
+    fw.close()
                     
 if __name__ == '__main__':
 ##    processADVSS('./advss.txt')
@@ -358,5 +429,8 @@ if __name__ == '__main__':
     #fixedLEN('./cedict.txt')
     #reviewNOphrase()
     #print loadASPECTsenti('./aspectDICT.txt')
-    getSENTENCE('./pos_seged.txt','./sentencePOS.txt')
+##    getSENTENCE('./neg_seged.txt')
+##    statSENTENCES('./neg_seged.txt')
+    statPARSED('./neg_parsed.txt')
+    reformPARSED('neg_parsed.txt','neg_parsed_format.txt')
     pass
