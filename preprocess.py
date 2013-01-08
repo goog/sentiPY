@@ -11,6 +11,7 @@ quote = re.compile(ur'".+?"')
 quote2 = re.compile(ur'\u201c.+?\u201d')
 period = re.compile(ur'\u3002{2,}')
 han = re.compile(ur'[\u4e00-\u9fa5]+')
+tag = re.compile( '#\w{1,3}')
 
 def rmBLANK(path,writeTO):
     fo = open(path)
@@ -137,7 +138,7 @@ def getLABEL(element):
 def getWORD(element):
     return element[:element.find('#')]
 
-def doSMALLbig(seger,element):
+'''def doSMALLbig(seger,element):
     if seger=='小': 
         if getWORD(element) in ['单人床','县城','地方','柜门','液晶']:
             return '-小\n'
@@ -146,12 +147,29 @@ def doSMALLbig(seger,element):
                                   '床','店','气','片','能力','酒店','钱','银行','阳台']:
             return '+大\n'
         elif getWORD(element) in ['声','理由','环境','当']:
-            return '-大\n'
+            return '-大\n'    '''
 
 def searchLIST(li,ty,string):
     for i in li:
         if i.startswith(ty) and i.find(string)!= -1:
             return i
+
+def doNO(ylist,string,i,phraseLIST,dict):
+    key = string.split('#')[0]
+    ele = searchLIST(ylist,'dobj',key+"-"+str(i+1))
+    if ele is None:
+        ele = searchLIST(ylist,'nsubj',key+"-"+str(i+1))
+    if ele:
+        m = han.findall(ele.decode('utf8'))
+        if m:
+            pair = [h.encode('utf8') for h in m]
+            if len(pair)==2:
+                pair.remove(key)
+                if not dict.get(pair[0]):
+                    phraseLIST.append('-没有');lb=i
+                else:
+                    ## not adjacent
+                    return ele.split(',')[1][:-1]
 
 def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
     dict = sentiment()
@@ -160,8 +178,10 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
     sumLIST = file2list('./summary.txt')
     aspect = loadASPECTsenti('./aspectDICT.txt')
     am = file2list('./ambiguity.txt')
+    farSENTI = []
     with open(taggedFILE) as fo1, open(parsedFILE) as fo2,open(phraseFILE,'w') as fw: 
         for line, y in izip(fo1,fo2):
+            phraseLIST = []  ## to do queue
             line = line.strip()
             y = y.strip()
             if line:  ##  a line from taggedFILE
@@ -176,42 +196,18 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                 for i in range(len(list)):
                     seger = getWORD(list[i]);label = getLABEL(list[i])
                     if seger in sumLIST:
-                        fw.write('SUM\n');lb=i
+                        phraseLIST.append('SUM');lb=i
                         
-                    elif list[i]=='没有#VE':
-                        ele = searchLIST(ylist,'dobj',"没有-"+str(i+1))
-                        if ele is None:
-                            ele = searchLIST(ylist,'nsubj',"没有-"+str(i+1))
-                        if ele:
-                            #print ele
-                            m = han.findall(ele.decode('utf8'))
-                            if m:
-                                pair = [h.encode('utf8') for h in m]
-                                if len(pair)==2:
-                                    pair.remove('没有')
-                                    if not dict.get(pair[0]):
-                                        fw.write('-没有\n');lb=i
-                            
-                    elif list[i]=='没#VE':
-                        ele = searchLIST(ylist,'dobj',"没-"+str(i+1))
-                        if ele is None:
-                            ele = searchLIST(ylist,'nsubj',"没-"+str(i+1))
-                        if ele:
-                            #print ele
-                            m = han.findall(ele.decode('utf8'))
-                            if m:
-                                pair = [h.encode('utf8') for h in m]
-                                if len(pair)==2:
-                                    pair.remove('没')
-                                    if not dict.get(pair[0]):
-                                        fw.write('-没有\n');lb=i
-                            
+                    elif list[i]=='没有#VE' or list[i]=='没#VE':
+                        if doNO(ylist,list[i],i,phraseLIST,dict):
+                            farSENTI.append(doNO(ylist,list[i],i,phraseLIST,dict))
+                                
                     elif dict.get(seger):
                         if label=="VA":
                             if i>0:
                                 p_label = getLABEL(list[i-1]) 
                                 if p_label in ['DEV','DEG'] and i>1:
-                                    fw.write(''.join(list[i-2:i+1])+'\n');lb=i
+                                    phraseLIST.append(''.join(list[i-2:i+1]));lb=i
                                 elif p_label=='AD':
                                     ind = i-1
                                     try:
@@ -224,19 +220,20 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                         print "out of range."
                                     if ind==i-1 and i>2:
                                         if getLABEL(list[i-2])=='VC' and getLABEL(list[i-3])=='AD':
-                                            fw.write(''.join(list[i-3:i+1])+'\n');lb=i
+                                            phraseLIST.append(''.join(list[i-3:i+1]));lb=i
                                         else:
-                                            fw.write(''.join(list[i-1:i+1])+'\n');lb=i       
+                                            phraseLIST.append(''.join(list[i-1:i+1]));lb=i       
 
                                     else:
                                         if ind<=lb:
                                             ind=lb+1 ## avoid repeated extraction
-                                        fw.write(''.join(list[ind:i+1])+'\n');lb=i
+                                        phraseLIST.append(''.join(list[ind:i+1]));lb=i
                                 ###  may other to do   
                                 else:
-                                    fw.write(list[i]+'\n');lb=i
+                                    phraseLIST.append(list[i]+'-'+str(i+1));lb=i
+                                    #print list[i]
                             else:
-                                fw.write(list[i]+'\n');lb=i
+                                phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                         
                         if label=="NN":
                             if seger in nnSET:  ## skip the zero strength noun
@@ -245,31 +242,31 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                 p_label = getLABEL(list[i-1])
                                 if p_label in ['AD','JJ','VE','CD']:
                                     # VE: 有/没有;CD:一点点
-                                    fw.write(''.join(list[i-1:i+1])+'\n');lb=i
+                                    phraseLIST.append(''.join(list[i-1:i+1]));lb=i
                                 elif p_label=='DT' and i>1:
-                                    fw.write(findADorVE(''.join(list[i-2:i+1])));lb=i
+                                    phraseLIST.append(findADorVE(''.join(list[i-2:i+1])));lb=i
                                 else:
-                                    fw.write(list[i]+'\n');lb=i
+                                    phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                             else:
-                                fw.write(list[i]+'\n');lb=i
+                                phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                                 
                         # verbs ,forward/backward?
                         if label=="VV":
                             if i>0:
                                 p_label = getLABEL(list[i-1])
                                 if p_label in ['AD','PN','VV']:
-                                    fw.write(''.join(list[i-1:i+1])+'\n');lb=i
+                                    phraseLIST.append(''.join(list[i-1:i+1]));lb=i
                                 else:
-                                    fw.write(list[i]+'\n');lb=i
+                                    phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                             else:
-                                fw.write(list[i]+'\n');lb=i
+                                phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                                                
                         if label=='AD':
                             if i>0:
                                 p_label = getLABEL(list[i-1])
                                 if p_label=='NN' and getWORD(list[i-1]) in ['问题','价格','价位','效果',
                                                                            '速度','续航','散热','性能','外观','容量']:
-                                    fw.write(''.join(list[i-1:i+1])+'\n');lb=i
+                                    phraseLIST.append(''.join(list[i-1:i+1]));lb=i
                                 elif p_label=='AD':
                                     ind = i-1
                                     try:
@@ -286,38 +283,44 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                         else:
                                             if ind<=lb:
                                                 ind=lb+1
-                                            fw.write(''.join(list[ind:i+1])+'\n');lb=i
+                                            phraseLIST.append(''.join(list[ind:i+1]));lb=i
                                 else:
-                                    fw.write(list[i]+'\n');lb=i
+                                    phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                             else:
-                                fw.write(list[i]+'\n');lb=i
+                                phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                                 
                                 
                         #interjection        
                         if label=="IJ":
-                            fw.write(list[i]+'\n');lb=i
+                            phraseLIST.append(list[i]);lb=i
                         if label=="JJ":
-                            try:
-                                if getLABEL(list[i+1])=='NN':
-                                    if doSMALLbig(seger,list[i+1]):
-                                        fw.write(doSMALLbig(seger,list[i+1]));lb=i
-                                elif getLABEL(list[i+1])=='DEG' and getLABEL(list[i+2])=='NN':
-                                    if doSMALLbig(seger,list[i+2]):
-                                        fw.write(doSMALLbig(seger,list[i+2]));lb=i+1
-                                ## 长#JJ 时间#NN //notebook +;hotel -
-                            except:
-                                print "JJ currently,out of range"
-                        if label=="CD":  # so small
-                            fw.write(list[i]+'\n');lb=i
+                            jjj = searchLIST(ylist,'amod',seger+"-"+str(i+1))
+                            if jjj:
+                                m = han.findall(jjj.decode('utf8'))
+                                if m:
+                                    pair = [h.encode('utf8') for h in m]
+                                    if len(pair)==2:
+                                        if aspect.get(' '.join(pair)):
+                                            phraseLIST.append(aspect.get(' '.join(pair)));lb=i                 
+                            
+                        if label=="CD":
+                            phraseLIST.append(list[i]);lb=i
                     else:
                         if label=='VV':
                             try:
                                 if ''.join(list[i-3:i])=='不#AD会#VV再#AD':
-                                    fw.write('-4\n');lb=i
+                                    phraseLIST.append('-4');lb=i
                             except:
                                 pass
-            
-
+                            
+                for p in phraseLIST:
+                    if tag.sub('',p) in farSENTI:
+                        fw.write('shift   '+p.split('-')[0]+'\n')
+                    else:
+                        if p.startswith('-'):
+                            fw.write(p+'\n')
+                        else:
+                            fw.write(p.split('-')[0]+'\n')
     fw.close()
 
 def filterPHRASE(phraseFILE,filteredFILE):

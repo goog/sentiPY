@@ -223,7 +223,7 @@ def findADorVE(phrase):
         phrase = m.group().encode('utf8')
     elif m2:
         phrase = m2.group().encode('utf8')
-    return phrase+'\n'
+    return phrase
 
 
 
