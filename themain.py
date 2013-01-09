@@ -113,9 +113,9 @@ def statistics(phraseNUMBERseqs):
             if strength > 0:
                 errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
-    #print errorLIST
     print dict
     print "the correct percentage is %s" %(dict[-1]/2000.0)
+    return errorLIST
 
 if __name__ == '__main__':
     print "starts",time.asctime()
@@ -132,15 +132,16 @@ if __name__ == '__main__':
 ##    finalPHRASE='./phrase.txt'
 ##    phraseNUMBERseqs='./phraseINline.txt'
 
-    preprocess("preprocess-neg.txt")
-    segANDpos("preprocess-neg.txt")
+##    preprocess("preprocess-neg.txt")
+##    segANDpos("preprocess-neg.txt")
 
     sentiDICT = {}
     loadSENTI('./sentiment.txt')
-    findPHRASE(taggedFILE,phraseFILE)
+    findPHRASE('neg_tagged.txt','neg_parsed_format.txt','neg_phrase.txt')
     filterPHRASE(phraseFILE,finalPHRASE)
     calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
-    statistics(phraseNUMBERseqs)
+    errorLIST  = statistics(phraseNUMBERseqs)
+    showERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
     

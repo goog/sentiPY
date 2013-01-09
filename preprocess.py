@@ -104,7 +104,7 @@ def segANDpos(input):
     subprocess.call("./segment.sh "+arg1, shell=True)
     print "segment finished."
     getSENTENCE(arg1+"_seged.txt")   ## split into sentences
-    statSENTENCES(arg1+"_seged.txt")
+    ##statSENTENCES(arg1+"_seged.txt")
     subprocess.call("./tagger.sh "+arg1, shell=True)
     print "pos tagger finished."
     
@@ -138,17 +138,6 @@ def getLABEL(element):
 def getWORD(element):
     return element[:element.find('#')]
 
-'''def doSMALLbig(seger,element):
-    if seger=='小': 
-        if getWORD(element) in ['单人床','县城','地方','柜门','液晶']:
-            return '-小\n'
-    elif seger=='大':
-        if getWORD(element) in ['公司','单位','商场','城市','宾馆',
-                                  '床','店','气','片','能力','酒店','钱','银行','阳台']:
-            return '+大\n'
-        elif getWORD(element) in ['声','理由','环境','当']:
-            return '-大\n'    '''
-
 def searchLIST(li,ty,string):
     for i in li:
         if i.startswith(ty) and i.find(string)!= -1:
@@ -169,19 +158,21 @@ def doNO(ylist,string,i,phraseLIST,dict):
                     phraseLIST.append('-没有');lb=i
                 else:
                     ## not adjacent
+                    #print ele
                     return ele.split(',')[1][:-1]
 
 def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
     dict = sentiment()
     advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
-    nnSET = file2set('./sentiNN.txt')
+    nnSET = file2set('./sentiNN.txt');vvSET=file2set('./sentiVV.txt')
+    adSET = file2set('./sentiAD.txt')
     sumLIST = file2list('./summary.txt')
     aspect = loadASPECTsenti('./aspectDICT.txt')
-    am = file2list('./ambiguity.txt')
-    farSENTI = []
+    am = file2list('./ambiguity.txt')   ### aaa
     with open(taggedFILE) as fo1, open(parsedFILE) as fo2,open(phraseFILE,'w') as fw: 
         for line, y in izip(fo1,fo2):
-            phraseLIST = []  ## to do queue
+            phraseLIST = [];farSENTI = [] ## to do queue
+            farSENTI2 = []   ## for not
             line = line.strip()
             y = y.strip()
             if line:  ##  a line from taggedFILE
@@ -252,6 +243,8 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                 
                         # verbs ,forward/backward?
                         if label=="VV":
+                            if seger in vvSET:
+                                continue
                             if i>0:
                                 p_label = getLABEL(list[i-1])
                                 if p_label in ['AD','PN','VV']:
@@ -262,6 +255,8 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                 phraseLIST.append(list[i]+'-'+str(i+1));lb=i
                                                
                         if label=='AD':
+                            if seger in adSET:
+                                continue
                             if i>0:
                                 p_label = getLABEL(list[i-1])
                                 if p_label=='NN' and getWORD(list[i-1]) in ['问题','价格','价位','效果',
@@ -294,14 +289,15 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                         if label=="IJ":
                             phraseLIST.append(list[i]);lb=i
                         if label=="JJ":
-                            jjj = searchLIST(ylist,'amod',seger+"-"+str(i+1))
-                            if jjj:
-                                m = han.findall(jjj.decode('utf8'))
-                                if m:
-                                    pair = [h.encode('utf8') for h in m]
-                                    if len(pair)==2:
-                                        if aspect.get(' '.join(pair)):
-                                            phraseLIST.append(aspect.get(' '.join(pair)));lb=i                 
+                            if seger in am:
+                                jjj = searchLIST(ylist,'amod',seger+"-"+str(i+1))
+                                if jjj:
+                                    m = han.findall(jjj.decode('utf8'))
+                                    if m:
+                                        pair = [h.encode('utf8') for h in m]
+                                        if len(pair)==2:
+                                            if aspect.get(' '.join(pair)):
+                                                phraseLIST.append(aspect.get(' '.join(pair)));lb=i                
                             
                         if label=="CD":
                             phraseLIST.append(list[i]);lb=i
@@ -312,9 +308,17 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                     phraseLIST.append('-4');lb=i
                             except:
                                 pass
-                            
+                        if seger=='不':
+                            ele  = searchLIST(ylist,'neg',"不-"+str(i+1))
+                            if ele:
+                                ele2 = ele.split(',')[4:]
+                                farSENTI2.append(ele2)
+                                
                 for p in phraseLIST:
                     if tag.sub('',p) in farSENTI:
+                        fw.write('shift   '+p.split('-')[0]+'\n')
+                    elif tag.sub('',p) in farSENTI2:
+                        print '111'
                         fw.write('shift   '+p.split('-')[0]+'\n')
                     else:
                         if p.startswith('-'):

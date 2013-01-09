@@ -2,11 +2,9 @@ def findSENTIdroppoint(sentence):
     sentence =sentence.strip()
     if sentence:
         li = sentence.split('|')
-        for i in[0,-1]:
+        for i in [0,-1]:
             if li and li[i]=='0':
                 li.pop(i)
-        if not li:
-            return 0
         ## there is a summary
         if 's' in li:
             for k,i in enumerate(li):  # find last 's'
@@ -28,21 +26,22 @@ def findSENTIdroppoint(sentence):
                     return float(li[0])
                 except:
                     return 0
+                
             begin = float(li[0]);end = float(li[-1])
             if abs(begin)>abs(end):
                 return begin
             elif abs(begin)<abs(end):
                 return end
             else:
-                if len(li)==2:
+                ##** strength vs count **
+                absLI = [abs(float(i)) for i in li]
+                ind = absLI.index(max(absLI))
+                if ind == 0 or ind==len(li)-1:
                     return end
-                else:  ##length more than two,** strength vs count ** neg strengths are weak 
-                    newLIST= [abs(float(i)) for i in li[1:-1]]
-                    ind = newLIST.index(max(newLIST))
-                    ## if float(li[1:-1][ind]) smaller than two ,count 
-                    return float(li[1:-1][ind])
+                else:
+                    return float(li[ind])
     else:
-        return 0  #  because of no sentiment
+        return 0  #  because of no extraction sentiment
 
 ## common method, to aggregate it
 def commonSENTI(sentence):
@@ -67,6 +66,7 @@ def calORIENTATION(strength):
 
 
 if __name__ == '__main__':
+    print findSENTIdroppoint('-1.0')
     print commonSENTI('s|1.8|-5.85|0|s|1.0|0')
     
 

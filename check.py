@@ -43,6 +43,58 @@ def reviewNOphrase():
                 buf+=line
     fw.close()
 
+
+def showERROR(path,list):
+    fo = open(path)
+    fw = open('errorLINES.txt','w')
+    buf = ""
+    lineNO=0
+    for line in fo:
+        line=line.strip()
+        if line:
+            if line=="----------":
+                lineNO+=1
+                if lineNO in list:
+                    fw.write(str(lineNO)+':'+buf+'*_*\n')
+                buf=''
+            else:
+                buf+=line
+    fw.close()
+
+    fo = open('neg_seged.txt.backup')
+    fw = open('errorSEG.txt','w')
+    buf = ""
+    lineNO=0
+    for line in fo:
+        line=line.strip()
+        if line:
+            if line=="-- -- -- -- --":
+                lineNO+=1
+                if lineNO in list:
+                    fw.write(str(lineNO)+':'+buf+'*_*\n')
+                buf=''
+            else:
+                buf+=line
+    fw.close()
+
+    fo = open('neg_phrase.txt')
+    fw = open('errorphrase.txt','w')
+    buf = ""
+    lineNO=0
+    for line in fo:
+        line=line.strip()
+        if line:
+            if line=="----------":
+                lineNO+=1
+                if lineNO in list:
+                    fw.write(str(lineNO)+':'+buf+'*_*\n')
+                buf=''
+            else:
+                buf+=line
+    fw.close()
+    
+    
+
 def countPHRASE(path):
     len1=0;len2=0;len3=0;lenx=0
     fo = open(path)
