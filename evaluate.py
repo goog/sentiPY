@@ -5,6 +5,8 @@ def findSENTIdroppoint(sentence):
         for i in [0,-1]:
             if li and li[i]=='0':
                 li.pop(i)
+        if not li:
+            return 0
         ## there is a summary
         if 's' in li:
             for k,i in enumerate(li):  # find last 's'
@@ -26,18 +28,17 @@ def findSENTIdroppoint(sentence):
                     return float(li[0])
                 except:
                     return 0
-                
+            #print li   
             begin = float(li[0]);end = float(li[-1])
             if abs(begin)>abs(end):
                 return begin
             elif abs(begin)<abs(end):
                 return end
             else:
-                ##** strength vs count **
                 absLI = [abs(float(i)) for i in li]
                 ind = absLI.index(max(absLI))
                 if ind == 0 or ind==len(li)-1:
-                    return end
+                    return begin
                 else:
                     return float(li[ind])
     else:

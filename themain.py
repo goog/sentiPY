@@ -16,9 +16,24 @@ def loadSENTI(path):
                 except:
                     print "type error, not number",line
     print "Length of sentiment lexion in %s is %s " %(fo.name,len(sentiDICT))
+
+def loadLEXICON(path):
+    with open(path) as fo:
+        lexicon = {}
+        for line in fo:
+            line =line.strip()
+            if line:
+                li= line.split()
+                try:
+                    lexicon[' '.join(li[0:-1])]= float(li[-1])
+                except:
+                        print "type error, not number",line    
+    print "Length of sentiment lexion in %s is %s " %(fo.name,len(lexicon))
+    return lexicon
+
     
 oov= set()
-def calPHRASEstrength(phrase,advDICT):
+def calPHRASEstrength(nonLINEAR,phrase,advDICT):
     if not phrase:
         return 0
     li = phrase.split()
@@ -26,15 +41,19 @@ def calPHRASEstrength(phrase,advDICT):
         strength= sentiDICT.get(li[0])
         if strength is None:
             oov.add(li[0]);strength = 0
+    elif nonLINEAR.get(' '.join(li)):
+        strength = nonLINEAR.get(' '.join(li))
     elif len(li)==2:
         strength = sentiDICT.get(li[1])
         if strength is None:
             oov.add(li[1])
             strength = 0
+##        if li[0] in ['不','shift','没','没有']:  ## shift
+##            strength = strength - 4 if strength>0 else strength + 4
         if advDICT.get(li[0]):
             strength*= advDICT.get(li[0])
         elif li[0]=="不太" and strength:
-            strength = strength - 5 if strength>0 else strength + 5 
+            strength = strength - 5 if strength>0 else strength + 5
 
     elif len(li)==3:  
         strength= sentiDICT.get(li[2])
@@ -84,7 +103,7 @@ def readFILEasDICT(path):
     return dict
 
 
-def calALL(advDICTfilePATH,inputPATH,outputPATH):
+def calALL(nonLINEAR,advDICTfilePATH,inputPATH,outputPATH):
     fo = open(inputPATH)
     fw = open(outputPATH,'w')
     advDICT = readFILEasDICT(advDICTfilePATH)
@@ -95,7 +114,7 @@ def calALL(advDICTfilePATH,inputPATH,outputPATH):
             if line =='SUM':
                 list.append('s')
             else:
-                list.append(str(calPHRASEstrength(line,advDICT)))
+                list.append(str(calPHRASEstrength(nonLINEAR,line,advDICT)))
         else: 
             fw.write("|".join(list)+"\n")
             list=[]  
@@ -139,9 +158,10 @@ if __name__ == '__main__':
     loadSENTI('./sentiment.txt')
     findPHRASE('neg_tagged.txt','neg_parsed_format.txt','neg_phrase.txt')
     filterPHRASE(phraseFILE,finalPHRASE)
-    calALL('advxxx.txt',finalPHRASE,phraseNUMBERseqs)
+    nonLINEAR  = loadLEXICON('./nonlinear.txt')
+    calALL(nonLINEAR,'advxxx.txt',finalPHRASE,phraseNUMBERseqs)
     errorLIST  = statistics(phraseNUMBERseqs)
-    showERROR('preprocess-neg.txt',errorLIST)
+    #writeERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
     

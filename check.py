@@ -44,7 +44,7 @@ def reviewNOphrase():
     fw.close()
 
 
-def showERROR(path,list):
+def writeERROR(path,list):
     fo = open(path)
     fw = open('errorLINES.txt','w')
     buf = ""
@@ -61,14 +61,14 @@ def showERROR(path,list):
                 buf+=line
     fw.close()
 
-    fo = open('neg_seged.txt.backup')
-    fw = open('errorSEG.txt','w')
+    fo = open('neg_tagged.txt')
+    fw = open('errorTAG.txt','w')
     buf = ""
     lineNO=0
     for line in fo:
         line=line.strip()
         if line:
-            if line=="-- -- -- -- --":
+            if line=="--#NN --#NN --#NN --#NN --#NN":
                 lineNO+=1
                 if lineNO in list:
                     fw.write(str(lineNO)+':'+buf+'*_*\n')
@@ -90,7 +90,7 @@ def showERROR(path,list):
                     fw.write(str(lineNO)+':'+buf+'*_*\n')
                 buf=''
             else:
-                buf+=line
+                buf+=line+' '
     fw.close()
     
     
