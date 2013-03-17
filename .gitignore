@@ -1,13 +1,8 @@
 *.pyc
 *.doc
-*.txt~
-*.sh~
 *~
 *.txt
 senti*
 neg_*
 pos_*
-maybeADV.txt
-1.txt
-2.txt
 preprocess-*

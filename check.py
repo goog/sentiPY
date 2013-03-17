@@ -2,6 +2,7 @@
 import re
 import os
 from shutil import copyfile
+from preprocess import *
 '''tools'''
 
 def checkoutPHRASE(path):
@@ -149,9 +150,9 @@ def checkLABELED(path1,path2):
             if len(kv)==2:
                 try:
                     test = float(kv[1])
+                    dict1[kv[0]]=kv[1]
                 except:
-                    print kv[0]
-                dict1[kv[0]]=kv[1]
+                    print kv[0],"value not float."    
     print "dict1 length is %s" %len(dict1)
 
 
@@ -162,10 +163,9 @@ def checkLABELED(path1,path2):
             if len(kv)==2:
                 try:
                     test = float(kv[1])
+                    dict2[kv[0]]=kv[1]
                 except:
                     print kv[0]
-                    
-                dict2[kv[0]]=kv[1]
     print "dict2 length is %s" %len(dict2)
 
     a = set(dict1.keys())
@@ -201,6 +201,72 @@ def checkLABELED(path1,path2):
                 print i
     fw.close()
 
+
+def adjust(path1,path2):
+    dict1={}
+    dict2={}
+    fo1 = open(path1)  #'./1.txt'
+    fo2 = open(path2)  #'./2.txt'
+    fw=open('./senti2.txt','w')
+    for line in fo1:
+        line=line.strip()
+        if line:
+            kv=line.split()
+            if len(kv)==2:
+                try:
+                    test = float(kv[1])
+                    dict1[kv[0]]=kv[1]
+                except:
+                    print kv[0],"value not float."    
+    print "dict1 length is %s" %len(dict1)
+
+
+    for line in fo2:
+        line=line.strip()
+        if line:
+            kv=line.split()
+            if len(kv)==2:
+                try:
+                    test = float(kv[1])
+                    dict2[kv[0]]=kv[1]
+                except:
+                    print kv[0]
+    print "dict2 length is %s" %len(dict2)
+
+    
+    for i in dict1.keys():
+            
+        if dict1.get(i)==dict2.get(i):
+            continue
+        else:
+            if dict1.get(i) and dict2.get(i):
+                if abs(float(dict1.get(i))-float(dict2.get(i)))<=1:
+                    avg= (float(dict1.get(i))+float(dict2.get(i)))/2.0
+                    dict1[i]=str(avg)
+                else:
+                    print i,"   ",dict1.get(i),"   ",dict2.get(i)
+                    r=raw_input("type a value:")
+                    dict1[i]=r
+                    
+    for i in dict1.keys():
+        fw.write(i+"   "+dict1.get(i)+"\n")
+    fw.close()
+
+import re
+hanLAB = re.compile(ur'[\u4e00-\u9fa5]+   -?[\d.]+')
+def splitLABEL(path,path1):
+    fo = open(path)
+    fw = open(path1,'w')
+    for line in fo:
+        line=line.strip()
+        li = hanLAB.findall(line.decode('utf8'))
+        if li:
+            print len(li)
+            for j in li:
+                fw.write(j.encode('utf8')+"\n")
+    fw.close()
+                
+        
 
 def doOOV():
     fo1 = open('./oov.txt')
@@ -386,8 +452,9 @@ def loadASPECTsenti(path):
                         dic[' '.join(li[0:2])]=li[2]
     return dic
 
-sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
 
+###define a regx
+sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
 # split more than 80 tokens
 def splitLONG(i):
     sentenceLI= []
@@ -404,8 +471,8 @@ def splitLONG(i):
                         if len(k.split())<81:
                             sentenceLI.append(k)
                         else:
-                            print "can't split this one:",k
-                            r=raw_input("input man made sentences:")
+                            print "this sentence can't be split:\n",k
+                            r=raw_input("input man-made sentence:")
                             list2 = r.split('\\n')
                             for l in list2:
                                 sentenceLI.append(l)
@@ -422,7 +489,7 @@ def getSENTENCE(path):
                 if line=='-- -- -- -- --':
                     fw.write(line+'\n')
                 else:
-                    li = sen.split(line.decode('utf8'))
+                    li = sen.split(line.decode('utf8')) #### split the seged file
                     for i in li:
                         i = i.strip().encode('utf8')
                         if i:
@@ -431,7 +498,8 @@ def getSENTENCE(path):
                             else:
                                 list2 = splitLONG(i)
                                 for s in list2:
-                                    fw.write(s+'\n')
+                                    if s:
+                                        fw.write(s+'\n')
     fw.close()
     copyfile('sentences.txt',path+'.backup')  
     os.rename('sentences.txt',path)
@@ -472,6 +540,38 @@ def reformPARSED(path,path2):
                 fw.write('   '.join(li)+'\n')
                 li = []
     fw.close()
+
+
+def checkDICT(path,path2):
+    a = file2set(path)
+    print len(a)
+
+    b = file2set(path2)
+    print len(b)
+    with open(path2) as fo:
+        for line in fo:
+            line=line.strip()
+            if line and (line not in a):
+                print line
+
+def diffTWOfile(path1,path2):
+    a = set()
+    b= set()
+    with open(path1) as org,open(path2) as dec:
+        for line in org:
+            if line:
+                if line.strip().split()[0] in a:
+                    print line.strip().split()[0]
+                a.add(line.strip().split()[0])
+
+        for line in dec:
+            if line:
+                b.add(line.strip().split()[0])
+    print len(a),len(b)
+    c= a-b
+    for i in c:
+        print i
+    
                     
 if __name__ == '__main__':
 ##    processADVSS('./advss.txt')
@@ -483,6 +583,10 @@ if __name__ == '__main__':
     #print loadASPECTsenti('./aspectDICT.txt')
 ##    getSENTENCE('./neg_seged.txt')
 ##    statSENTENCES('./neg_seged.txt')
-    statPARSED('./neg_parsed.txt')
-    reformPARSED('neg_parsed.txt','neg_parsed_format.txt')
+##    statPARSED('./pos_parsed.txt')
+##    reformPARSED('pos_parsed.txt','pos_parsed_format.txt')
+    #checkDICT('positive.txt','NTUSD_positive_simplified.txt')
+    #adjust('sentiment.txt','lexicon2.txt')
+    #splitLABEL("senti2.txt","senti3.txt")
+    diffTWOfile("sentiment2.txt","mySTRENGTH.txt")
     pass

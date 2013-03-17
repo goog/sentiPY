@@ -11,19 +11,10 @@ quote = re.compile(ur'".+?"')
 quote2 = re.compile(ur'\u201c.+?\u201d')
 period = re.compile(ur'\u3002{2,}')
 han = re.compile(ur'[\u4e00-\u9fa5]+')
-tag = re.compile( '#\w{1,3}')
-rmword = re.compile( '\w{1,3}')
+tag = re.compile('#\w{1,3}')
+rmword = re.compile('\w{1,3}')
 
-def rmBLANK(path,writeTO):
-    fo = open(path)
-    fw = open(writeTO,'w')
-    for line in fo:
-        line = line.strip()
-        if line:
-            fw.write(line+'\n')       
-    fw.close()
-
-def readPHRASE(path):
+def extractADV(path):
     fo = open(path)
     fw=open('./maybeADV.txt','w')
     li=[]
@@ -85,9 +76,8 @@ def preprocess(path):
                     line = applyPAT(period,line,1,' 无语 ')
                     
                     ## remove intensional verb and something unsure
-                    lineCOPY = line     
+                    lineCOPY = line    
                     lineCOPY = lineCOPY.replace('。','\n').replace(',','\n').replace('，','\n')
-                    ##  sentence split issue
                     clauses = lineCOPY.split('\n') 
                     for i in clauses:
                         for j in ivLIST:
@@ -112,12 +102,12 @@ def segANDpos(input):
     subprocess.call("./tagger.sh "+arg1, shell=True)
     print "pos tagger finished."
     
-def parseLINE(line):
+'''def parseLINE(line):
     p = re.compile( '#\w{1,3}')
     fw=open('/home/googcheng/parser/line.txt','w')
     fw.write(p.sub('',line))
     fw.close()
-    subprocess.call("./parse.sh", shell=True)
+    subprocess.call("./parse.sh", shell=True)'''
 
 def sentiment():
     dict_list=[]
@@ -126,14 +116,21 @@ def sentiment():
     fo2 = open('./pos.txt')
     for line in fo1:
         line=line.strip()
-        if line not in exclude:
+        if line:
             dict_list.append(line)
 
     for line in fo2:
         line=line.strip()
-        if line not in exclude:
+        if line:
             dict_list.append(line)
-    print "there is %s words in sentiment dictionary" % len({}.fromkeys(dict_list,1))
+    print "prior length:",len(dict_list)
+    for i in exclude:
+        try:
+            dict_list.remove(i)
+        except:
+            pass
+    print "there is %s words in pos&&neg dictionary" % len({}.fromkeys(dict_list,1))
+    print 'test.point:',{}.fromkeys(dict_list,1).get('K')
     return {}.fromkeys(dict_list,1)
 
 def getLABEL(element):
@@ -159,15 +156,15 @@ def doNO(ylist,string,i,phraseLIST,dict):
             if len(pair)==2:
                 pair.remove(key)
                 if not dict.get(pair[0]):
-                    phraseLIST.append('-没有');lb=i
+                    #phraseLIST.append('-没有');lb=i
+                    phraseLIST.append('没有');lb=i
                 else:
                     ## not adjacent
-                    #print ele
                     return ele.split(',')[1][:-1]
 
 def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
     dict = sentiment()
-    advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
+    #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
     nnSET = file2set('./sentiNN.txt');vvSET=file2set('./sentiVV.txt')
     adSET = file2set('./sentiAD.txt')
     sumLIST = file2list('./summary.txt')
@@ -295,15 +292,17 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                             if aspect.get(' '.join(pair)):
                                                 phraseLIST.append(aspect.get(' '.join(pair)));lb=i
                                             else:
-                                                print "aspect miss:",' '.join(pair)
+                                                ### default
+                                                phraseLIST.append(list[i])
                             
                         if label=="CD":
                             phraseLIST.append(list[i]);lb=i
                     else:
                         if label=='VV':
+                            ### to do .......
                             try:
                                 if ''.join(list[i-3:i])=='不#AD会#VV再#AD':
-                                    phraseLIST.append('-4');lb=i
+                                    phraseLIST.append('-4');lb=i  ### add a const
                             except:
                                 pass
                         if seger=='不':
@@ -311,7 +310,7 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                             if ele:
                                 ele2 = ele.split(',')[0][4:]
                                 farSENTI2.append(ele2)
-                ## must factored,,wait to effect             
+                ## must factored            
                 for p in phraseLIST:
                     if tag.sub('',p) in farSENTI:
                         fw.write('shift   '+p.split('-')[0]+'\n')
@@ -340,7 +339,9 @@ def filterPHRASE(phraseFILE,filteredFILE):
             else:
                 li= line.split('#')
                 if len(li)==1:
-                    print "smth error in filter"
+                    #print "smth error in filter"
+                    #print ' '.join(li)
+                    fw.write(li[0]+'\n')
                     
                 elif len(li) ==2:
                     fw.write(li[0]+'\n')
@@ -397,7 +398,8 @@ def filterPHRASE(phraseFILE,filteredFILE):
 
 if __name__ == '__main__':
     #preprocess("preprocess-neg.txt")
-    findPHRASE('neg_tagged.txt','neg_parsed_format.txt','neg_phrase.txt')
+    extractADV('phrase2.txt')
+    #findPHRASE('neg_tagged.txt','neg_parsed_format.txt','neg_phrase.txt')
 
 
 

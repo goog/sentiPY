@@ -27,8 +27,7 @@ def findSENTIdroppoint(sentence):
                 try:
                     return float(li[0])
                 except:
-                    return 0
-            #print li   
+                    return 0  
             begin = float(li[0]);end = float(li[-1])
             if abs(begin)>abs(end):
                 return begin
