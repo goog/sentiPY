@@ -45,10 +45,11 @@ for line in fo3:
     ngd=(max(logx,logy)-logxy) / float(math.log(N)-min(logx,logy))
     if ngd >1:
         cnt+=1
-        ngd= 1 ##### ??
+        ngd= 1
     fw.write('   '.join(parts[0:2])+'---'+str(ngd)+"\n")
     
 print "times that ngd bigger than one:",cnt
+print "total",total
 print "the radio is :", float(cnt)/total
 fw.close()
 

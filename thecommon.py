@@ -130,58 +130,29 @@ def statistics(phraseNUMBERseqs):
     with open(phraseNUMBERseqs) as myFILE:
         for num, line in enumerate(myFILE, 1):
             line=line.strip()
-            strength1 = findSENTIdroppoint(line)
-            #strength = commonSENTI(line)
-            ''' mix two methods '''
-            strength2 = commonSENTI(line)
-            if strength1 * strength2 > 0:
-                strength = strength2
-            elif strength1 == 0:
-                strength = strength2
-            elif strength2 == 0:
-                strength = strength1
-            else:
-                
-                if strength1 >0 and strength2 < 0:   #######
-                    strength = strength1
-                elif strength1 < 0 and strength2 > 0:
-                    strength = strength2
-                else:
-                    strength = (strength1+strength2)/2
+            #strength = findSENTIdroppoint(line) 
+            strength = commonSENTI(line)
+##            if strength1 * strength2 > 0:
+##                strength = strength2
+##            elif strength1 == 0:
+##                strength = strength2
+##            elif strength2 == 0:
+##                strength = strength1
+##            else:
+##                
+##                if strength1 >0 and strength2 < 0:   #######
+##                    strength = strength1
+##                elif strength1 < 0 and strength2 > 0:
+##                    strength = strength2
+##                else:
+##                    strength = (strength1+strength2)/2
                 #####strength = strength2
 ##            if strength > 0:
 ##                errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
     print dict
-    print "my union method:"
     print "the correct percentage is %s" %(dict[1]/2000.0)
     return errorLIST
-
-
-def statistics2(phraseNUMBERseqs):
-    dict ={1:0,0:0,-1:0}
-    with open(phraseNUMBERseqs) as myFILE:
-        for num, line in enumerate(myFILE, 1):
-            line=line.strip()
-            eles = line.split('|')
-            sum  = 0
-            for i in eles:
-                try:
-                    value = float(i)
-                except:
-                    pass
-                if value > 0:
-                    sum+=1
-                elif value < 0:
-                    sum-=1
-                
-            
-            
-            dict[calORIENTATION(sum)]+=1
-    print '''  *****count stat:'''
-    print dict
-    print "the correct percentage is %s" %(dict[1]/2000.0)
-    
 
 if __name__ == '__main__':
     print "starts",time.asctime()
@@ -193,10 +164,10 @@ if __name__ == '__main__':
 ##    parsedFILE='./neg_parsed_format.txt'
 ##    finalPHRASE='./phrase2.txt'
 ##    phraseNUMBERseqs='./phraseINline2.txt'
-    
-#    preprocess("preprocess-neg.txt")
-#    segANDpos("preprocess-neg.txt")
-#    reformPARSED('neg_parsed.txt',parsedFILE)
+##   
+##    preprocess("preprocess-neg.txt")
+##    segANDpos("preprocess-neg.txt")
+##    reformPARSED('neg_parsed.txt',parsedFILE)
 
     taggedFILE='./pos_tagged.txt'
     phraseFILE='./pos_phrase.txt'
@@ -204,18 +175,20 @@ if __name__ == '__main__':
     finalPHRASE='./phrase.txt'
     phraseNUMBERseqs='./phraseINline.txt'
     
-    preprocess("preprocess-pos.txt")
-    segANDpos("preprocess-pos.txt")
-    reformPARSED('pos_parsed.txt',parsedFILE)
+##    preprocess("preprocess-pos.txt")
+##    segANDpos("preprocess-pos.txt")
+##    reformPARSED('pos_parsed.txt',parsedFILE)
 
 
-###  notebook block
+
+    '''  '''
+    ###  notebook block
 ##    taggedFILE='./neg_tagged.txt'
 ##    phraseFILE='./neg_phrasenb.txt'
 ##    parsedFILE='./neg_parsed_formatnb.txt'
 ##    finalPHRASE='./phrase2nb.txt'
 ##    phraseNUMBERseqs='./phraseINline2nb.txt'
-    
+##    
 ##    preprocess("preprocess-neg.txt")
 ##    segANDpos("preprocess-neg.txt")
 ##    reformPARSED('neg_parsednb.txt',parsedFILE)
@@ -225,28 +198,20 @@ if __name__ == '__main__':
 ##    parsedFILE='./pos_parsed_formatnb.txt'
 ##    finalPHRASE='./phrasenb.txt'
 ##    phraseNUMBERseqs='./phraseINlinenb.txt'
-    
+   
 ##    preprocess("preprocess-pos.txt")
 ##    segANDpos("preprocess-pos.txt")
 ##    reformPARSED('pos_parsednb.txt',parsedFILE)
 
-
-
     sentiDICT = {}
-    #loadSENTI('./sentiment2.txt')
-    loadSENTI('./mySTRENGTH.txt')   ### sync two files
-    findPHRASE(taggedFILE,parsedFILE,phraseFILE)
+    loadSENTI('./sentiment2.txt')
+    #loadSENTI('./mySTRENGTH.txt')   ### sync two files
+    #findPHRASE(taggedFILE,parsedFILE,phraseFILE)####
+    findPHRASE1(taggedFILE,phraseFILE)
     filterPHRASE(phraseFILE,finalPHRASE)
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
     calALL(nonLINEAR,'advxxx.txt',finalPHRASE,phraseNUMBERseqs)
-
-
-    #####  apply count method 
     errorLIST  = statistics(phraseNUMBERseqs)
-
-
-    ###add new function to count the number of pos/neg
-    statistics2(phraseNUMBERseqs)
     #writeERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()

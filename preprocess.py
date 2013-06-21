@@ -101,13 +101,6 @@ def segANDpos(input):
     ##statSENTENCES(arg1+"_seged.txt")
     subprocess.call("./tagger.sh "+arg1, shell=True)
     print "pos tagger finished."
-    
-'''def parseLINE(line):
-    p = re.compile( '#\w{1,3}')
-    fw=open('/home/googcheng/parser/line.txt','w')
-    fw.write(p.sub('',line))
-    fw.close()
-    subprocess.call("./parse.sh", shell=True)'''
 
 def sentiment():
     dict_list=[]
@@ -156,28 +149,28 @@ def doNO(ylist,string,i,phraseLIST,dict):
             if len(pair)==2:
                 pair.remove(key)
                 if not dict.get(pair[0]):
-                    #phraseLIST.append('-没有');lb=i
                     phraseLIST.append('没有');lb=i
                 else:
-                    ## not adjacent
+                    ## dobj all right; nsubj ? 
                     return ele.split(',')[1][:-1]
 
 def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
     dict = sentiment()
     #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
-    nnSET = file2set('./sentiNN.txt');vvSET=file2set('./sentiVV.txt')
+    nnSET = file2set('./sentiNN.txt')
+    vvSET=file2set('./sentiVV.txt')
     adSET = file2set('./sentiAD.txt')
     sumLIST = file2list('./summary.txt')
     aspect = loadASPECTsenti('./aspectDICT.txt')
     am = file2list('./ambiguity.txt')
     with open(taggedFILE) as fo1, open(parsedFILE) as fo2,open(phraseFILE,'w') as fw: 
         for line, y in izip(fo1,fo2):
-            phraseLIST = [];farSENTI = [] ##do queue
+            phraseLIST = []
+            farSENTI = [] ##do queue
             farSENTI2 = []   ## for not
             line = line.strip()
             y = y.strip()
             if line:  ##  a line from taggedFILE
-                #if line =='----------#NN':  ## NN
                 #if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
                 if line =='--#NN --#NN --#NN --#NN --#NN':
                     fw.write('----------\n')
@@ -191,8 +184,9 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                         phraseLIST.append('SUM');lb=i
                         
                     elif list[i]=='没有#VE' or list[i]=='没#VE':
-                        if doNO(ylist,list[i],i,phraseLIST,dict):
-                            farSENTI.append(doNO(ylist,list[i],i,phraseLIST,dict))
+                        ret = doNO(ylist,list[i],i,phraseLIST,dict)
+                        if ret:
+                            farSENTI.append(ret)
                                 
                     elif dict.get(seger):
                         if label=="VA":
@@ -232,7 +226,8 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                 p_label = getLABEL(list[i-1])
                                 if p_label in ['AD','JJ','VE','CD']:
                                     # VE: 有/没有;CD:一点点
-                                    phraseLIST.append(''.join(list[i-1:i+1]));lb=i
+                                    if lb != i-1:  ## most use of lb
+                                        phraseLIST.append(''.join(list[i-1:i+1]));lb=i
                                 elif p_label=='DT' and i>1:
                                     phraseLIST.append(findADorVE(''.join(list[i-2:i+1])));lb=i
                                 else:
@@ -310,17 +305,43 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                             if ele:
                                 ele2 = ele.split(',')[0][4:]
                                 farSENTI2.append(ele2)
-                ## must factored            
+                          
                 for p in phraseLIST:
                     if tag.sub('',p) in farSENTI:
                         fw.write('shift   '+p.split('-')[0]+'\n')
                     elif tag.sub('',p) in farSENTI2:
-                        fw.write('shift   '+p.split('-')[0]+'\n')   ##  didnt work
+                        fw.write('shift   '+p.split('-')[0]+'\n')
                     else:
                         if p.startswith('-'):
                             fw.write(p+'\n')
                         else:
                             fw.write(p.split('-')[0]+'\n')
+    fw.close()
+
+def findPHRASE1(taggedFILE,phraseFILE):
+    dict = sentiment()
+    #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
+##    aspect = loadASPECTsenti('./aspectDICT.txt')
+##    am = file2list('./ambiguity.txt')
+    with open(taggedFILE) as fo1,open(phraseFILE,'w') as fw: 
+        for line in fo1:
+            phraseLIST = [];
+            line = line.strip()
+
+            if line:  ##  a line from taggedFILE
+                #if line =='----------#NN':  ## NN
+                #if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
+                if line =='--#NN --#NN --#NN --#NN --#NN':
+                    fw.write('----------\n')
+                    continue
+                list = line.split()
+                
+                  #lowerbound, record the wrote position
+                for i in range(len(list)):
+                    seger = getWORD(list[i]);
+                    
+                    if dict.get(seger):
+                        fw.write(list[i]+'\n')
     fw.close()
 
 def filterPHRASE(phraseFILE,filteredFILE):

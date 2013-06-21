@@ -41,9 +41,8 @@ def loadSENTI(path):
 
 
 '''
-    the construction of the graph,not very right @@@####
+    the construction of the graph
 '''
-#**************** change it *********!!!!!
 ### the phrase2 to change it !!!
 #with open('phrase2.txt') as fp:
 cnt1 =0 
@@ -65,14 +64,14 @@ with open('phrase12.txt') as fp:
                             continue
                         if dict.get('   '.join(li[i:i+2])):
                             ngd = float(dict.get('   '.join(li[i:i+2])))
-                        elif dict.get('   '.join(li[i:i+2])) is None:
+                        else:
                             try:
                                 ngd = float(dict.get(li[i+1]+'   '+li[i]))
                             except:
                                 #print li[i],'   ',li[i+1],"miss it"
                                 todo.add('   '.join(li[i:i+2]))
                         cnt1+=1
-                        association= 1 - ngd
+                        association= 1 - ngd  ## some asso is zero
                         DG.add_edge(fir.decode('utf8'),sec.decode('utf8'),weight=association)
                         DG.add_edge(sec.decode('utf8'),fir.decode('utf8'),weight=association)
                 li = []

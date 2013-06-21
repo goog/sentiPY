@@ -36,7 +36,7 @@ for n in DG:
     DG.node[n]['s']=senti.get(n.encode('utf8'))
     
 #iter
-for i in xrange(100):
+for i in xrange(1):
     li = []
     for n in DG:
         if DG.in_degree(n)==0:
@@ -59,10 +59,10 @@ for i in xrange(100):
                 pass
         li.append(DG.node[n]['s1'])
             
-    #normalize the strength: method
+    #normalize the strength
     li.sort(reverse=True)
     a = []
-    print "the mormalized factor :",li[0]
+    print "the normalized factor :",li[0]
     for n in DG:
         #DG.node[n]['s1']=DG.node[n]['s1']/math.sqrt(sums)
         DG.node[n]['s1']=DG.node[n]['s1']/li[0]
@@ -77,6 +77,8 @@ for i in xrange(100):
         print "iter %s th stop" % i
         break
 
+
+### some strength gets 75. so big than ...
 fw=open("mySTRENGTH.txt","w")           
 for n in DG:
     fw.write(n.encode('utf8')+"    "+str(DG.node[n]['s'])+"\n")
