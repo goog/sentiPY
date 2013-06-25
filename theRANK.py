@@ -157,9 +157,9 @@ def statistics(movie,phraseNUMBERseqs):
                 label = "推荐"
             elif 0<=strength and strength<=2:
                 label = "还行"
-            elif -2<=strength and strength<0:
+            elif -3<=strength and strength<0:
                 label = "较差"
-            elif -5<=strength and strength<-2:
+            elif -5<=strength and strength<-3:
                 label = "很差"
                 
             if label == y.split("----------")[0]:
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
     calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
     errorLIST  = statistics('./movie.txt',settings['phraseNUMBERseqs'])
-    #writeERROR('preprocess-neg.txt',errorLIST)
+    writeERROR('preprocess-pos.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
 

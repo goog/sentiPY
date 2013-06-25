@@ -277,7 +277,7 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                         if label=="IJ":
                             phraseLIST.append(list[i]);lb=i
                         if label=="JJ":
-                            if seger in am:
+                            if seger in am:  ## handler  ambiguity
                                 jjj = searchLIST(ylist,'amod',seger+"-"+str(i+1))
                                 if jjj:
                                     m = han.findall(jjj.decode('utf8'))
@@ -289,6 +289,9 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
                                             else:
                                                 ### default
                                                 phraseLIST.append(list[i])
+                            else:
+                                phraseLIST.append(list[i]);lb=i
+                                
                             
                         if label=="CD":
                             phraseLIST.append(list[i]);lb=i
