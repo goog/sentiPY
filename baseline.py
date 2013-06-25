@@ -2,7 +2,7 @@
 from preprocess import *
 from evaluate import *
 from check import *
-import time
+import time,yaml
 
 def loadSENTI(path):
     fo = open(path)
@@ -84,8 +84,8 @@ def calPHRASEstrength(nonLINEAR,phrase,advDICT):
         for i in range(length-2,-1,-1):
             if advDICT.get(li[i]):
                 strength*=advDICT.get(li[i])
-    if strength < 0:
-        strength = strength*1.5
+##    if strength < 0:
+##        strength = strength*1.3
                 
 ## if droppoint,comment two lines above
     return strength
@@ -147,6 +147,7 @@ def statistics(phraseNUMBERseqs):
                 elif strength1 < 0 and strength2 > 0:
                     strength = strength2
                 else:
+                    print "here"
                     strength = (strength1+strength2)/2
                 #####strength = strength2
 ##            if strength > 0:
@@ -174,9 +175,7 @@ def statistics2(phraseNUMBERseqs):
                     sum+=1
                 elif value < 0:
                     sum-=1
-                
-            
-            
+                          
             dict[calORIENTATION(sum)]+=1
     print '''  *****count stat:'''
     print dict
@@ -185,71 +184,31 @@ def statistics2(phraseNUMBERseqs):
 
 if __name__ == '__main__':
     print "starts",time.asctime()
-    print '''
-**notice : the preprocess 163 line , if segmenter is changed!
-'''
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    parsedFILE='./neg_parsed_format.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
     
-#    preprocess("preprocess-neg.txt")
-#    segANDpos("preprocess-neg.txt")
-#    reformPARSED('neg_parsed.txt',parsedFILE)
+    with open("neg_weibo.conf") as f:
+        settings=yaml.load(f)
+##    preprocess(settings['preFILE'])
+##    segANDpos(settings['preFILE'])
 
-    taggedFILE='./pos_tagged.txt'
-    phraseFILE='./pos_phrase.txt'
-    parsedFILE='./pos_parsed_format.txt'
-    finalPHRASE='./phrase.txt'
-    phraseNUMBERseqs='./phraseINline.txt'
-    
-    preprocess("preprocess-pos.txt")
-    segANDpos("preprocess-pos.txt")
-    reformPARSED('pos_parsed.txt',parsedFILE)
-
-
-###  notebook block
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrasenb.txt'
-##    parsedFILE='./neg_parsed_formatnb.txt'
-##    finalPHRASE='./phrase2nb.txt'
-##    phraseNUMBERseqs='./phraseINline2nb.txt'
-    
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
-##    reformPARSED('neg_parsednb.txt',parsedFILE)
-
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrasenb.txt'
-##    parsedFILE='./pos_parsed_formatnb.txt'
-##    finalPHRASE='./phrasenb.txt'
-##    phraseNUMBERseqs='./phraseINlinenb.txt'
-    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsednb.txt',parsedFILE)
-
-
+    reformPARSED(settings['parseFILE'],settings['parsedFILE'])
 
     sentiDICT = {}
-    #loadSENTI('./sentiment2.txt')
-    loadSENTI('./mySTRENGTH.txt')   ### sync two files
-    findPHRASE(taggedFILE,parsedFILE,phraseFILE)
-    filterPHRASE(phraseFILE,finalPHRASE)
+    loadSENTI('./sentiment2.txt')   # ./mySTRENGTH.txt
+    findPHRASE(settings['taggedFILE'],settings['parsedFILE'],settings['phraseFILE'])
+    filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
-    calALL(nonLINEAR,'advxxx.txt',finalPHRASE,phraseNUMBERseqs)
-
-
-    #####  apply count method 
-    errorLIST  = statistics(phraseNUMBERseqs)
-
+    calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
+    errorLIST  = statistics(settings['phraseNUMBERseqs'])
 
     ###add new function to count the number of pos/neg
-    statistics2(phraseNUMBERseqs)
-    #writeERROR('preprocess-neg.txt',errorLIST)
+    statistics2(settings['phraseNUMBERseqs'])
+    
+    writeERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
+
+
+
             
 
 

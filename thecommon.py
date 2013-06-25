@@ -3,6 +3,7 @@ from preprocess import *
 from evaluate import *
 from check import *
 import time
+import yaml
 
 def loadSENTI(path):
     fo = open(path)
@@ -85,7 +86,7 @@ def calPHRASEstrength(nonLINEAR,phrase,advDICT):
             if advDICT.get(li[i]):
                 strength*=advDICT.get(li[i])
     if strength < 0:
-        strength = strength*1.5
+        strength = strength*1.3
                 
 ## if droppoint,comment two lines above
     return strength
@@ -132,89 +133,37 @@ def statistics(phraseNUMBERseqs):
             line=line.strip()
             #strength = findSENTIdroppoint(line) 
             strength = commonSENTI(line)
-##            if strength1 * strength2 > 0:
-##                strength = strength2
-##            elif strength1 == 0:
-##                strength = strength2
-##            elif strength2 == 0:
-##                strength = strength1
-##            else:
-##                
-##                if strength1 >0 and strength2 < 0:   #######
-##                    strength = strength1
-##                elif strength1 < 0 and strength2 > 0:
-##                    strength = strength2
-##                else:
-##                    strength = (strength1+strength2)/2
-                #####strength = strength2
+
 ##            if strength > 0:
 ##                errorLIST.append(num)
             dict[calORIENTATION(strength)]+=1
     print dict
-    print "the correct percentage is %s" %(dict[1]/2000.0)
+    print "the correct percentage is %s" %(dict[-1]/2000.0)
     return errorLIST
 
 if __name__ == '__main__':
     print "starts",time.asctime()
-    print '''
-**notice : the preprocess 163 line , if segmenter is changed!
-'''
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    parsedFILE='./neg_parsed_format.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
-##   
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
-##    reformPARSED('neg_parsed.txt',parsedFILE)
 
-    taggedFILE='./pos_tagged.txt'
-    phraseFILE='./pos_phrase.txt'
-    parsedFILE='./pos_parsed_format.txt'
-    finalPHRASE='./phrase.txt'
-    phraseNUMBERseqs='./phraseINline.txt'
-    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsed.txt',parsedFILE)
+    with open("neg_book.conf") as f:
+        settings=yaml.load(f)
+##    preprocess(settings['preFILE'])
+##    segANDpos(settings['preFILE'])
 
-
-
-    '''  '''
-    ###  notebook block
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrasenb.txt'
-##    parsedFILE='./neg_parsed_formatnb.txt'
-##    finalPHRASE='./phrase2nb.txt'
-##    phraseNUMBERseqs='./phraseINline2nb.txt'
-##    
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
-##    reformPARSED('neg_parsednb.txt',parsedFILE)
-
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrasenb.txt'
-##    parsedFILE='./pos_parsed_formatnb.txt'
-##    finalPHRASE='./phrasenb.txt'
-##    phraseNUMBERseqs='./phraseINlinenb.txt'
-   
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsednb.txt',parsedFILE)
+    reformPARSED(settings['parseFILE'],settings['parsedFILE'])
 
     sentiDICT = {}
     loadSENTI('./sentiment2.txt')
-    #loadSENTI('./mySTRENGTH.txt')   ### sync two files
-    #findPHRASE(taggedFILE,parsedFILE,phraseFILE)####
-    findPHRASE1(taggedFILE,phraseFILE)
-    filterPHRASE(phraseFILE,finalPHRASE)
+    findPHRASE1(settings['taggedFILE'],settings['phraseFILE'])
+    filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
-    calALL(nonLINEAR,'advxxx.txt',finalPHRASE,phraseNUMBERseqs)
-    errorLIST  = statistics(phraseNUMBERseqs)
+    calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
+    errorLIST  = statistics(settings['phraseNUMBERseqs'])
     #writeERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
+
+
+
             
 
 

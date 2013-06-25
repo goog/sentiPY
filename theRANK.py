@@ -123,90 +123,61 @@ def calALL(nonLINEAR,advDICTfilePATH,inputPATH,outputPATH):
             list=[]  
     fw.close()
 
-def statistics(phraseNUMBERseqs):
+def statistics(movie,phraseNUMBERseqs):
     errorLIST = []
-    dict ={1:0,0:0,-1:0}
-    with open(phraseNUMBERseqs) as myFILE:
-        for num, line in enumerate(myFILE, 1):
+    cnt = 0
+    lineno = 0
+    ## read two files simulatously
+    with open(phraseNUMBERseqs) as myFILE, open(movie) as fo:
+        for line, y in izip(myFILE,fo):
+            lineno+=1
+            label = ""
             line=line.strip()
-            strength = findSENTIdroppoint(line)
-##            strength2 = commonSENTI(line)
-##            if strength1 * strength2 > 0:
-##                strength = strength2
-##            elif strength1 == 0:
-##                strength = strength2
-##            elif strength2 == 0:
-##                strength = strength1
-##            else:
-##                
-##                if strength1 >0 and strength2 < 0:
-##                    strength = strength1
-##                else:
-##                    strength = strength2
+            strength1 = findSENTIdroppoint(line)
+            strength2 = commonSENTI(line)
+            
+            if strength1 * strength2 > 0:
+                strength = strength2
+            elif strength1 == 0:
+                strength = strength2
+            elif strength2 == 0:
+                strength = strength1
+            else:
+                
+                if strength1 >0 and strength2 < 0:
+                    strength = strength1
+                else:
+                    strength = strength2
                 
 
-            if strength > 0:
-                errorLIST.append(num)
 
-            
-            dict[calORIENTATION(strength)]+=1
-    print dict
-    print "the correct percentage is %s" %(dict[-1]/2000.0)
+            if strength > 4:
+                label = "力荐"
+            elif 2<strength and strength<=4:
+                label = "推荐"
+            elif 0<=strength and strength<=2:
+                label = "还行"
+            elif -2<=strength and strength<0:
+                label = "较差"
+            elif -5<=strength and strength<-2:
+                label = "很差"
+                
+            if label == y.split("----------")[0]:
+                cnt+=1
+            else:
+                errorLIST.append(lineno)
+                
+    print cnt
+    print "the correct percentage is %s" %(cnt/867.0)
     return errorLIST
 
 if __name__ == '__main__':
     print "starts",time.asctime()
-    
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    parsedFILE='./neg_parsed_format.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
-   
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
-##    reformPARSED('neg_parsed.txt',parsedFILE)
-
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrase.txt'
-##    parsedFILE='./pos_parsed_format.txt'
-##    finalPHRASE='./phrase.txt'
-##    phraseNUMBERseqs='./phraseINline.txt'
-    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsed.txt',parsedFILE)
-
-
-
-    '''  '''
-    ###  notebook block
-#    taggedFILE='./neg_tagged.txt'
-#    phraseFILE='./neg_phrasenb.txt'
-#    parsedFILE='./neg_parsed_formatnb.txt'
-#    finalPHRASE='./phrase2nb.txt'
-#    phraseNUMBERseqs='./phraseINline2nb.txt'
-    
-#    preprocess("preprocess-neg.txt")
-#    segANDpos("preprocess-neg.txt")
-#    reformPARSED('neg_parsednb.txt',parsedFILE)
-
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrasenb.txt'
-##    parsedFILE='./pos_parsed_formatnb.txt'
-##    finalPHRASE='./phrasenb.txt'
-##    phraseNUMBERseqs='./phraseINlinenb.txt'
-##    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsednb.txt',parsedFILE)
-
-
 
     with open("rank.conf") as f:
         settings=yaml.load(f)
 ##    preprocess(settings['preFILE'])
-    segANDpos(settings['preFILE'])
+##    segANDpos(settings['preFILE'])
 
     reformPARSED(settings['parseFILE'],settings['parsedFILE'])
 
@@ -216,8 +187,8 @@ if __name__ == '__main__':
     filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
     calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
-    errorLIST  = statistics(settings['phraseNUMBERseqs'])
-    writeERROR('preprocess-neg.txt',errorLIST)
+    errorLIST  = statistics('./movie.txt',settings['phraseNUMBERseqs'])
+    #writeERROR('preprocess-neg.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
 
