@@ -36,9 +36,8 @@ def loadLEXICON(path):
     
 oov= set()
 def calPHRASEstrength(nonLINEAR,phrase,advDICT):
-    ### return none if oov
     if not phrase:
-        return 0    #################  smth ????  should return none
+        return 0
     li = phrase.split()
     if len(li) ==1:
         strength= sentiDICT.get(li[0])
@@ -85,9 +84,8 @@ def calPHRASEstrength(nonLINEAR,phrase,advDICT):
         for i in range(length-2,-1,-1):
             if advDICT.get(li[i]):
                 strength*=advDICT.get(li[i])
-    if strength < 0:
-        strength = strength*1.3
-                
+##    if strength < 0:
+##        strength = strength*1.3       
 ## if droppoint,comment two lines above
     return strength
 
@@ -107,7 +105,6 @@ def readFILEasDICT(path):
     print "the length of dictionary builded from file is %s" %(len(dict))
     return dict
 
-
 def calALL(nonLINEAR,advDICTfilePATH,inputPATH,outputPATH):
     fo = open(inputPATH)
     fw = open(outputPATH,'w')
@@ -122,25 +119,9 @@ def calALL(nonLINEAR,advDICTfilePATH,inputPATH,outputPATH):
                 list.append(str(calPHRASEstrength(nonLINEAR,line,advDICT)))
         else: 
             fw.write("|".join(list)+"\n")
-            list=[]  
+            list=[]
+    fw.write("|".join(list)+"\n")    # handler the last line
     fw.close()
-
-
-##def statistics(phraseNUMBERseqs):
-##    errorLIST = []
-##    dict ={1:0,0:0,-1:0}
-##    with open(phraseNUMBERseqs) as myFILE:
-##        for num, line in enumerate(myFILE, 1):
-##            line=line.strip()
-##            #strength = findSENTIdroppoint(line) 
-##            strength = commonSENTI(line)
-##
-####            if strength > 0:
-####                errorLIST.append(num)
-##            dict[calORIENTATION(strength)]+=1
-##    print dict
-##    print "the correct percentage is %s" %(dict[-1]/2000.0)
-##    return errorLIST
 
 def statistics(movie,phraseNUMBERseqs):
     errorLIST = []
@@ -152,21 +133,21 @@ def statistics(movie,phraseNUMBERseqs):
             lineno+=1
             label = ""
             line=line.strip()
-            #strength = findSENTIdroppoint(line)
-            strength = commonSENTI(line)
-##            
-##            if strength1 * strength2 > 0:
-##                strength = strength2
-##            elif strength1 == 0:
-##                strength = strength2
-##            elif strength2 == 0:
-##                strength = strength1
-##            else:
-##                
-##                if strength1 >0 and strength2 < 0:
-##                    strength = strength1
-##                else:
-##                    strength = strength2
+            strength1 = findSENTIdroppoint(line)
+            strength2 = commonSENTI(line)
+            
+            if strength1 * strength2 > 0:
+                strength = strength2
+            elif strength1 == 0:
+                strength = strength2
+            elif strength2 == 0:
+                strength = strength1
+            else:
+                
+                if strength1 >0 and strength2 < 0:
+                    strength = strength1
+                else:
+                    strength = strength2
 
             if strength > 4:
                 label = "力荐"
@@ -185,7 +166,7 @@ def statistics(movie,phraseNUMBERseqs):
                 errorLIST.append(lineno)
                 
     print cnt
-    print "the correct percentage is %s" %(cnt/867.0)
+    print "the correct percentage is %s" %(cnt/800.0)
     return errorLIST
 
 if __name__ == '__main__':
@@ -199,19 +180,15 @@ if __name__ == '__main__':
     reformPARSED(settings['parseFILE'],settings['parsedFILE'])
 
     sentiDICT = {}
-    loadSENTI('./sentiment2.txt')
-    findPHRASE1(settings['taggedFILE'],settings['phraseFILE'])
+    loadSENTI('./sentiment2.txt')   # ./mySTRENGTH.txt
+    findPHRASE(settings['taggedFILE'],settings['parsedFILE'],settings['phraseFILE'])
     filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
     calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
     errorLIST  = statistics('./movie.txt',settings['phraseNUMBERseqs'])
-    #writeERROR('preprocess-neg.txt',errorLIST)
+    writeERROR('preprocess-pos.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
-
-
-
-            
 
 
 
