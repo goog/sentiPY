@@ -171,8 +171,8 @@ def findPHRASE(taggedFILE,parsedFILE,phraseFILE):
             line = line.strip()
             y = y.strip()
             if line:  ##  a line from taggedFILE
-                #if line =='--#NN --#NN --#NN --#NN --#NN':
-                if line =="---------#NR -#PU":
+                if line =='--#NN --#NN --#NN --#NN --#NN':
+                #if line =="---------#NR -#PU":
                     fw.write('----------\n')
                     continue
                 list = line.split()

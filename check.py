@@ -26,22 +26,21 @@ def checkoutPHRASE(path):
 
 
 def reviewNOphrase():
-    list  = checkoutPHRASE('phrase2.txt')  #to analyze the final phrase
-    #print list
-    fo = open('./neg_tagged.txt')
+    list  = checkoutPHRASE('phraseRANK.txt')  # analyze the final phrase
+    fo = open('./pos_tagged.txt')
     fw = open('reviewNOphrase.txt','w')
     buf = ""
     lineNO=0
     for line in fo:
         line=line.strip()
         if line:
-            if line=="--#NN --#NN --#NN --#NN --#NN":  ## change with segment
+            if line=="---------#NR -#PU":  ## change with segmenter
                 lineNO+=1
                 if lineNO in list:
                     fw.write(buf+'*_*\n')
                 buf=''
             else:
-                buf+=line
+                buf+=' '+line
     fw.close()
 
 
@@ -579,7 +578,7 @@ if __name__ == '__main__':
     #checkOOV('./sentiment_yb.txt','./oov.txt')
     #rmOOVinLEXICON('./oov.txt')
     #fixedLEN('./cedict.txt')
-    #reviewNOphrase()
+    reviewNOphrase()
     #print loadASPECTsenti('./aspectDICT.txt')
 ##    getSENTENCE('./neg_seged.txt')
 ##    statSENTENCES('./neg_seged.txt')
@@ -588,5 +587,5 @@ if __name__ == '__main__':
     #checkDICT('positive.txt','NTUSD_positive_simplified.txt')
     #adjust('sentiment.txt','lexicon2.txt')
     #splitLABEL("senti2.txt","senti3.txt")
-    diffTWOfile("sentiment2.txt","mySTRENGTH.txt")
+    #diffTWOfile("sentiment2.txt","mySTRENGTH.txt")
     pass

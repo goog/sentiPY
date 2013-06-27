@@ -36,7 +36,7 @@ def loadLEXICON(path):
     
 oov= set()
 def calPHRASEstrength(nonLINEAR,phrase,advDICT):
-    if not phrase:
+    if not phrase:  ## didnt extract a phrase
         return 0
     li = phrase.split()
     if len(li) ==1:
@@ -87,6 +87,10 @@ def calPHRASEstrength(nonLINEAR,phrase,advDICT):
 ##    if strength < 0:
 ##        strength = strength*1.3       
 ## if droppoint,comment two lines above
+    if strength < -5:
+        strength = -5
+    if strength > 5:
+        strength =5
     return strength
 
 
@@ -127,7 +131,6 @@ def statistics(movie,phraseNUMBERseqs):
     errorLIST = []
     cnt = 0
     lineno = 0
-    ## read two files simulatously
     with open(phraseNUMBERseqs) as myFILE, open(movie) as fo:
         for line, y in izip(myFILE,fo):
             lineno+=1
@@ -137,7 +140,7 @@ def statistics(movie,phraseNUMBERseqs):
             strength2 = commonSENTI(line)
             
             if strength1 * strength2 > 0:
-                strength = strength2
+                strength = strength2    ## ?
             elif strength1 == 0:
                 strength = strength2
             elif strength2 == 0:
