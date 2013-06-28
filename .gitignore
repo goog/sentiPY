@@ -2,7 +2,7 @@
 *.doc
 *~
 *.txt
+!movie.txt
 senti*
 neg_*
 pos_*
-preprocess-*

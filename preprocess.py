@@ -334,8 +334,7 @@ def findPHRASE1(taggedFILE,phraseFILE):
             if line:  ##  a line from taggedFILE
                 #if line =='----------#NN':  ## NN
                 #if line =='--#PU --#PU --#PU --#PU --#PU':   ## for ctb segment
-                #if line =='--#NN --#NN --#NN --#NN --#NN':
-                if line =="---------#NR -#PU":
+                if line =='--#NN --#NN --#NN --#NN --#NN':
                     fw.write('----------\n')
                     continue
                 list = line.split()

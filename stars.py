@@ -33,6 +33,23 @@ def loadLEXICON(path):
     print "Length of sentiment lexion in %s is %s " %(fo.name,len(lexicon))
     return lexicon
 
+## commonSENTI for star rating
+def aveSENTI(sentence):
+    sentence =sentence.strip()
+    sum = 0
+    cnt = 0
+    if sentence:
+        li = sentence.split('|')
+        for i in li:
+            try:
+                sum+=float(i)
+                cnt+=1
+            except:
+                continue
+    if cnt:
+        return sum/cnt
+    else:
+        return sum
     
 oov= set()
 def calPHRASEstrength(nonLINEAR,phrase,advDICT):
@@ -136,25 +153,29 @@ def statistics(movie,phraseNUMBERseqs):
             lineno+=1
             label = ""
             line=line.strip()
-            strength1 = findSENTIdroppoint(line)
-            strength2 = commonSENTI(line)
-            
-            if strength1 * strength2 > 0:
-                strength = strength2    ## ?
-            elif strength1 == 0:
-                strength = strength2
-            elif strength2 == 0:
-                strength = strength1
-            else:
                 
-                if strength1 >0 and strength2 < 0:
-                    strength = strength1
-                else:
-                    strength = strength2
+            strength = findSENTIdroppoint(line)
+            #strength = commonSENTI(line)
+            # test point
+##            if lineno == 73:
+##                print "strength1,2 is: ", strength1,strength2 
+            
+##            if strength1 * strength2 > 0:
+##                strength = strength2
+##            elif strength1 == 0:
+##                strength = strength2
+##            elif strength2 == 0:
+##                strength = strength1
+##            else:
+##                
+##                if strength1 >0 and strength2 < 0:
+##                    strength = strength1
+##                else:
+##                    strength = strength2
 
-            if strength > 4:
+            if strength >= 3.6:
                 label = "力荐"
-            elif 2<strength and strength<=4:
+            elif 2<strength and strength<3.6:
                 label = "推荐"
             elif 0<=strength and strength<=2:
                 label = "还行"
@@ -169,7 +190,7 @@ def statistics(movie,phraseNUMBERseqs):
                 errorLIST.append(lineno)
                 
     print cnt
-    print "the correct percentage is %s" %(cnt/800.0)
+    print "the correct percentage is %s" %(cnt/600.0)
     return errorLIST
 
 if __name__ == '__main__':
@@ -189,7 +210,7 @@ if __name__ == '__main__':
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
     calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
     errorLIST  = statistics('./movie.txt',settings['phraseNUMBERseqs'])
-    writeERROR('preprocess-pos.txt',errorLIST)
+    #writeERROR('preprocess-pos.txt',errorLIST)
     recordOOV(oov)
     print 'finished',time.asctime()
 

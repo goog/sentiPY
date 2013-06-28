@@ -168,9 +168,9 @@ def statistics(movie,phraseNUMBERseqs):
 ##                else:
 ##                    strength = strength2
 
-            if strength > 4:
+            if strength >= 3.6:
                 label = "力荐"
-            elif 2<strength and strength<=4:
+            elif 2<strength and strength< 3.6:
                 label = "推荐"
             elif 0<=strength and strength<=2:
                 label = "还行"
@@ -185,7 +185,7 @@ def statistics(movie,phraseNUMBERseqs):
                 errorLIST.append(lineno)
                 
     print cnt
-    print "the correct percentage is %s" %(cnt/867.0)
+    print "the correct percentage is %s" %(cnt/600.0)
     return errorLIST
 
 if __name__ == '__main__':
