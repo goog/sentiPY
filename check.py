@@ -581,7 +581,7 @@ if __name__ == '__main__':
     reviewNOphrase()
     #print loadASPECTsenti('./aspectDICT.txt')
 ##    getSENTENCE('./neg_seged.txt')
-##    statSENTENCES('./neg_seged.txt')
+    statSENTENCES('./pos_seged.txt')
 ##    statPARSED('./pos_parsed.txt')
 ##    reformPARSED('pos_parsed.txt','pos_parsed_format.txt')
     #checkDICT('positive.txt','NTUSD_positive_simplified.txt')

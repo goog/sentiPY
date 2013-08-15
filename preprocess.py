@@ -421,8 +421,8 @@ def filterPHRASE(phraseFILE,filteredFILE):
 
 
 if __name__ == '__main__':
-    #preprocess("preprocess-neg.txt")
-    extractADV('phrase2.txt')
+    preprocess("preprocess-neg.txt")
+##    extractADV('phrase2.txt')
     #findPHRASE('neg_tagged.txt','neg_parsed_format.txt','neg_phrase.txt')
 
 

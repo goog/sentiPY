@@ -203,9 +203,9 @@ if __name__ == '__main__':
 
 
 
-    with open("rank.conf") as f:
+    with open("pos_book.conf") as f:
         settings=yaml.load(f)
-##    preprocess(settings['preFILE'])
+    preprocess(settings['preFILE'])
     segANDpos(settings['preFILE'])
 
     reformPARSED(settings['parseFILE'],settings['parsedFILE'])
