@@ -3,7 +3,19 @@ import re
 import os
 from shutil import copyfile
 from preprocess import *
+from suffixTEST import getMAXchSTR
 '''tools'''
+
+def file2dic(path):
+    with open(path) as fo:
+        dictionary = {}
+        for line in fo:
+            line =line.strip()
+            if line:
+                dictionary[line] = 1
+    print "the length of the exclude dictionary is %s " %(len(dictionary))
+    return dictionary
+            
 
 def checkoutPHRASE(path):
     ## path to the final phrase,return empty phrase line number
@@ -451,34 +463,55 @@ def loadASPECTsenti(path):
                         dic[' '.join(li[0:2])]=li[2]
     return dic
 
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
 
-###define a regx
-sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
+
 # split more than 80 tokens
-def splitLONG(i):
+def splitLONG(line,manual=False):
+    '''
+    param: i, segmented line
+    return the smaller length sentence list
+    '''
     sentenceLI= []
-    list1=i.split('，')
+    list1=line.split('，')
     for j in list1:
         j = j.strip()
         if j:
             if len(j.split())<81:
                 sentenceLI.append(j)
             else:
-                for k in j.split(','):
+                jlist = j.split(',')
+                for k in jlist:
                     k = k.strip()
                     if k:
                         if len(k.split())<81:
                             sentenceLI.append(k)
                         else:
-                            print "this sentence can't be split:\n",k
-                            r=raw_input("input man-made sentence:")
-                            list2 = r.split('\\n')
-                            for l in list2:
-                                sentenceLI.append(l)
+                            if not manual:
+                                print "this too long sentence can't be split by delimiter"
+                                if getMAXchSTR(k)[0]:  ## repeat detect, also used for spam
+                                    key = getMAXchSTR(k)[1]   ## the key is utf8
+                                    sentenceLI.append(key)
+                                else:
+                                ##chunk the long sentence to the fixed sentences
+                                    ge = chunks(k.split(),80)
+                                    for i in ge:
+                                        sentenceLI.append(' '.join(i))
+                            else:
+                                print "this sentence can't be split:\n",k
+                                r=raw_input("input man-made sentence:")
+                                list2 = r.split('\\n')
+                                for l in list2:
+                                    sentenceLI.append(l)
     return sentenceLI
                         
-                
-        
+## post-process the seged file
+###define a regx
+sen = re.compile(ur'\u3002|\uff0e|\uff01|\uff1f|\?|!|\.')
 def getSENTENCE(path):
     ## sentence length :80 tokens
     with open(path) as f,open('sentences.txt','w') as fw:
@@ -502,6 +535,30 @@ def getSENTENCE(path):
     fw.close()
     copyfile('sentences.txt',path+'.backup')  
     os.rename('sentences.txt',path)
+
+
+## post-process the seged file  , ##todo : remove above method                      
+def splitSegmented(path,path2):
+    ## sentence length :80 tokens
+    with open(path) as f,open(path2,'w') as fw:
+        for line in f:
+            line=line.strip()
+            if line:
+                if line=='-- -- -- -- --':
+                    fw.write(line+'\n')
+                else:
+                    li = sen.split(line.decode('utf8')) #### split the seged file
+                    for i in li:
+                        i = i.strip().encode('utf8')
+                        if i:
+                            if len(i.split())< 81:
+                                fw.write(i+'\n')
+                            else:
+                                list2 = splitLONG(i)
+                                for s in list2:
+                                    if s:
+                                        fw.write(s+'\n')
+    fw.close()
 
 def statSENTENCES(path):
     cnt = 0

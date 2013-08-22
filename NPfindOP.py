@@ -15,14 +15,16 @@ def opinionSEARCH(path1,path2):
             line = line.split()[1]
             dic[line]=1
     
-    '''  according the typed dependency to find opinions  '''       
+    '''  according the typed dependency to find opinions  
+	#todo: apply a dictionary to filter the another word in the dep
+    '''   
     with open(path1) as fo,open(path2,'w') as fw:
         for line in fo:
             line = line.strip()
             if line.startswith('nn(---2, ---1)'):
                 continue
             li = line.split('   ')
-            ###  some dependencies: assmod
+            ###  some dependencies: assmod  , nsubj , nsubjpass
             for i in li:
                 if i.startswith('amod'):
                     word = i.split('-')[0][5:]
