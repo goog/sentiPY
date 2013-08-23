@@ -17,7 +17,7 @@ def extractDEP(dep,order=0):
         return [ele2,ele1]
     return [ele1,ele2]
 
-
+## this method need a special Chinese parser.
 def opinionSEARCH(path1,path2):
     ## load the frequent feature
     dic = {}
@@ -28,7 +28,7 @@ def opinionSEARCH(path1,path2):
             dic[line]=1
     
     '''  according the typed dependency to find opinions  
-	#todo: apply a dictionary to filter the another word in the dep
+	#todo: create a dictionary to filter the another word in the dep
     '''   
     with open(path1) as fo,open(path2,'w') as fw:
         for line in fo:
@@ -48,11 +48,13 @@ def opinionSEARCH(path1,path2):
                         fw.write(' '.join(extractDEP(i,order=1))+'\n')        
         fw.close()
 
-## different from the above one, search the adjacent adjective
+
 
     #######################################
     ##what's called the adjacent adjective#
-    #######################################    
+    #######################################
+
+## search the adjacent adjective
 sp = re.compile(r'#\w{1,3}')
 def opinionSEARCH2(path1,path2):
     ## path1: the POSed files
@@ -76,7 +78,9 @@ def opinionSEARCH2(path1,path2):
             hanLIST = map(lambda x:x.strip().encode('utf8'), match)  ## forget the space,check long
             for i,item in enumerate(hanLIST):
                 if dic.get(item) and (i < len(hanLIST)-1):
-                    for j in range(i+1,len(hanLIST),1):   ## back forward???
+                    for j in range(i+1,len(hanLIST),1):   ## back forward
+                        if li[j].split("#")[0] in [',','，','。','!','！']:  ##check the subsentence
+                            break
                         if (j <= i+4) and (li[j].endswith("#VA")==True):
                             fw.write(item+"   "+li[j].split("#")[0]+"\n")
                             break

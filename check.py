@@ -6,6 +6,8 @@ from preprocess import *
 from suffixTEST import getMAXchSTR
 '''tools'''
 
+
+## load each line as a single key 
 def file2dic(path):
     with open(path) as fo:
         dictionary = {}
@@ -13,7 +15,7 @@ def file2dic(path):
             line =line.strip()
             if line:
                 dictionary[line] = 1
-    print "the length of the exclude dictionary is %s " %(len(dictionary))
+    print "the length of the dictionary is %s " %(len(dictionary))
     return dictionary
             
 
