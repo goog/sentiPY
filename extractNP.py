@@ -4,11 +4,9 @@ from check import file2dic,splitSegmented
 Nouns(2): NR, NN
 '''
 
-## For more efficient, create a filter dictionary to filter the noun(phrase)
-
 pat = re.compile(ur'\S*#N[NR]')
-exclude = file2dic("./feature-exclude.txt")
 def pos2basket(path,out):
+    exclude = file2dic("./feature-exclude.txt")
     with open(path) as fo,open(out,'w') as fw:
         nnLIST= []
         for line in fo:
@@ -29,6 +27,6 @@ def pos2basket(path,out):
         fw.close()
 
 if __name__ == '__main__':
-    #pos2basket('./computer.txt','./features.basket')
-    splitSegmented("/home/drill/evaluation_seged.txt","/home/drill/evaluation-segged.txt")
+    pos2basket('./computer.txt','./features.basket')
+    #splitSegmented("/home/drill/evaluation_seged.txt","/home/drill/evaluation-segged.txt")
                          
