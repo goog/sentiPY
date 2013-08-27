@@ -9,3 +9,4 @@ neg_*
 pos_*
 !pos.txt
 !neg.txt
+!sentiPY.py
