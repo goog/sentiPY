@@ -7,3 +7,5 @@
 senti*
 neg_*
 pos_*
+!pos.txt
+!neg.txt

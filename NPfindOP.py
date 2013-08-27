@@ -2,8 +2,9 @@
 from orangeApriori import itemset
 
 '''
-according the Feature(noun phrase), to find the corresponding opinion
+according features(noun phrase) to find the corresponding opinion
 '''
+
 han = re.compile(ur'[\u4e00-\u9fa5]+')
 
 def extractDEP(dep,order=0):
@@ -17,7 +18,7 @@ def extractDEP(dep,order=0):
         return [ele2,ele1]
     return [ele1,ele2]
 
-## this method need a special Chinese parser.
+## this method needs a special Chinese parser.
 def opinionSEARCH(path1,path2):
     ## load the frequent feature
     dic = {}
@@ -58,6 +59,7 @@ def opinionSEARCH(path1,path2):
 sp = re.compile(r'#\w{1,3}')
 def opinionSEARCH2(path1,path2):
     ## path1: the POSed files
+    
     ## load the frequent feature
     dic = {}
     #with open('./itemsets.txt') as fo1:
@@ -75,19 +77,18 @@ def opinionSEARCH2(path1,path2):
             LINE = line.decode('utf8')
             match = sp.sub('',LINE)
             match = match.split()
-            hanLIST = map(lambda x:x.strip().encode('utf8'), match)  ## forget the space,check long
+            hanLIST = map(lambda x:x.strip().encode('utf8'), match)
             for i,item in enumerate(hanLIST):
                 if dic.get(item) and (i < len(hanLIST)-1):
-                    for j in range(i+1,len(hanLIST),1):   ## back forward
-                        if li[j].split("#")[0] in [',','，','。','!','！']:  ##check the subsentence
+                    for j in range(i+1,len(hanLIST),1):   ## afterward
+                        if li[j].split("#")[0] in [',','，','。','!','！']:  ##break before next subsentence
                             break
-                        if (j <= i+4) and (li[j].endswith("#VA")==True):
+                        if (j <= i+4) and (li[j].endswith("#VA")==True):   ## find the adj within a fixed intervals
                             fw.write(item+"   "+li[j].split("#")[0]+"\n")
                             break
         fw.close()
 
 if __name__ == '__main__':
-    #itemset('features.basket','itemsets.txt')
     #opinionSEARCH('./neg_parsed_formatnb.txt','./np-op.txt')
     opinionSEARCH2('./computer.txt','./np-op.txt')
                          

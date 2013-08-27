@@ -31,8 +31,7 @@ def count(path,out):
             total = posCNT + negCNT
             posRATIO = "%.4f" %(float(posCNT) /total)
             negRATIO = "%.4f" %(float(negCNT) /total)
-            fw.write(i+": "+"the positive ratio: "+posRATIO+" , the negative ratio: "+negRATIO+"\n")
-            
+            fw.write(i+": "+"the positive ratio: "+posRATIO+" , the negative ratio: "+negRATIO+"\n")    
                                    
         fw.close()
 
