@@ -10,9 +10,9 @@ def ev(m):
     N = m.shape
     R = np.zeros(N)
     S = np.zeros(N[0])
+    
     ## 计算模糊一致矩阵
     r = sum(m.T)  ## the initialized eigenvector
-    print "r",r 
     for i in range(N[0]):
         for j in range(N[1]):
             R[i,j] = float(r[i] - r[j])/(2*N[0]) + 0.5
@@ -21,7 +21,6 @@ def ev(m):
             
     ## 方根法
     for i in range(N[0]):
-        print "R[i:]",R[i,:]
         S[i]= R[i,:].prod()
     S = np.power(S,1.0/N[0])
     S = S /(S.sum())

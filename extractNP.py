@@ -11,9 +11,11 @@ def pos2basket(path,out):
         nnLIST= []
         for line in fo:
             line = line.strip()
-            if line == "--#PU --#PU --#PU --#PU --#PU":
-                fw.write(','.join(nnLIST)+'\n')
-                nnLIST= []
+            #if line == "--#PU --#PU --#PU --#PU --#PU":
+            if line == "---------#NR -#PU":
+                if nnLIST:
+                    fw.write(','.join(nnLIST)+'\n')
+                    nnLIST= []
             else:
                 line = line.decode('utf8')
                 match = pat.findall(line)
@@ -27,6 +29,7 @@ def pos2basket(path,out):
         fw.close()
 
 if __name__ == '__main__':
-    pos2basket('./computer.txt','./features.basket')
+    #pos2basket('./computer.txt','./features.basket')
+    pos2basket('./evaluation.txt','./features.basket')
     #splitSegmented("/home/drill/evaluation_seged.txt","/home/drill/evaluation-segged.txt")
                          
