@@ -587,17 +587,8 @@ def statPARSED(path):
                 cnt+=1
     print cnt
 
-def reformPARSED(path,path2):
-    with open(path) as f,open(path2,'w') as fw:
-        li = []
-        for line in f:
-            line=line.strip()
-            if line:
-                li.append(line)
-            else:
-                fw.write('   '.join(li)+'\n')
-                li = []
-    fw.close()
+
+            
 
 
 def checkDICT(path,path2):

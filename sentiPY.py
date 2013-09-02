@@ -1,4 +1,4 @@
-import numpy as np
+﻿import numpy as np
 import pymongo
 from eigenvector import ev
 import subprocess
@@ -31,7 +31,10 @@ def dbFETCH():
     return document
 
 def oneS(document):
+    grades = {"注册会员":1,"铁牌会员":2,"铜牌会员":3,"银牌会员":4,"金牌会员":5,"钻石会员":6,"双钻石会员":7,"企业客户":8}
     timeSTR,vip,votes,length,text = dict2review(document)
+    vip = vip.encode('utf8')
+    vip = grades[vip]
     print "votes",votes
     print length
     print text
@@ -40,20 +43,19 @@ def oneS(document):
     seged = (cat << text |java["-mx700m","-cp","/home/drill/segment/stanford-ner.jar:",
                                "edu.stanford.nlp.ie.NERServer","-port","9191","-client"])()
     seged = seged.split('\n',1)[1].strip()
-    print seged
-    ## time:
+    
+    ## time
     now = datetime.now()
     stime = time.strptime(timeSTR, "%Y-%m-%d %H:%M")
     dt = datetime.fromtimestamp(mktime(stime))
-    print now - dt,type(now - dt)
     timeduration = str(now - dt)
     days =  timeduration.split()[0]
-    parsed = (cat << seged |java["-mx700m","-cp","/home/drill/pos/stanford-postagger.jar:",
+    
+    posed = (cat << seged |java["-mx700m","-cp","/home/drill/pos/stanford-postagger.jar:",
                                "edu.stanford.nlp.tagger.maxent.MaxentTaggerServer","-port","2020","-client"])()
-    parsed=parsed.strip()
-    parsed = parsed.encode('utf8')
-    npOP,fCNT = opinionSEARCH3(parsed)
-    print fCNT
+    posed=posed.strip()
+    posed = posed.encode('utf8')
+    npOP,fCNT = opinionSEARCH3(posed)
     sentiment = 1
     ## vip need to digitalize
     print vip,votes,days,length,fCNT,sentiment

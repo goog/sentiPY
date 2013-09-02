@@ -4,6 +4,7 @@ from evaluate import *
 from check import *
 import time
 import yaml
+from nlp import seg,pos,parser
 
 def loadSENTI(path):
     fo = open(path)
@@ -106,30 +107,20 @@ def readFILEasDICT(path):
     return dict
 
 
-def calALL(nonLINEAR,advDICTfilePATH,inputPATH,outputPATH):
-    fo = open(inputPATH)
-    fw = open(outputPATH,'w')
+def calALL(nonLINEAR,advDICTfilePATH,finalPHs):
     advDICT = readFILEasDICT(advDICTfilePATH)
     list=[]
-    for line in fo:
-        line=line.strip()
-        if line!='----------':
+    for line in finalPHs:
             if line =='SUM':
                 list.append('s')
             else:
                 list.append(str(calPHRASEstrength(nonLINEAR,line,advDICT)))
-        else: 
-            fw.write("|".join(list)+"\n")
-            list=[]  
-    fw.close()
+    return ("|".join(list))
+           
+    
 
 def statistics(phraseNUMBERseqs):
-    errorLIST = []
-    dict ={1:0,0:0,-1:0}
-    with open(phraseNUMBERseqs) as myFILE:
-        for num, line in enumerate(myFILE, 1):
-            line=line.strip()
-            strength = findSENTIdroppoint(line)
+    strength = findSENTIdroppoint(phraseNUMBERseqs)
 ##            strength2 = commonSENTI(line)
 ##            if strength1 * strength2 > 0:
 ##                strength = strength2
@@ -143,83 +134,60 @@ def statistics(phraseNUMBERseqs):
 ##                    strength = strength1
 ##                else:
 ##                    strength = strength2
-                
+    print "the sentiment strenth of a review is:",strength
+    return strength
 
-            if strength > 0:
-                errorLIST.append(num)
 
-            
-            dict[calORIENTATION(strength)]+=1
-    print dict
-    print "the correct percentage is %s" %(dict[-1]/2000.0)
-    return errorLIST
+
+sentiDICT = {}
+## just in time(jit) to handle each review
+def sentiFLY(line):
+    loadSENTI('./sentiment2.txt')
+    ## nlp
+    print "segment begins:"
+    seged = seg(line)
+    print "pos tagger begins:"
+    posed = pos(seged)
+    print "parser begins:"
+    parsed = parser(seged)
+    print "parser is over."
+
+    print "seged",seged
+    print "parsed",parsed
+
+    ## find phrases and compute the sentiment polarity
+    phrases = findPHRASE(posed,parsed)
+    print ' '.join(phrases)
+    finalPH = filterPHRASE(phrases)
+    nonLINEAR  = loadLEXICON('./nonlinear.txt')
+    phraseNUMBERseqs = calALL(nonLINEAR,'advxxx.txt',finalPH)
+    return statistics(phraseNUMBERseqs)
+    
 
 if __name__ == '__main__':
-    print "starts",time.asctime()
-    
-##    taggedFILE='./neg_tagged.txt'
-##    phraseFILE='./neg_phrase.txt'
-##    parsedFILE='./neg_parsed_format.txt'
-##    finalPHRASE='./phrase2.txt'
-##    phraseNUMBERseqs='./phraseINline2.txt'
-   
-##    preprocess("preprocess-neg.txt")
-##    segANDpos("preprocess-neg.txt")
-##    reformPARSED('neg_parsed.txt',parsedFILE)
-
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrase.txt'
-##    parsedFILE='./pos_parsed_format.txt'
-##    finalPHRASE='./phrase.txt'
-##    phraseNUMBERseqs='./phraseINline.txt'
-    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsed.txt',parsedFILE)
+    sentiFLY("东西很好，喜欢")
 
 
 
-    '''  '''
-    ###  notebook block
-#    taggedFILE='./neg_tagged.txt'
-#    phraseFILE='./neg_phrasenb.txt'
-#    parsedFILE='./neg_parsed_formatnb.txt'
-#    finalPHRASE='./phrase2nb.txt'
-#    phraseNUMBERseqs='./phraseINline2nb.txt'
-    
-#    preprocess("preprocess-neg.txt")
-#    segANDpos("preprocess-neg.txt")
-#    reformPARSED('neg_parsednb.txt',parsedFILE)
 
-##    taggedFILE='./pos_tagged.txt'
-##    phraseFILE='./pos_phrasenb.txt'
-##    parsedFILE='./pos_parsed_formatnb.txt'
-##    finalPHRASE='./phrasenb.txt'
-##    phraseNUMBERseqs='./phraseINlinenb.txt'
-##    
-##    preprocess("preprocess-pos.txt")
-##    segANDpos("preprocess-pos.txt")
-##    reformPARSED('pos_parsednb.txt',parsedFILE)
-
-
-
-    with open("pos_book.conf") as f:
-        settings=yaml.load(f)
-    preprocess(settings['preFILE'])
-    segANDpos(settings['preFILE'])
-
-    reformPARSED(settings['parseFILE'],settings['parsedFILE'])
-
-    sentiDICT = {}
-    loadSENTI('./sentiment2.txt')   # ./mySTRENGTH.txt
-    findPHRASE(settings['taggedFILE'],settings['parsedFILE'],settings['phraseFILE'])
-    filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
-    nonLINEAR  = loadLEXICON('./nonlinear.txt')
-    calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
-    errorLIST  = statistics(settings['phraseNUMBERseqs'])
-    writeERROR('preprocess-neg.txt',errorLIST)
-    recordOOV(oov)
-    print 'finished',time.asctime()
+##    print "starts",time.asctime()
+##    with open("pos_book.conf") as f:
+##        settings=yaml.load(f)
+##    preprocess(settings['preFILE'])
+##    segANDpos(settings['preFILE'])
+##
+##    reformPARSED(settings['parseFILE'],settings['parsedFILE'])
+##
+##    sentiDICT = {}
+##    loadSENTI('./sentiment2.txt')   # ./mySTRENGTH.txt
+##    findPHRASE(settings['taggedFILE'],settings['parsedFILE'],settings['phraseFILE'])
+##    filterPHRASE(settings['phraseFILE'],settings['finalPHRASE'])
+##    nonLINEAR  = loadLEXICON('./nonlinear.txt')
+##    calALL(nonLINEAR,'advxxx.txt',settings['finalPHRASE'],settings['phraseNUMBERseqs'])
+##    errorLIST  = statistics(settings['phraseNUMBERseqs'])
+##    writeERROR('preprocess-neg.txt',errorLIST)
+##    recordOOV(oov)
+##    print 'finished',time.asctime()
 
 
 
