@@ -6,7 +6,7 @@ SentiDP stands for "Sentiment Drop Point", utilizes the sentiment word strength(
 ### Features
 1, Sentiment classificaton based on sentiment word strengths  
 2, Sentiment rating   
-3, Sentiment effectiveness rank
+3, Sentiment effectiveness rank  
 4, Extracting aspect-opinions
 
 ##Requirement 

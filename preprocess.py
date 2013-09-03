@@ -89,18 +89,6 @@ def preprocess(path):
                         fw.write(line+'\n')            
             fw.write("----------\n")
         fw.close()
-                    
-
-##def segANDpos(input):
-##    cmd="cp "+input+" ~/segmenter/"+input
-##    subprocess.call(cmd, shell=True)
-##    arg1=input[-7:-4]  
-##    subprocess.call("./segment.sh "+arg1, shell=True)
-##    print "segment finished."
-##    getSENTENCE(arg1+"_seged.txt")   ## split into sentences
-##    ##statSENTENCES(arg1+"_seged.txt")
-##    subprocess.call("./tagger.sh "+arg1, shell=True)
-##    print "pos tagger finished."
 
 def sentiment():
     dict_list=[]
@@ -122,9 +110,9 @@ def sentiment():
             dict_list.remove(i)
         except:
             pass
-    print "there is %s words in pos&&neg dictionary" % len({}.fromkeys(dict_list,1))
-    print 'test.point:',{}.fromkeys(dict_list,1).get('K')
-    return {}.fromkeys(dict_list,1)
+    print "there are %s words in the pos&&neg dictionary" % len(dict.fromkeys(dict_list,1))
+    print 'test.point:',dict.fromkeys(dict_list,1).get('K')
+    return dict.fromkeys(dict_list,1)
 
 def getLABEL(element):
     return element[element.find('#')+1:]
@@ -162,6 +150,7 @@ def doNO(ylist,string,i,phraseLIST,dict):
 '''
 
 def findPHRASE(line,y):
+    ## load dictionary and files
     dict = sentiment()
     #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
     nnSET = file2set('./sentiNN.txt')
@@ -177,7 +166,7 @@ def findPHRASE(line,y):
     farSENTI2 = []   ## for not
     line = line.strip()
     y = y.strip()
-    if line:  ##  a line from taggedFILE
+    if line:
         list = line.split()
         ylist = y.split('   ')
         lb = 0    #lowerbound, record the wrote position
@@ -328,8 +317,6 @@ def findPHRASE(line,y):
 def findPHRASE1(taggedFILE,phraseFILE):
     dict = sentiment()
     #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
-##    aspect = loadASPECTsenti('./aspectDICT.txt')
-##    am = file2list('./ambiguity.txt')
     with open(taggedFILE) as fo1,open(phraseFILE,'w') as fw: 
         for line in fo1:
             phraseLIST = [];
@@ -357,13 +344,12 @@ def filterPHRASE(phraseLIST):
     for line in phraseLIST:
         if line == 'SUM':
             finalPH.append('SUM')
-        elif line.startswith('+') or line.startswith('-'):  ## for const
+        elif line.startswith('+') or line.startswith('-'):  ## for const sentiment
             finalPH.append(line)
         else:
             li= line.split('#')
             if len(li)==1:
-                finalPH.append(li[0])
-                
+                finalPH.append(li[0]) 
             elif len(li) ==2:
                 finalPH.append(li[0])
             elif len(li) == 3:
@@ -372,8 +358,7 @@ def filterPHRASE(phraseLIST):
                 elif li[1].startswith('PU'):
                     finalPH.append(li[1][2:])
                 else:
-                    finalPH.append(tag.sub('   ',line))
-                
+                    finalPH.append(tag.sub('   ',line))  
             elif len(li) == 4:
                 if li[1].startswith('VE'):   ## VE:有/没有
                     if li[0] in ['没','没有']:

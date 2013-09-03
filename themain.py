@@ -138,9 +138,8 @@ def statistics(phraseNUMBERseqs):
     return strength
 
 
-
-sentiDICT = {}
 ## just in time(jit) to handle each review
+sentiDICT = {}
 def sentiFLY(line):
     loadSENTI('./sentiment2.txt')
     ## nlp
