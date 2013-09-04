@@ -2,9 +2,11 @@
 from preprocess import *
 from evaluate import *
 from check import *
+import os
 import time
 import yaml
 from nlp import seg,pos,parser
+pwd = os.path.dirname(os.path.realpath(__file__))
 
 def loadSENTI(path):
     fo = open(path)
@@ -139,8 +141,37 @@ def statistics(phraseNUMBERseqs):
 
 
 ## just in time(jit) to handle each review
+''' adapt it to return list for the django views. '''
 sentiDICT = {}
 def sentiFLY(line):
+    li = []
+    ## load the sentiment word lexicon
+    loadSENTI(os.path.join(pwd,'sentiment2.txt'))
+    ## load the nonlinear sentiment phrase strengths
+    nonLINEAR  = loadLEXICON(os.path.join(pwd,'nonlinear.txt'))
+    
+    ## nature language processing
+    print "segment begins:"
+    seged = seg(line)
+    print "pos tagger begins:"
+    posed = pos(seged)
+    print "parser begins:"
+    parsed = parser(seged)
+    print "parser is over."
+
+    ## find opinion phrases and compute the sentiment strength
+    phrases = findPHRASE(posed,parsed)
+    finalPH = filterPHRASE(phrases)
+    phraseNUMBERseqs = calALL(nonLINEAR,os.path.join(pwd,'advxxx.txt'),finalPH)
+    senti = statistics(phraseNUMBERseqs)
+    ## assemble the result list for django
+    li.extend([seged,posed,parsed,' ,'.join(finalPH),phraseNUMBERseqs,senti])
+    return li
+
+
+## backup one
+def sentiFLY1(line):
+    print 'current directory is ',os.getcwd()
     loadSENTI('./sentiment2.txt')
     ## nlp
     print "segment begins:"
@@ -159,15 +190,12 @@ def sentiFLY(line):
     print ' '.join(phrases)
     finalPH = filterPHRASE(phrases)
     nonLINEAR  = loadLEXICON('./nonlinear.txt')
-    phraseNUMBERseqs = calALL(nonLINEAR,'advxxx.txt',finalPH)
+    phraseNUMBERseqs = calALL(nonLINEAR,'./advxxx.txt',finalPH)
     return statistics(phraseNUMBERseqs)
     
 
 if __name__ == '__main__':
     sentiFLY("东西很好，喜欢")
-
-
-
 
 ##    print "starts",time.asctime()
 ##    with open("pos_book.conf") as f:

@@ -4,6 +4,7 @@ import opencc
 import subprocess
 from check import *
 from itertools import izip
+pwd = os.path.dirname(os.path.realpath(__file__))
 
 par = re.compile(ur'\(.+?\)')
 par2 = re.compile(ur'\uff08.+?\uff09')
@@ -92,9 +93,9 @@ def preprocess(path):
 
 def sentiment():
     dict_list=[]
-    exclude = file2set('./stopword.txt')      
-    fo1 = open('./neg.txt')
-    fo2 = open('./pos.txt')
+    exclude = file2set(os.path.join(pwd,'stopword.txt'))      
+    fo1 = open(os.path.join(pwd,'neg.txt'))
+    fo2 = open(os.path.join(pwd,'pos.txt'))
     for line in fo1:
         line=line.strip()
         if line:
@@ -153,12 +154,12 @@ def findPHRASE(line,y):
     ## load dictionary and files
     dict = sentiment()
     #advSET = file2set('./sentiADV.txt') ##read sentiment words which act as advs
-    nnSET = file2set('./sentiNN.txt')
-    vvSET=file2set('./sentiVV.txt')
-    adSET = file2set('./sentiAD.txt')
-    sumLIST = file2list('./summary.txt')
-    aspect = loadASPECTsenti('./aspectDICT.txt')
-    am = file2list('./ambiguity.txt')
+    nnSET = file2set(os.path.join(pwd,'sentiNN.txt'))
+    vvSET=file2set(os.path.join(pwd,'sentiVV.txt'))
+    adSET = file2set(os.path.join(pwd,'sentiAD.txt'))
+    sumLIST = file2list(os.path.join(pwd,'summary.txt'))
+    aspect = loadASPECTsenti(os.path.join(pwd,'aspectDICT.txt'))
+    am = file2list(os.path.join(pwd,'ambiguity.txt'))
     
     phraseLIST = []
     phraseLIST2 = []
