@@ -1,4 +1,6 @@
 ﻿import re
+import os
+pwd = os.path.dirname(os.path.realpath(__file__))
 
 '''
 according features(noun phrase) to find the corresponding opinion
@@ -88,12 +90,11 @@ def opinionSEARCH2(path1,path2):
         fw.close()
 
 def opinionSEARCH3(str1):
-    ## path1: the POSed files
+    ## param: the POSed line
     
     ## load the frequent feature
     dic = {}
-    #with open('./itemsets.txt') as fo1:
-    with open('./itemsetsMANUAL.txt') as fo1: ## under testing
+    with open(os.path.join(pwd,'itemsetsMANUAL.txt')) as fo1:
         for line in fo1:
             line = line.strip()
             dic[line]=1
