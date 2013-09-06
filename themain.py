@@ -151,13 +151,10 @@ def sentiFLY(line):
     nonLINEAR  = loadLEXICON(os.path.join(pwd,'nonlinear.txt'))
     
     ## nature language processing
-    print "segment begins:"
     seged = seg(line)
-    print "pos tagger begins:"
     posed = pos(seged)
-    print "parser begins:"
     parsed = parser(seged)
-    print "parser is over."
+    print "nlp over."
 
     ## find opinion phrases and compute the sentiment strength
     phrases = findPHRASE(posed,parsed)

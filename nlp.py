@@ -11,8 +11,10 @@ from pprint import pprint
 
 java = local["java"]
 def seg(text):
-    seged = (cat << text |java["-mx700m","-cp","/home/drill/segment/stanford-ner.jar:",
-                               "edu.stanford.nlp.ie.NERServer","-port","9191","-client"])()
+    #seged = (cat << text |java["-mx700m","-cp","/home/drill/segment/stanford-ner.jar:",
+    #                           "edu.stanford.nlp.ie.NERServer","-port","9191","-client"])()
+    seged = (java["-mx700m","-cp","/home/drill/segment/stanford-ner.jar:", 
+            "edu.stanford.nlp.ie.NERServer", "-port","9191","-client"] << text)()
     seged = seged.split('\n',1)[1].strip()
     seged = seged.encode('utf8')
     return seged
@@ -40,6 +42,7 @@ def parser(string):
 
 
 if __name__ =="__main__":
-    string  = "我 是 中国 人"
-    print parser(string)
+    print seg("我是中国人")
+##    string  = "我 是 中国 人"
+##    print parser(string)
     

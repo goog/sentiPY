@@ -193,6 +193,18 @@ def statistics(movie,phraseNUMBERseqs):
     print "the correct percentage is %s" %(cnt/600.0)
     return errorLIST
 
+def senti2stars(strength):
+    if strength >= 3.6:
+        return 5
+    elif 2<strength and strength<3.6:
+        return 4
+    elif 0<=strength and strength<=2:
+        return 3
+    elif -3<=strength and strength<0:
+        return 2
+    elif -5<=strength and strength<-3:
+        return 1
+
 if __name__ == '__main__':
     print "starts",time.asctime()
 

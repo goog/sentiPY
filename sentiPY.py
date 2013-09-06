@@ -63,7 +63,7 @@ def oneS(document):
     text = text.encode("utf8")
     
     seged = seg(text)
-    posed = pos(text)
+    posed = pos(seged)
     npOP,fCNT = opinionSEARCH3(posed)
     
     ## time
@@ -78,34 +78,56 @@ def oneS(document):
     ## digitalized indicators
     print vip,votes,days,length,fCNT,sentiment
     return vip,votes,days,length,fCNT,sentiment
-    
-    
 
+def fetchFstat():
+    db = dbCON('192.168.0.155',27017,'jd')
+    print db
+    coll = db['mobile_evaluation']
+    qresult = coll.find({"pid": "1022456996"})
+    #starsSTAT(db,'mobile_evaluation',"1022456996")
+    
+    ##feature dictionary to store the feature statistic result
+    fdict = {}
+    for i in qresult:
+        text = i['opnion'].encode("utf8")
+        seged = seg(text)
+        try:
+            posed = pos(seged)
+        except:
+            print "oopsss"
+        npop = opinionSEARCH3(posed)[0]  
+        if npop:
+            for j in npop:
+                countSTREAM(j,fdict)
+    showCOUNT(fdict)
+    return fdict
+
+from stars import senti2stars
+
+def rating():
+    db = dbCON('192.168.0.155',27017,'jd')
+    print db
+    coll = db['mobile_evaluation']
+    qresult = coll.find({"pid": "1022456996"})
+    #starsSTAT(db,'mobile_evaluation',"1022456996")
+    
+    ##feature dictionary to store the feature statistic result
+    fdict = {1:0,2:0,3:0,4:0,5:0}
+    for i in qresult:
+        text = i['opnion'].encode("utf8")
+        score = sentiFLY(text)
+        grade = senti2stars(score)
+        fdict[grade]+=1
+    print fdict
+    return fdict
+        
 if __name__=="__main__":
     db = dbCON('192.168.0.155',27017,'jd')
     print db
     coll = db['mobile_evaluation']
     qresult = coll.find({"pid": "1022456996"})
     starsSTAT(db,'mobile_evaluation',"1022456996")
-    
-    ##feature dictionary to store the feature statistic result
-    fdict = {}
-    cnt = 0
-    for i in qresult:
-        text = i['opnion'].encode("utf8")
-        if cnt == 1089:
-            print text
-        seged = seg(text)
-        posed = pos(text)
-        npop = opinionSEARCH3(posed)[0]  
-        if npop:
-            for j in npop:
-                countSTREAM(j,fdict)
-        cnt +=1
-        print "current time:",cnt
-    showCOUNT(fdict)
-            
-    
+    rating()
                
             
     

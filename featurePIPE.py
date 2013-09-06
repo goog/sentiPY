@@ -1,12 +1,12 @@
-import re
+import re,os
 from check import file2dic
-
+pwd = os.path.dirname(os.path.realpath(__file__))
 '''  make a distribution of the features   '''
 
 def count(path,out):
     with open(path) as fo,open(out,'w') as fw:
-        posD = file2dic("./pos.txt")
-        negD = file2dic("./neg.txt")
+        posD = file2dic(os.path.join(pwd,'pos.txt'))
+        negD = file2dic(os.path.join(pwd,'neg.txt'))
         distribution = {}
         for line in fo:
             line = line.strip()
@@ -37,8 +37,8 @@ def count(path,out):
 
 ## the distribution is a global variable
 distribution = {}
-posD = file2dic("./pos.txt")
-negD = file2dic("./neg.txt")
+posD = file2dic(os.path.join(pwd,'pos.txt'))
+negD = file2dic(os.path.join(pwd,'neg.txt'))
 def countSTREAM(npop,distribution):
     line = npop.strip()
     feature = line.split('   ')[0]
