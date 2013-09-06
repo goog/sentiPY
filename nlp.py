@@ -2,6 +2,9 @@
 from plumbum.cmd import cat
 from plumbum import local
 import subprocess
+import json
+import jsonrpclib
+from pprint import pprint
 ############################
 #       online NLP         #
 ############################
@@ -21,24 +24,22 @@ def pos(seged):
     posed = posed.encode('utf8')
     return posed
 
+class StanfordNLP:
+    def __init__(self, port_number=8080):
+        self.server = jsonrpclib.Server("http://localhost:%d" % port_number)
 
-## this is a temporary solution
+    def parse(self, text):
+        return json.loads(self.server.parse(text))
+
 def parser(string):
-    os.popen("echo "+string+" > ~/parser/stanfordtemp.txt")
-    os.popen("~/parser/do.sh ~/parser/stanfordtemp.txt > ~/parser/output.txt")
-    fo = open('/home/drill/parser/output.txt')
-    li = []
-    for line in fo:
-        line = line.strip()
-        if line:
-            li.append(line)
-    return "   ".join(li)
+    nlp = StanfordNLP()
+    result = nlp.parse(string)
+    deps = result['sentences'][0]['dependencies']
+    deps = map(lambda x:x.encode('utf8'),deps)
+    return "   ".join(deps)
 
 
 if __name__ =="__main__":
     string  = "我 是 中国 人"
-    output = parser(string)
-    print output
-    print seg("我是中国人")
-    print pos("我 是 中国 人")
+    print parser(string)
     
