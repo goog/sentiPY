@@ -26,9 +26,6 @@ install the python package first
 ####2,sentiment analysis
 ```from sentipy import senti```  
 ```s = senti.senti()```  
-```s.sentiFLY("新年快乐")```
-
-
-**mailto**: *googcheng@gmail.com*
+```s.sentiFLY("新年快乐")```  
 
 
