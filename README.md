@@ -11,21 +11,29 @@ SentiPY is a sentiment ananlysis system based on the SentiDP algorithm and imple
 ##Requirement 
 We need a Stanford NLP service, but its size is more than 300Mb, so we need to download it manually from Dropbox.  
 1,**install corenlp-python**(include the Stanford CoreNLP)  
-```wget https://www.dropbox.com/s/21wkispu69cmk7n/corenlp.tar.gz```  
-```tar xvzf corenlp.tar.gz```  
-```cd corenlp-python```    
-```python corenlp/corenlp.py```  
+```bash
+wget https://www.dropbox.com/s/21wkispu69cmk7n/corenlp.tar.gz  
+tar xvzf corenlp.tar.gz
+cd corenlp-python  
+python corenlp/corenlp.py
+```
 then the NLP server is running.
 
 ##usage:
 install the python package first
 ####1,nlp(to do segment\pos\parse)
-```from sentipy import nlp```  
-```server = nlp.StanfordNLP()```  
-```print nlp.parser1(server,"我在广州") ```  
+```python
+from sentipy import nlp
+server = nlp.StanfordNLP() 
+print nlp.parser1(server,"我在广州")
+```
 ####2,sentiment analysis
-```from sentipy import senti```  
-```s = senti.senti()```  
-`s.sentiFLY("新年快乐")`
+```python
+from sentipy import senti
+s = senti.senti()
+s.sentiFLY("新年快乐")
+```
+
+Thanks for the support of Useease.Inc  and Stanford NLP GROUP's John.
 
 
